@@ -11,12 +11,18 @@ Author: Abigail Johnson
 + Start, stop, and monitor the progress of any DellVE benchmark
 + View real-time monitoring of system GPUs (nvidia)
 
-## Run the app locally
-1. [Install Python]
+## Installation
+1. To run the project locally
 + cd into this project's root directory
-+ Run `pip install -r requirements.txt` to install the app's dependencies
-+ Run `python app.py`
++ Run `pip3 install -r requirements.txt` to install the app's dependencies
++ Run `python3 app.py`
 + Access the running app in a browser at <http://localhost:5000>
+
+## Deployment
+TODO
+
+## License
+TODO
 
 ## TODOs
 #### Functional
@@ -25,6 +31,11 @@ Author: Abigail Johnson
     - Remove server config whitelist and implement home form verification
 #### Vanity
     - (maybe) Add minimizer control snippet to run config and detail panels
-    - Some styling (slider tick detail white; margins; extract css from html; fix css to properly adapt mobile; remove excess styling)
+    - Fix styling!
+        -- fix css to properly adapt mobile and make uniform across browsers (looks like shit in safari)  
+        -- slider tick detail white  
+        -- margins  
+        -- extract css from html   
+        -- remove excess styling  
     - About section
     - Refactor views into modular React components
