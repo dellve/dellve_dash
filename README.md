@@ -2,7 +2,7 @@
 Front-end application to accompany the DellVE Benchmark Suite  
 
 Author: Abigail Johnson  
-Live: https://dellve-dash.mybluemix.net/
+Live: http://dellve-dash.mybluemix.net/
 
 ## Features
 #### Portal Home
@@ -62,3 +62,6 @@ TODO
     - About section
     - Throw custom error page and/or display alert modal on invalid server config input (currently re-renders portal home on error )
     - Refactor views into modular React components
+
+## Known Issues
+Application must be accessed via http instead of https for netdata dependencies to load
