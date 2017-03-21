@@ -38,4 +38,5 @@ TODO
         -- extract css from html   
         -- remove excess styling  
     - About section
+    - Throw custom error page and/or display alert modal on invalid server config input (currently re-renders portal home on error )
     - Refactor views into modular React components
