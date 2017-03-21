@@ -1,6 +1,6 @@
 # DellVE Dash
 Front-end application to accompany the DellVE Benchmark Suite  
-Author: Abigail Johnson
+Author: Abigail Johnson  
 Live: https://dellve-dash.mybluemix.net/
 
 ## Features
