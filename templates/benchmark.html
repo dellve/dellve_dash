@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--TODO: Extract custom CSS to stylesheet -->
+    <title>DellVE Dash: Benchmarks</title>
+    <meta name="author" content="Abigail Johnson">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="website"/>
+    <link rel="shortcut icon" href="../static/img/bodybuilder-favicon.png">
+    <!--Loading bootstrap css-->
+    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700">
+    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,700,300">
+    <link type="text/css" rel="stylesheet" href="../static/css/jquery-ui-1.10.4.custom.min.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/animate.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/all.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/main.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/style-responsive.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/slider.css">
+</head>
+<script>
+// this section has to appear before loading dashboard.js
+// Select a theme.
+//var netdataTheme = 'default'; // this is white
+var netdataTheme = 'slate'; // this is dark
+</script>
+<!-- Load dashboard.js
+Future TODO: Ammend to be configurable for diff servers
+-->
+<script type="text/javascript" src="http://{{ server }}:{{ netdata_port }}/dashboard.js"></script>
+<script>
+// Set operational options
+// This has to be done, after dashboard.js is loaded
+// destroy charts not shown (lowers memory on the browser)
+NETDATA.options.current.destroy_on_hide = true;
+// set this to false, to always show all dimensions
+NETDATA.options.current.eliminate_zero_dimensions = true;
+// lower the pressure on this browser
+NETDATA.options.current.concurrent_refreshes = true;
+// if the browser is too slow (a pi?)
+// set this to false
+NETDATA.options.current.parallel_refresher = true;
+// always update the charts, even if focus is lost
+// NETDATA.options.current.stop_updates_when_focus_is_lost = false;
+// Since you may render charts from many servers and any of them may
+// become offline for some time, the charts will break.
+// This will reload the page every RELOAD_EVERY minutes
+var RELOAD_EVERY = 5;
+setTimeout(function(){
+    location.reload();
+}, RELOAD_EVERY * 60 * 1000);
+</script>
+<body>
+    <!-- BEGIN TOP HEADER -->
+    <div id="header-topbar-option-demo" class="page-header-topbar">
+        <nav id="topbar" role="navigation" style="margin-bottom: 0;"
+            data-step="3" class="navbar navbar-default navbar-static-top">
+        <div class="navbar-header">
+            <a id="logo" href="/benchmarks" class="navbar-brand">
+                <img style="max-width:100px; margin-top: -5px;"
+                    src='../static/img/dell-logo-vector3.png'>
+            </a>
+        </div>
+        <div class="topbar-main">
+            <a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
+            <ul class="nav navbar navbar-top-links navbar-right mbn">
+                <li class="dropdown topbar-user">
+                    <a  class="dropdown-toggle">
+                        <span class="hidden-xs"> <b>Connected to: </b> &nbsp{{server }}</span>&nbsp;
+                    </a>
+                </li>
+            </ul>
+        </div>
+        </nav>
+    </div>
+    <!-- END TOP HEADER-->
+    <!-- BEGIN PAGE WRAPPER -->
+    <div>
+        <!-- BEGIN SIDEBAR-->
+        <nav id="sidebar" role="navigation" data-position="right"
+            class="navbar-default navbar-static-side" style="min-height: 100%;">
+            <div class="sidebar-collapse menu-scroll" >
+                <ul id="side-menu" class="nav">
+                    <div class="clearfix"></div>
+                    <!-- System Metrics link -->
+                    <li>
+                        <a href="/">
+                            <i class="fa fa-home">
+                                <div class="icon-bg bg-orange"></div>
+                            </i>
+                            <span class="menu-title">Portal Home</span>
+                        </a>
+                    </li>
+                    <!-- System Metrics link -->
+                    <li>
+                        <a href="/system_metrics?server={{ server }}&netdata_port={{ netdata_port }}&dellve_port={{ dellve_port}}">
+                            <i class="fa fa-tachometer fa-fw">
+                                <div class="icon-bg bg-orange"></div>
+                            </i>
+                            <span class="menu-title">System Overview</span>
+                        </a>
+                    </li>
+                    <!-- Benchmarks link -->
+                    <li class="active">
+                        <a href="/benchmarks?server={{ server }}&netdata_port={{ netdata_port }}&dellve_port={{ dellve_port}}">
+                            <i class="fa fa-files-o">
+                                <div class="icon-bg bg-orange"></div>
+                            </i>
+                            <span class="menu-title">Benchmarks</span>
+                        </a>
+                    </li>
+                    <!-- About TODO: implement this page -->
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-info-circle">
+                                <div class="icon-bg bg-orange"></div>
+                            </i>
+                            <span class="menu-title">About</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- END SIDEBAR -->
+        <div style='margin-left: 300px;'>
+        <!-- BEGIN BENCHMARK RUN CONFIG  -->
+        <br>
+        <div class='panel panel-default' style='width:90%;'>
+            <div class='panel-heading'>
+                <h4 class='panel-title'> Run Configuration </h4>
+            </div>
+            <div class='panel-body'>
+                <div class='row'>
+                    <!-- TODO: enter Dellve API endpoint specs
+                        action='#'
+                    -->
+                    <form>
+                        <div class='col-lg-11' >
+                            <div class= 'form-group'>
+                                <div class="col-xs-3">
+                                    Benchmark Type
+                                    <!-- TODO: dynamically create this using get_benchmarks() endpoint -->
+                                    <select class="selectpicker form-control" data-width='50px'>
+                                          <optgroup label="Dellve">
+                                              <option value='test_id'>Forward Convo</option>
+                                              <option value='test_id'>Backward Convo</option>
+                                              <option value='test_id'>...</option>
+                                          </optgroup>
+                                          <optgroup label="Other">
+                                              <option>TBD</option>
+                                          </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-xs-3">
+                                    Stress Load Type
+                                    <select name='load_type' class="selectpicker form-control" data-width='50px'>
+                                        <option value='gpu'>GPU Utilization</option>
+                                        <option value='memory'>Memory Utilization</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-3">
+                                    Stress Level
+                                    <form name="stress_level2">
+                                        <input name='stress_level' id="sliderInId" type="range" value=50
+                                            min=0 max=100 step=1 oninput="sliderOutId.value = sliderInId.value ">
+                                        <output name="stress_level_out" id="sliderOutId">50</output>
+                                    </form>
+                                </div>
+                                <!-- TODO: add slider -->
+                                <div class="col-xs-3">
+                                    <br>
+                                    <input type="submit"  class="btn btn-primary" value='Run'></input>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- END BENCHMARK RUN CONFIG -->
+        <!-- BEGIN NETDATA INFO  -->
+        <div class='panel panel-default' style='width:90%;'>
+        <!--<div style='height: 380px; overflow: scroll;'> -->
+        <div class='panel-heading'>
+            <h4 class='panel-title'> Performance Metrics </h4>
+        </div>
+        <div class='panel-body' style='height: 380px; overflow: scroll;'>
+            <div style="width: 90%; text-align: center; height: 500px;display: inline-block;">
+                <!-- Load -->
+                <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
+                    <div class = 'netdata-title'>
+                        <b>Load (% total GPU/Memory Utilization)</b>
+                    </div>
+                    <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
+                        <div data-netdata="nv.load"></div>
+                    </div>
+                </div>
+                <br>
+                <!-- Memory -->
+                <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
+                    <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
+                        <b>Memory Usage (MB)</b>
+                    </div>
+                    <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
+                        <div data-netdata="nv.memory"></div>
+                    </div>
+                </div>
+                <br>
+                <!-- Temperature --->
+                <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
+                    <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
+                        <b>Temperature</b>
+                    </div>
+                    <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
+                        <div data-netdata="nv.temperature"></div>
+                    </div>
+                </div>
+                <br>
+                <!-- Frequency --->
+                <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
+                    <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
+                        <b>Frequency</b>
+                    </div>
+                    <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
+                        <div data-netdata="nv.frequency"></div>
+                    </div>
+                </div>
+                <br>
+                <!-- Errors -->
+                <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
+                    <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
+                        <b>ECC</b>
+                    </div>
+                    <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
+                        <div data-netdata="nv.ecc_errors"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- END NETDATA INFO -->
+    </div>
+        <!-- END PAGE CONTENT -->
+    </div>
+    <!-- END PAGE WRAPPER -->
+</body>
+</html>

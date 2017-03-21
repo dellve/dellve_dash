@@ -1,0 +1,39 @@
+/* Styling for main performance dashboard */
+.netdata-graph {
+    width: 80%;
+    height: 180px;
+    text-align: center;
+    display: inline-block;
+}
+
+.netdata-chart-container {
+    width: 80%;
+    text-align: center;
+    display: inline-block;"
+}
+
+.dellve-logo {
+    width: 80%;
+    text-align: center;
+    display: inline-block;"
+}
+
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}
+
+/*
+.system-metrics {
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 100%;
+    height: 100%;
+} */
+
+
+/*
+.wrapper         {width:100%;height:100%;margin-left:400px auto;background:#CCC}
+.h_iframe        {position:relative;}
+.h_iframe .ratio {display:block;width:100%;height:auto;}
+.h_iframe iframe {position:absolute;top:0;left:0;width:100%; height:100%;} */
