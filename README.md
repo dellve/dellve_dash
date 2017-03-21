@@ -1,6 +1,7 @@
 # DellVE Dash
 Front-end application to accompany the DellVE Benchmark Suite  
 Author: Abigail Johnson
+Live: https://dellve-dash.mybluemix.net/
 
 ## Features
 #### Portal Home
@@ -19,7 +20,27 @@ Author: Abigail Johnson
 + Access the running app in a browser at <http://localhost:5000>
 
 ## Deployment
-TODO
+#### Prerequisites
+You'll need the following:
+* [Bluemix account](https://console.ng.bluemix.net/registration/)
+* [Cloud Foundry CLI](https://github.com/cloudfoundry/cli#downloads)
+* [Git](https://git-scm.com/downloads)
+* [Python](https://www.python.org/downloads/)
+
+#### Deploying to Bluemix
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy)
+or....
+```
+cf api https://api.ng.bluemix.net
+cf login
+cf push
+```
+This can take a minute. If there is an error in the deployment process you can use the command `cf logs <Your-App-Name> --recent` to troubleshoot.
+When deployment completes you should see a message indicating that your app is running.  View your app at the URL listed in the output of the push command.  You can also issue the
+  ```
+cf apps
+  ```
+command to view your apps status and see the URL.
 
 ## License
 TODO

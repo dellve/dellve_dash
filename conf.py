@@ -1,4 +1,5 @@
 import os
 
+# TODO: extract app constants here
 SERVER_IP = 'server'
-ENV_PATH = '/Users/abigailjohnson/Desktop/dellve'
+
