@@ -1,7 +1,3 @@
-"""
-Hello World app for running Python apps on Bluemix
-"""
-
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 # To use a consistent encoding
@@ -20,4 +16,3 @@ setup(
     long_description=long_description,
     url='https://github.com/magescher/dellve-dash'
 )
-
