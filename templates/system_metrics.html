@@ -25,7 +25,12 @@
     <link type="text/css" rel="stylesheet" href="../static/css/style-responsive.css">
     <link type="text/css" rel="stylesheet" href="../static/css/slider.css">
 </head>
-<body>
+<style>
+    body {
+        background-color: #272b30;
+    }
+</style>
+<body scroll="no" style="overflow: hidden">
     <!-- BEGIN TOP HEADER -->
     <div id="header-topbar-option-demo" class="page-header-topbar">
         <nav id="topbar" role="navigation" style="margin-bottom: 0;"
@@ -100,13 +105,15 @@
         <div>
             <div class="h_iframe" >
                 <iframe src='http://{{ server }}:{{netdata_port}}' allow-scrolling='no'
-                    width="81%" style="margin-left:250px; margin-top: -60px;position: absolute"
-                    border='none' frameborder="0" height="600px"
+                    width="88%" style="margin-left:13%; margin-top: -60px;position: absolute;overflow: hidden;"
+                    border='none' frameborder="0" height="103%"
                     allowfullscreen sandboxsrc>
                 </iframe>
             </div>
         </div>
         <!-- END SYTEM METRICS -->
     </div>
+
 </body>
 </html>
+    
