@@ -141,15 +141,15 @@ setTimeout(function(){
                     <!-- TODO: enter Dellve API endpoint specs
                         action='#'
                     -->
-                    <form>
+                    <form action='http://10.157.26.8:9999/benchmark/AlexnetBenchmark'>
                         <div class='col-lg-11' >
                             <div class= 'form-group'>
                                 <div class="col-xs-3">
                                     Benchmark Type
                                     <!-- TODO: dynamically create this using get_benchmarks() endpoint -->
-                                    <select class="selectpicker form-control" data-width='50px'>
+                                    <select name='benchmark' class="selectpicker form-control" data-width='50px'>
                                           <optgroup label="Dellve">
-                                              <option value='test_id'>Forward Convo</option>
+                                              <option value='0'>AlexnetBenchmark</option>
                                               <option value='test_id'>Backward Convo</option>
                                               <option value='test_id'>...</option>
                                           </optgroup>
