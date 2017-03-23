@@ -4,14 +4,15 @@ import os
 #       Application Constants
 ##############################################
 
-# Query Params
+# Query Params and template variable names
 SERVER_TAG = 'server'
 DELLVE_TAG = 'dellve_port'
 NETDATA_TAG = 'netdata_port'
+BENCHMARK_TAG = 'benchmarks'
 
 # External API Endpoints used for dependency verification and form submission
 NETDATA_SUFFIX = '/api/v1/charts/data?chart=netdata.plugin_pythond_nv'
-DVE_BENCH_LIST = ''# TODO: ammend as API is determined
+DVE_BENCH_LIST = '/benchmark/'# TODO: ammend as API is determined
 
 # Local/Bluemix Deployment
 DEFAULT_PORT = 8080

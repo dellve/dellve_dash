@@ -18,9 +18,12 @@ Live: http://dellve-dash.mybluemix.net/
 + cd into this project's root directory
 + Run `pip3 install -r requirements.txt` to install the app's dependencies
 + Run `python3 app.py`
-+ Access the running app in a browser at <http://localhost:5000>
 
 ## Deployment
+This application uses a continuous delivery pipeline. Whenever an approved commit has been made to the master branch, the application will be automatically redeployed to the dellve-dash instance on Bluemix.
+
+To deploy this application to a seperate Bluemix instance, follow the instructions below:  
+
 #### Prerequisites
 You'll need the following:
 * [Bluemix account](https://console.ng.bluemix.net/registration/)

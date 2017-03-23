@@ -22,7 +22,7 @@ def main():
 @app.route('/system_metrics', methods=['GET'])
 def get_system_metrics():
     args = request.args
-    if valid_config_params( args ):
+    if dellve_enabled(args) and netdata_enabled(args):
         return apply_template(TEMPLATE_DIR + SYS_PAGE, args)
     # TODO: throw custom error page
     else:
@@ -31,9 +31,25 @@ def get_system_metrics():
 @app.route('/benchmarks', methods=['GET'] )
 def get_benchmark_page():
     args = request.args
-    if valid_config_params( args ):
-        return apply_template(TEMPLATE_DIR + BENCH_PAGE, args)
-    # TODO: throw custom error page
+    mutable_dict = {}
+    dellve_verified = True
+    try:
+        # get list of benchmarks
+        url = 'http://' + str(args[SERVER_TAG]) + ':' + str(args[DELLVE_TAG]) + DVE_BENCH_LIST
+        benchmarks = requests.get(url).json()
+        print( 'Benchmarks: ', benchmarks )
+        arg_tags = [ SERVER_TAG , NETDATA_TAG, DELLVE_TAG ]
+        # can't append benchmarks to args directly (immutable), so copy data over
+        for tag in arg_tags:
+            mutable_dict[tag] = args[tag]
+        mutable_dict[BENCHMARK_TAG] = benchmarks
+    except:
+        print('Unable to create dynamic benchmark list')
+        dellve_verified = False
+    # Verify netdata enabled and return appropriate page
+    # TODO: throw custom error
+    if dellve_verified and netdata_enabled(args):
+        return apply_template(TEMPLATE_DIR + BENCH_PAGE, mutable_dict)
     else:
         return render_template(HOME_PAGE)
 
@@ -46,12 +62,12 @@ def apply_template(template_path, args):
     t_vars[ SERVER_TAG ] = str( args[ SERVER_TAG ] )
     t_vars[ NETDATA_TAG ] = str( args[ NETDATA_TAG ] )
     t_vars[ DELLVE_TAG ] = str( args[ DELLVE_TAG ] )
+    try:
+        t_vars[ BENCHMARK_TAG ] = args[ BENCHMARK_TAG ]
+    # Not all templates pass benchmarks; dummy exception
+    except:
+        dummy = True
     return template.render(t_vars)
-
-# Verify that user provided server configuration has
-# a proper dellve installation and dependecies
-def valid_config_params(params):
-    return True if dellve_enabled(params) and netdata_enabled(params) else False
 
 # Helper Function to determine whether a server has
 # a proper netdata installation and netdata plugin
@@ -61,9 +77,8 @@ def netdata_enabled(params):
     return valid_api_endpoint(url)
 
 # Helper Function to determine whether a server has
-# a proper netdata
+# the proper dellve dependencies and listening api
 def dellve_enabled(params):
-    return True # TODO: uncomment once API deployed
     url = 'http://' + str(params[SERVER_TAG]) + ':' + str(params[DELLVE_TAG]) + DVE_BENCH_LIST
     return valid_api_endpoint(url)
 

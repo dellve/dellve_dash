@@ -20,24 +20,21 @@
     <link type="text/css" rel="stylesheet" href="../static/css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="../static/css/animate.css">
-    <link type="text/css" rel="stylesheet" href="../static/css/all.css">
     <link type="text/css" rel="stylesheet" href="../static/css/main.css">
     <link type="text/css" rel="stylesheet" href="../static/css/style-responsive.css">
     <link type="text/css" rel="stylesheet" href="../static/css/slider.css">
+    <script src="../static/jquery.js"></script>
 </head>
 <script>
-// this section has to appear before loading dashboard.js
-// Select a theme.
+//   1. Select a theme. (this section has to appear before loading dashboard.js)
 //var netdataTheme = 'default'; // this is white
 var netdataTheme = 'slate'; // this is dark
 </script>
-<!-- Load dashboard.js
-Future TODO: Ammend to be configurable for diff servers
--->
+<!-- 2.  Load dashboard.js -->
 <script type="text/javascript" src="http://{{ server }}:{{ netdata_port }}/dashboard.js"></script>
 <script>
-// Set operational options
-// This has to be done, after dashboard.js is loaded
+//   3. Set operational options
+// ( This has to be done after dashboard.js is loaded )
 // destroy charts not shown (lowers memory on the browser)
 NETDATA.options.current.destroy_on_hide = true;
 // set this to false, to always show all dimensions
@@ -56,8 +53,28 @@ var RELOAD_EVERY = 5;
 setTimeout(function(){
     location.reload();
 }, RELOAD_EVERY * 60 * 1000);
+
+// 4. Setup action handlers for stop/start buttons
+// TODO: progress bar update
+function get_action(form) {
+    var benchmarkId = document.getElementById('benchmark-container').value;
+    var controlButton = document.getElementById('benchmark-start-stop');
+    if ( controlButton.value == 'Start') {
+        form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/start";
+        controlButton.value = 'Stop';
+        controlButton.className = 'btn btn-warning';
+    } else {
+        form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/stop";
+        controlButton.value = 'Start';
+        controlButton.className = 'btn btn-info';
+    }
+}
 </script>
+
 <body>
+    <!-- TODO: Better style this so that it doesn't interfere with UI
+    Dummy iframe - target for form submission (prevent GET request to Dellve from opening in current or new window)-->
+    <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe>
     <!-- BEGIN TOP HEADER -->
     <div id="header-topbar-option-demo" class="page-header-topbar">
         <nav id="topbar" role="navigation" style="margin-bottom: 0;"
@@ -138,50 +155,31 @@ setTimeout(function(){
             </div>
             <div class='panel-body'>
                 <div class='row'>
-                    <!-- TODO: enter Dellve API endpoint specs
-                        action='#'
-                    -->
-                    <form action='http://10.157.26.8:9999/benchmark/AlexnetBenchmark'>
+                    <!-- BEGIN RUN CONFIG FORM -->
+                    <form onsubmit="get_action(this);" target='dummyframe'>
                         <div class='col-lg-11' >
                             <div class= 'form-group'>
-                                <div class="col-xs-3">
+                                <div class="col-md-4">
                                     Benchmark Type
-                                    <!-- TODO: dynamically create this using get_benchmarks() endpoint -->
-                                    <select name='benchmark' class="selectpicker form-control" data-width='50px'>
-                                          <optgroup label="Dellve">
-                                              <option value='0'>AlexnetBenchmark</option>
-                                              <option value='test_id'>Backward Convo</option>
-                                              <option value='test_id'>...</option>
-                                          </optgroup>
-                                          <optgroup label="Other">
-                                              <option>TBD</option>
-                                          </optgroup>
+                                    <select name='benchmark_id' id='benchmark-container'
+                                        class="selectpicker form-control">
+                                          <!-- Dynamically populate benchmark dropdown -->
+                                          {% for benchmark in benchmarks %}
+                                          <option value="{{ benchmark['id'] }}">{{ benchmark['name'] }}</option>
+                                          {% endfor %}
                                     </select>
                                 </div>
-                                <div class="col-xs-3">
-                                    Stress Load Type
-                                    <select name='load_type' class="selectpicker form-control" data-width='50px'>
-                                        <option value='gpu'>GPU Utilization</option>
-                                        <option value='memory'>Memory Utilization</option>
-                                    </select>
-                                </div>
-                                <div class="col-xs-3">
-                                    Stress Level
-                                    <form name="stress_level2">
-                                        <input name='stress_level' id="sliderInId" type="range" value=50
-                                            min=0 max=100 step=1 oninput="sliderOutId.value = sliderInId.value ">
-                                        <output name="stress_level_out" id="sliderOutId">50</output>
-                                    </form>
-                                </div>
-                                <!-- TODO: add slider -->
-                                <div class="col-xs-3">
+                                <!-- Toggle Between Start/Stop Button -->
+                                <div class="col-md-4">
                                     <br>
-                                    <input type="submit"  class="btn btn-primary" value='Run'></input>
+                                    <input id='benchmark-start-stop' type="submit" class="btn btn-info" value='Start'></input>
                                 </div>
+                                <!-- TODO: progress bar update (trigger on click, reset stop
+                                    to start when benchmark 100%; expand benchmark res panel when 100% )-->
                             </div>
                         </div>
-
                     </form>
+                    <!-- END BEGIN RUN CONFIG FORM -->
                 </div>
             </div>
         </div>
