@@ -2,7 +2,7 @@
 Front-end application to accompany the DellVE Benchmark Suite  
 
 Author: Abigail Johnson  
-Live: http://dellve-dash.mybluemix.net/
+Live: http://dellve-dash.mybluemix.net/ :+1: :sparkles: :camel: :tada: :rocket: :metal: :octocat:  
 
 ## Features
 #### Portal Home
@@ -32,8 +32,8 @@ You'll need the following:
 * [Python](https://www.python.org/downloads/)
 
 #### Deploying to Bluemix
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy)
-or....
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy)  
+or....  
 ```
 cf api https://api.ng.bluemix.net
 cf login
@@ -51,23 +51,26 @@ TODO
 
 ## TODOs
 #### Functional
-    ~~Remove server config whitelist and implement home form verification~~     
-    ~~Attach dellve API endpoint to run config form (start/stop buttons)~~     
-    ~~Add progress bar/long polling functionality~~  
-    - Ensure proper reinitialization of run panel on page return    
+    - [x] Remove server config whitelist and implement home form verification    
+    - [x] Attach dellve API endpoint to run config form (start/stop buttons)     
+    - [x] Add progress bar/long polling functionality
+    - [ ] Ensure proper reinitialization of run panel on page return     
         -- ( if user leaves benchmark page in middle of run, ensure stop button and proper benchmark progress is displayed if the benchmark is still running by the time they return )  
-    - Add benchmark detail panel (expand on benchmark progress complete)
+    - [ ] Add benchmark detail panel (expand on benchmark progress complete)  
+
 #### Vanity
-    - (maybe) Add minimizer control snippet to run config and detail panels
-    - Fix styling!
-        -- fix css to properly adapt mobile and make uniform across browsers (looks like shit in safari)  
-        -- Unify DellVE logo alignment amongst pages
-        -- margins  
-        -- extract css from html   
-        -- remove excess styling  
-    - About section
-    - Throw custom error page and/or display alert modal on invalid server config input (currently re-renders portal home on error )
-    - Refactor views into modular React components
+    - [ ] (maybe) Add minimizer control snippet to run config and detail panels
+    - [ ] Fix styling!
+        - [ ] fix css to properly adapt mobile and make uniform across browsers (looks like shit in safari)  
+        - [ ] Unify DellVE logo alignment amongst pages
+        - [ ] margins  
+        - [ ] extract css from html   
+        - [ ] remove excess styling  
+    - [ ] About section
+    - [ ] Throw custom error page and/or display alert modal on invalid server config input (currently re-renders portal home on error )
+
+#### Other Future improvements
+    - [ ] Refactor views into modular React components
 
 ## Note
 Application must be accessed via http instead of https for netdata dependencies to load
