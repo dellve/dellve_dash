@@ -30,7 +30,7 @@ def get_system_metrics():
 # Helper proxy for get_progress polling (ajax rejects cross origin)
 @app.route('/progress_proxy', methods=['GET'])
 def get_progress_proxy():
-    r = requests.get( "http://" + request.args[URL_TAG]  + '/benchmark/progress').json()['progress']
+    r = requests.get( "http://" + request.args[URL_TAG]  + '/benchmark/progress').json()
     #print('get progess : ' + str(r))
     return jsonify(r)
 
@@ -40,25 +40,31 @@ def get_benchmark_page():
     mutable_dict = {}
     dellve_verified = True
     try:
-        # get list of benchmarks
-        url = 'http://' + str(args[SERVER_TAG]) + ':' + str(args[DELLVE_TAG]) + DVE_BENCH_LIST
-        benchmarks = requests.get(url).json()
+        # 1. get list of benchmarks
+        benchmarks = requests.get('http://' + str(args[SERVER_TAG]) + ':' + str(args[DELLVE_TAG]) + DVE_BENCH_LIST).json()
         print ('Benchmarks: ', benchmarks)
-        arg_tags = [ SERVER_TAG , NETDATA_TAG, DELLVE_TAG ]
         # can't append benchmarks to args directly (immutable), so copy data over
+        arg_tags = [ SERVER_TAG , NETDATA_TAG, DELLVE_TAG ]
         for tag in arg_tags:
             mutable_dict[tag] = args[tag]
         mutable_dict[BENCHMARK_TAG] = benchmarks
+        # 2. Restore proper stop/progress controls, last detail panel,
+        #    last user-selected benchmark, and progress bar
+        run_detail = requests.get( "http://" + str(args[SERVER_TAG]) + ":" + str(args[DELLVE_TAG])  + '/benchmark/progress').json()
+        print ('Last runtime detail: ', run_detail)
+        mutable_dict[RUN_DETAIL_TAG] = run_detail
     except:
         print ('Unable to create dynamic benchmark list')
         dellve_verified = False
-    # Verify netdata enabled and return appropriate page
+
+    # 3. Verify netdata enabled and return appropriate page
     if dellve_verified and netdata_enabled(args):
         return apply_template(TEMPLATE_DIR + BENCH_PAGE, mutable_dict)
     else:
         return render_template(HOME_PAGE) # TODO: throw custom error
 
 # Helper method for applying jinja templates
+# TODO itereate here
 def apply_template(template_path, args):
     template_env = jinja2.Environment(
         loader=jinja2.FileSystemLoader( os.path.dirname(__file__) ) )
@@ -69,6 +75,7 @@ def apply_template(template_path, args):
     t_vars[ DELLVE_TAG ] = str( args[ DELLVE_TAG ] )
     try:
         t_vars[ BENCHMARK_TAG ] = args[ BENCHMARK_TAG ]
+        t_vars[ RUN_DETAIL_TAG ] = args[  RUN_DETAIL_TAG]
     # Not all templates pass benchmarks; dummy exception
     except:
         dummy = True
@@ -78,7 +85,6 @@ def apply_template(template_path, args):
 # a proper netdata installation and netdata plugin
 def netdata_enabled(params):
     url = 'http://' + str(params[SERVER_TAG]) + ':' + str(params[NETDATA_TAG]) + NETDATA_SUFFIX
-    #print (url)
     return valid_api_endpoint(url)
 
 # Helper Function to determine whether a server has

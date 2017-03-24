@@ -10,6 +10,9 @@ DELLVE_TAG = 'dellve_port'
 NETDATA_TAG = 'netdata_port'
 BENCHMARK_TAG = 'benchmarks'
 URL_TAG = 'url_base'
+PROGRESS_TAG = 'progress'
+RUN_DETAIL_TAG = 'run_detail'
+
 # External API Endpoints used for dependency verification and form submission
 NETDATA_SUFFIX = '/api/v1/charts/data?chart=netdata.plugin_pythond_nv'
 DVE_BENCH_LIST = '/benchmark/'# TODO: ammend as API is determined
