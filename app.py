@@ -1,4 +1,4 @@
-from flask import Flask, render_template, json, jsonify, request, url_for, redirect
+from flask import Flask, render_template, json, jsonify, request, url_for, redirect, Response
 import requests
 import jinja2
 import os
@@ -24,9 +24,15 @@ def get_system_metrics():
     args = request.args
     if dellve_enabled(args) and netdata_enabled(args):
         return apply_template(TEMPLATE_DIR + SYS_PAGE, args)
-    # TODO: throw custom error page
     else:
-        return render_template(HOME_PAGE)
+        return render_template(HOME_PAGE) # TODO: throw custom error page
+
+# Helper proxy for get_progress polling (ajax rejects cross origin)
+@app.route('/progress_proxy', methods=['GET'])
+def get_progress_proxy():
+    r = requests.get( "http://" + request.args[URL_TAG]  + '/benchmark/progress').json()['progress']
+    #print('get progess : ' + str(r))
+    return jsonify(r)
 
 @app.route('/benchmarks', methods=['GET'] )
 def get_benchmark_page():
@@ -37,21 +43,20 @@ def get_benchmark_page():
         # get list of benchmarks
         url = 'http://' + str(args[SERVER_TAG]) + ':' + str(args[DELLVE_TAG]) + DVE_BENCH_LIST
         benchmarks = requests.get(url).json()
-        print( 'Benchmarks: ', benchmarks )
+        print ('Benchmarks: ', benchmarks)
         arg_tags = [ SERVER_TAG , NETDATA_TAG, DELLVE_TAG ]
         # can't append benchmarks to args directly (immutable), so copy data over
         for tag in arg_tags:
             mutable_dict[tag] = args[tag]
         mutable_dict[BENCHMARK_TAG] = benchmarks
     except:
-        print('Unable to create dynamic benchmark list')
+        print ('Unable to create dynamic benchmark list')
         dellve_verified = False
     # Verify netdata enabled and return appropriate page
-    # TODO: throw custom error
     if dellve_verified and netdata_enabled(args):
         return apply_template(TEMPLATE_DIR + BENCH_PAGE, mutable_dict)
     else:
-        return render_template(HOME_PAGE)
+        return render_template(HOME_PAGE) # TODO: throw custom error
 
 # Helper method for applying jinja templates
 def apply_template(template_path, args):
@@ -73,7 +78,7 @@ def apply_template(template_path, args):
 # a proper netdata installation and netdata plugin
 def netdata_enabled(params):
     url = 'http://' + str(params[SERVER_TAG]) + ':' + str(params[NETDATA_TAG]) + NETDATA_SUFFIX
-    print(url)
+    #print (url)
     return valid_api_endpoint(url)
 
 # Helper Function to determine whether a server has
@@ -90,7 +95,6 @@ def valid_api_endpoint(url):
     # Destination not found
     except:
         return False
-
 
 if __name__ == "__main__":
     app.run(host=DEFAULT_HOST,port=port, debug=True)

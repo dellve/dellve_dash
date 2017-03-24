@@ -51,9 +51,10 @@ TODO
 
 ## TODOs
 #### Functional
-    - Attach dellve API endpoint to run config form
-    - Add progress/detail panel to Benchmarks page (under run config)
     - Remove server config whitelist and implement home form verification
+    - Attach dellve API endpoint to run config form (start/stop buttons)
+    - Add progress bar/long polling functionality
+    - Add benchmark detail panel (expand on benchmark progress complete)
 #### Vanity
     - (maybe) Add minimizer control snippet to run config and detail panels
     - Fix styling!
@@ -66,5 +67,5 @@ TODO
     - Throw custom error page and/or display alert modal on invalid server config input (currently re-renders portal home on error )
     - Refactor views into modular React components
 
-## Known Issues
+## Note
 Application must be accessed via http instead of https for netdata dependencies to load
