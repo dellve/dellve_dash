@@ -51,15 +51,17 @@ TODO
 
 ## TODOs
 #### Functional
-    - Remove server config whitelist and implement home form verification
-    - Attach dellve API endpoint to run config form (start/stop buttons)
-    - Add progress bar/long polling functionality
+    - ~~Remove server config whitelist and implement home form verification~~    
+    - ~~Attach dellve API endpoint to run config form (start/stop buttons)~~  
+    - ~~Add progress bar/long polling functionality~~
+    - Ensure proper reinitialization of run panel on page return    
+        -- ( if user leaves benchmark page in middle of run, ensure stop button and proper benchmark progress is displayed if the benchmark is still running by the time they return )  
     - Add benchmark detail panel (expand on benchmark progress complete)
 #### Vanity
     - (maybe) Add minimizer control snippet to run config and detail panels
     - Fix styling!
         -- fix css to properly adapt mobile and make uniform across browsers (looks like shit in safari)  
-        -- slider tick detail white  
+        -- Unify DellVE logo alignment amongst pages
         -- margins  
         -- extract css from html   
         -- remove excess styling  
