@@ -51,9 +51,9 @@ TODO
 
 ## TODOs
 #### Functional
-    ~~- Remove server config whitelist and implement home form verification~~     
-    ~~- Attach dellve API endpoint to run config form (start/stop buttons)~~     
-    ~~- Add progress bar/long polling functionality~~  
+    ~~Remove server config whitelist and implement home form verification~~     
+    ~~Attach dellve API endpoint to run config form (start/stop buttons)~~     
+    ~~Add progress bar/long polling functionality~~  
     - Ensure proper reinitialization of run panel on page return    
         -- ( if user leaves benchmark page in middle of run, ensure stop button and proper benchmark progress is displayed if the benchmark is still running by the time they return )  
     - Add benchmark detail panel (expand on benchmark progress complete)
