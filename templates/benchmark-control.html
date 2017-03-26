@@ -1,0 +1,33 @@
+<!-- BEGIN BENCHMARK RUN CONFIG  -->
+<div class='row'>
+    <div class='col-lg-11' >
+        <div class="col-md-6">
+            <br><h1 > Benchmarks </h1>
+        </div>
+        <!-- BEGIN RUN CONFIG FORM -->
+        <form onsubmit="getBenchmarkAction(this);" target='dummyframe'>
+            <div class= 'form-group'>
+                <div class="col-md-3">
+                    Benchmark Type
+                    <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark -->
+                    <select id='benchmark-container'  class="selectpicker form-control" >
+                          {% for benchmark in benchmarks %}
+                          <option value="{{ benchmark['id'] }}">{{ benchmark['name'] }}</option>
+                          {% endfor %}
+                    </select>
+                </div>
+                <!-- Toggle Between Start/Stop Button -->
+                <div class="col-md-3">
+                    Action <br>
+                    {% if run_detail['progress'] == 0 or run_detail['progress'] == 100 -%}
+                    <input id='benchmark-start-stop' style='width: 100%' type="submit" class="btn btn-info" value='Start'></input>
+                    {% else -%}
+                    <input id='benchmark-start-stop' style='width: 100%' type="submit" class="btn btn-warning" value='Stop'></input>
+                    {%- endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<br><br>
+<!-- END BENCHMARK RUN CONFIG -->

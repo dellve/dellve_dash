@@ -21,40 +21,17 @@
     <link type="text/css" rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="../static/css/main.css">
     <link type="text/css" rel="stylesheet" href="../static/css/style-responsive.css">
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> -->
+    <link type="text/css" rel="stylesheet" href="../static/css/benchmark.css">
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <!--<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js">  -->
 </head>
-<script>
-//   1. Select a theme. (this section has to appear before loading dashboard.js)
-//var netdataTheme = 'default'; // this is white
-var netdataTheme = 'slate'; // this is dark
-</script>
-<!-- 2.  Load dashboard.js -->
+<!--   1. Select a theme. (this section has to appear before loading dashboard.js) -->
+<script>var netdataTheme = 'slate'; //var netdataTheme = 'default'; </script>
+<!--   2.  Load dashboard.js -->
 <script type="text/javascript" src="http://{{ server }}:{{ netdata_port }}/dashboard.js"></script>
+<!--   3.  Set netdata config options -->
+<script type="text/javascript" src="../static/js/netdata-config.js"></script>
 <script>
-//   3. Set operational options
-// ( This has to be done after dashboard.js is loaded )
-// destroy charts not shown (lowers memory on the browser)
-NETDATA.options.current.destroy_on_hide = true;
-// set this to false, to always show all dimensions
-NETDATA.options.current.eliminate_zero_dimensions = true;
-// lower the pressure on this browser
-NETDATA.options.current.concurrent_refreshes = true;
-// if the browser is too slow (a pi?)
-// set this to false
-NETDATA.options.current.parallel_refresher = true;
-// always update the charts, even if focus is lost
-// NETDATA.options.current.stop_updates_when_focus_is_lost = false;
-// Since you may render charts from many servers and any of them may
-// become offline for some time, the charts will break.
-// This will reload the page every RELOAD_EVERY minutes
-//var RELOAD_EVERY = 5;
-//setTimeout(function(){
-//    location.reload();
-//}, RELOAD_EVERY * 60 * 1000);
-
-// 4. Setup action handlers for stop/start buttons
+//     4. Setup action handlers for stop/start buttons
 function getBenchmarkAction(form) {
     var benchmarkId = document.getElementById('benchmark-container').value;
     var controlButton = document.getElementById('benchmark-start-stop');
@@ -73,7 +50,8 @@ function getBenchmarkAction(form) {
 }
 
 // 5. Setup poll handlers for benchmark progress updates
-$(document).ready(function () { $request = new PollRequest(); });
+//$(document).ready(function () { $request = new PollRequest(); });
+$request = new PollRequest();
 
 function PollRequest() {
   this.pollTimer = null;
@@ -92,14 +70,13 @@ PollRequest.prototype.activatePoll = function () {
         console.log('Benchmark Progress:' + runDetail['progress']);
         $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
         // Benchmark run complete, end polling, change stop to start button,
-        if ( runDetail['progress'] ) {
+        if ( runDetail['progress'] == 100 ) {
             console.log('Benchmark run complete');
             var controlButton = document.getElementById('benchmark-start-stop');
             controlButton.value = 'Start';
             controlButton.className = 'btn btn-info';
             $request.deactivatePoll();
-            // TODO: expand and populate benchmark detail panel
-
+            $('#benchmark-detail').attr('aria-expanded', true); // expand detail panel
         }
     })
   }, this.interval);
@@ -112,220 +89,30 @@ PollRequest.prototype.activatePoll = function () {
 {% if run_detail['progress'] != 0 and run_detail['progress'] != 100 %}
 $request.activatePoll();
 {% endif %}
-
 </script>
-
 <body>
     <!-- TODO: Better style this so that it doesn't interfere with UI
     Dummy iframe - target for form submission (prevent GET request to Dellve from opening in current or new window)-->
     <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe>
-    <!-- BEGIN TOP HEADER -->
-    <div id="header-topbar-option-demo" class="page-header-topbar">
-        <nav id="topbar" role="navigation" style="margin-bottom: 0;"
-            data-step="3" class="navbar navbar-default navbar-static-top">
-        <div class="navbar-header">
-            <a id="logo" href="/system_metrics" class="navbar-brand">
-                <img style="max-width:100px; margin-top: -5px;"
-                    src='../static/img/dell-logo-vector3.png'>
-            </a>
-        </div>
-        <div class="topbar-main">
-            <a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
-            <ul class="nav navbar navbar-top-links navbar-right mbn">
-                <li class="dropdown topbar-user">
-                    <a  class="dropdown-toggle">
-                        <span class="hidden-xs"> <b>Connected to: </b> &nbsp{{server }}:{{dellve_port}}</span>&nbsp;
-                    </a>
-                </li>
-            </ul>
-        </div>
-        </nav>
-    </div>
-    <!-- END TOP HEADER-->
+    {% include 'templates/nav_header.html' %}
     <!-- BEGIN PAGE WRAPPER -->
     <div>
-        <!-- BEGIN SIDEBAR-->
-        <!-- TODO: create this dynamically with jinja-->
-        <nav id="sidebar" role="navigation" data-position="right"
-            class="navbar-default navbar-static-side" style="min-height: 100%;">
-            <div class="sidebar-collapse menu-scroll" >
-                <ul id="side-menu" class="nav">
-                    <div class="clearfix"></div>
-                    <!-- System Metrics link -->
-                    <li>
-                        <a href="/">
-                            <i class="fa fa-home">
-                                <div class="icon-bg bg-orange"></div>
-                            </i>
-                            <span class="menu-title">Portal Home</span>
-                        </a>
-                    </li>
-                    <!-- System Metrics link -->
-                    <li>
-                        <a href="/system_metrics?server={{ server }}&netdata_port={{ netdata_port }}&dellve_port={{ dellve_port}}">
-                            <i class="fa fa-tachometer fa-fw">
-                                <div class="icon-bg bg-orange"></div>
-                            </i>
-                            <span class="menu-title">System Overview</span>
-                        </a>
-                    </li>
-                    <!-- Benchmarks link -->
-                    <li class="active">
-                        <a href="/benchmarks?server={{ server }}&netdata_port={{ netdata_port }}&dellve_port={{ dellve_port}}">
-                            <i class="fa fa-files-o">
-                                <div class="icon-bg bg-orange"></div>
-                            </i>
-                            <span class="menu-title">Benchmarks</span>
-                        </a>
-                    </li>
-                    <!-- About TODO: implement this page -->
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-info-circle">
-                                <div class="icon-bg bg-orange"></div>
-                            </i>
-                            <span class="menu-title">About</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <!-- END SIDEBAR -->
-        <div style='margin-left: 300px;'>
-        <!-- BEGIN BENCHMARK RUN CONFIG  -->
-        <br>
-        <div class='panel panel-default' style='width:90%;'>
-            <div class='panel-heading'>
-                <h4 class='panel-title'> Run Configuration </h4>
-            </div>
-            <div class='panel-body'>
-                <div class='row'>
-                    <!-- BEGIN RUN CONFIG FORM -->
-                    <form onsubmit="getBenchmarkAction(this);" target='dummyframe'>
-                        <div class='col-lg-11' >
-                            <div class= 'form-group'>
-                                <div class="col-md-3">
-                                    Benchmark Type
-                                    <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark -->
-                                    <select id='benchmark-container' class="selectpicker form-control" value="{{ run_detail['id'] }}">
-                                          {% for benchmark in benchmarks %}
-                                          <option value="{{ benchmark['id'] }}">{{ benchmark['name'] }}</option>
-                                          {% endfor %}
-                                    </select>
-                                </div>
-                                <!-- Toggle Between Start/Stop Button -->
-                                <div class="col-md-2">
-                                    Action
-                                    <br>
-                                    {% if run_detail['progress'] == 0 or run_detail['progress'] == 100 -%}
-                                    <input id='benchmark-start-stop' style='width: 100%' type="submit" class="btn btn-info" value='Start'></input>
-                                    {% else -%}
-                                    <input id='benchmark-start-stop' style='width: 100%' type="submit" class="btn btn-warning" value='Stop'></input>
-                                    {%- endif %}
-                                </div>
-                                <!-- TODO: progress bar update (trigger on click, reset stop
-                                    to start when benchmark 100%; expand benchmark res panel when 100% )-->
-                                <div class="col-md-4">
-                                    Benchmark Progress
-                                    <div class="progress">
-                                        <div id='benchmark-progress' class="progress-bar progress-bar-success progress-bar-striped"
-                                            role="progressbar" aria-valuenow="{{ run_detail['progress'] }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ run_detail['progress'] }}%">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- END BEGIN RUN CONFIG FORM -->
-                </div>
-            </div>
+        {% include 'templates/sidebar.html' %}
+        <script> document.getElementById('benchmark-page').className = 'active';</script>
+        <!-- BEGIN PAGE CONTENT -->
+        <div style='margin-left: 300px;'><br>
+            {% include 'templates/benchmark-control.html' %}
+            {% include 'templates/benchmark-run-detail.html' %}
+            {% include 'templates/nvidia_charts.html' %}
         </div>
-        <!-- END BENCHMARK RUN CONFIG -->
-        <!-- TODO: BEGIN BENCHMARK DETAIL PANEL -->
-        <div id="accordion2" class='panel panel-default accordion-group' style='width:90%;'>
-            <div class='panel-heading accordion-heading'>
-                <a class='panel-title accordion-toggle' data-toggle="collapse"
-                    data-parent="#accordion2" href="#collapseOne"> Benchmark Results </a>
-            </div>
-            <div id="collapseOne" class="collapse in panel-body">
-                    Anim pariatur cliche...
-            </div>
-        </div>
-        <!-- END BENCHMARK DETAIL PANEL -->
-        <!-- BEGIN NETDATA INFO  -->
-        <!-- TODO: create this dynamically with jinja-->
-        <div class='panel panel-default' style='width:90%;'>
-        <!--<div style='height: 380px; overflow: scroll;'> -->
-        <div class='panel-heading'>
-            <h4 class='panel-title'> Performance Metrics </h4>
-        </div>
-        <div class='panel-body' style='height: 380px; overflow: scroll;'>
-            <div style="width: 90%; text-align: center; height: 500px;display: inline-block;">
-                <!-- Load -->
-                <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
-                    <div class = 'netdata-title'>
-                        <b>Load (% total GPU/Memory Utilization)</b>
-                    </div>
-                    <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
-                        <div data-netdata="nv.load"></div>
-                    </div>
-                </div>
-                <br>
-                <!-- Memory -->
-                <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
-                    <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
-                        <b>Memory Usage (MB)</b>
-                    </div>
-                    <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
-                        <div data-netdata="nv.memory"></div>
-                    </div>
-                </div>
-                <br>
-                <!-- Temperature --->
-                <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
-                    <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
-                        <b>Temperature</b>
-                    </div>
-                    <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
-                        <div data-netdata="nv.temperature"></div>
-                    </div>
-                </div>
-                <br>
-                <!-- Frequency -->
-                <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
-                    <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
-                        <b>Frequency</b>
-                    </div>
-                    <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
-                        <div data-netdata="nv.frequency"></div>
-                    </div>
-                </div>
-                <br>
-                <!-- Errors -->
-                <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
-                    <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
-                        <b>ECC</b>
-                    </div>
-                    <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
-                        <div data-netdata="nv.ecc_errors"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- END PAGE CONTENT -->
+        <!--CORE JAVASCRIPT-->
+        <script src="../static/js/jquery-1.10.2.min.js"></script>
+        <script src="../static/js/jquery.menu.js"></script>
+        <script src="../static/js/jquery-ui.js"></script>
+        <script src="../static/js/bootstrap.min.js"></script>
+        <script src="../static/js/responsive-tabs.js"></script>
     </div>
-        <!-- END NETDATA INFO -->
-    </div>
-    <!-- END PAGE CONTENT -->
-    <!--CORE JAVASCRIPT-->
-    <script src="../static/js/jquery-1.10.2.min.js"></script>
-    <script src="../static/js/jquery-migrate-1.2.1.min.js"></script>
-    <script src="../static/js/jquery.menu.js"></script>
-    <script src="../static/js/jquery-ui.js"></script>
-    <script src="../static/js/bootstrap.min.js"></script>
-    <!--<script src="../static/js/bootstrap-hover-dropdown.js"></script> -->
-    <!--<script src="../static/js/bootstrap-select.min.js"></script> -->
-    <script src="../static/js/responsive-tabs.js"></script>
-</div>
     <!-- END PAGE WRAPPER -->
 </body>
 </html>

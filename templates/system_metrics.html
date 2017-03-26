@@ -32,74 +32,13 @@
 </style>
 <body scroll="no" style="overflow: hidden">
     <!-- BEGIN TOP HEADER -->
-    <div id="header-topbar-option-demo" class="page-header-topbar">
-        <nav id="topbar" role="navigation" style="margin-bottom: 0;"
-            data-step="3" class="navbar navbar-default navbar-static-top">
-        <div class="navbar-header">
-            <a id="logo" href="/benchmarks" class="navbar-brand">
-                <img style="max-width:100px; margin-top: -5px;"
-                    src='../static/img/dell-logo-vector3.png'>
-            </a>
-        </div>
-        <div class="topbar-main">
-            <a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
-            <ul class="nav navbar navbar-top-links navbar-right mbn">
-                <li class="dropdown topbar-user">
-                    <a  class="dropdown-toggle">
-                        <span class="hidden-xs"> <b>Connected to: </b> &nbsp{{server }}:{{dellve_port}}</span>&nbsp;
-                    </a>
-                </li>
-            </ul>
-        </div>
-        </nav>
-    </div>
+    {% include 'templates/nav_header.html' %}
     <!-- END TOP HEADER-->
-    <!-- BEGIN WRAPPER -->
+    <!-- BEGIN PAGE WRAPPER -->
     <div>
         <!-- BEGIN SIDEBAR-->
-        <nav id="sidebar" role="navigation" data-step="2" data-intro="Template has <b>many navigation styles</b>" data-position="right" class="navbar-default navbar-static-side" style="min-height: 100%;">
-            <div class="sidebar-collapse menu-scroll">
-                <ul id="side-menu" class="nav">
-                    <div class="clearfix"></div>
-                    <!-- Portal Home link -->
-                    <li>
-                        <a href="/">
-                            <i class="fa fa-home">
-                                <div class="icon-bg bg-orange"></div>
-                            </i>
-                            <span class="menu-title">Portal Home</span>
-                        </a>
-                    </li>
-                    <!-- System Metrics link -->
-                    <li class="active">
-                        <a href="/system_metrics?server={{ server }}&netdata_port={{ netdata_port }}&dellve_port={{ dellve_port}}">
-                            <i class="fa fa-tachometer fa-fw">
-                                <div class="icon-bg bg-orange"></div>
-                            </i>
-                            <span class="menu-title">System Overview</span>
-                        </a>
-                    </li>
-                    <!-- Benchmarks link -->
-                    <li>
-                        <a href="/benchmarks?server={{ server }}&netdata_port={{ netdata_port }}&dellve_port={{ dellve_port}}">
-                            <i class="fa fa-files-o">
-                                <div class="icon-bg bg-orange"></div>
-                            </i>
-                            <span class="menu-title">Benchmarks</span>
-                        </a>
-                    </li>
-                    <!-- About TODO: implement this page -->
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-info-circle">
-                                <div class="icon-bg bg-orange"></div>
-                            </i>
-                            <span class="menu-title">About</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        {% include 'templates/sidebar.html' %}
+        <script> document.getElementById('system-page').className = 'active';</script>
         <!-- END SIDEBAR -->
         <!-- BEGIN SYSTEM METRICS -->
         <div>
@@ -113,7 +52,6 @@
         </div>
         <!-- END SYTEM METRICS -->
     </div>
-
+    <!-- END PAGE WRAPPER-->
 </body>
 </html>
-    

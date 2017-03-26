@@ -1,0 +1,60 @@
+<!-- BEGIN NETDATA INFO  -->
+<div class='panel panel-default' style='width:91%' >
+    <div class='panel-heading'>
+        <h4 class='panel-title'> Performance Metrics </h4>
+    </div>
+    <div class='panel-body' style='height: 650px; overflow: scroll;'>
+        <div style="width: 91%; align: center; display: inline-block;">
+            <!-- Load -->
+            <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
+                <div class = 'netdata-title'>
+                    <b>Load (% total GPU/Memory Utilization)</b>
+                </div>
+                <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
+                    <div data-netdata="nv.load"></div>
+                </div>
+            </div>
+            <br>
+            <!-- Memory -->
+            <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
+                <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
+                    <b>Memory Usage (MB)</b>
+                </div>
+                <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
+                    <div data-netdata="nv.memory"></div>
+                </div>
+            </div>
+            <br>
+            <!-- Temperature --->
+            <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
+                <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
+                    <b>Temperature</b>
+                </div>
+                <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
+                    <div data-netdata="nv.temperature"></div>
+                </div>
+            </div>
+            <br>
+            <!-- Frequency -->
+            <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
+                <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
+                    <b>Frequency</b>
+                </div>
+                <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
+                    <div data-netdata="nv.frequency"></div>
+                </div>
+            </div>
+            <br>
+            <!-- Errors -->
+            <div style="width: 100%; height: 24vh; text-align: center; display: inline-block;">
+                <div style="width: 100%; height: 15px; text-align: center; display: inline-block;">
+                    <b>ECC</b>
+                </div>
+                <div style="width: 100%; height:  150px; text-align: center; display: inline-block;">
+                    <div data-netdata="nv.ecc_errors"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END NETDATA INFO -->
