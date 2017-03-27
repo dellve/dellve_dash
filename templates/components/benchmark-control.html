@@ -16,7 +16,7 @@ function getBenchmarkAction(form) {
         // start progress polling
         $request.activatePoll();
         // paint progress bar blue for 'active' benchmark state
-        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info';
+        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
     // Benchmark stop
     } else {
         // send stop command to dellve api
@@ -27,7 +27,7 @@ function getBenchmarkAction(form) {
         // end progress polling
         $request.deactivatePoll();
         // paint progress bar yellow for 'stopped' benchmark state
-        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning';
+        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
         document.getElementById('benchmark-progress').innerHTML = 'Stopped';
     }
 }

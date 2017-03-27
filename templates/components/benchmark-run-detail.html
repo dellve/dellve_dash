@@ -32,8 +32,8 @@ PollRequest.prototype.activatePoll = function () {
             // TODO: populate benchmark detail
             $('#benchmark-detail').attr('aria-expanded', true); // expand detail panel
             // paint progress bar green to represent finished benchmark state
-            document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-success';
-            document.getElementById('benchmark-progress').innerHTML = "Complete";  
+            document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-success progress-bar-striped';
+            document.getElementById('benchmark-progress').innerHTML = "Complete";
         } else {
             document.getElementById('benchmark-progress').innerHTML = runDetail['progress'] + "%";
         }
