@@ -1,3 +1,25 @@
+<!-- Component Control-->
+<script>
+//   Action handler for stop/start buttons
+function getBenchmarkAction(form) {
+    var benchmarkId = document.getElementById('benchmark-container').value;
+    var controlButton = document.getElementById('benchmark-start-stop');
+    if ( controlButton.value == 'Start') {
+        form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/start";
+        $('#benchmark-progress').attr('aria-valuenow', 0).css('width', "0%");
+        controlButton.value = 'Stop';
+        controlButton.className = 'btn btn-warning';
+        $request.activatePoll();
+    } else {
+        form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/stop";
+        controlButton.value = 'Start';
+        controlButton.className = 'btn btn-info';
+        $request.deactivatePoll();
+    }
+}
+</script>
+
+<!-- Component View -->
 <!-- BEGIN BENCHMARK RUN CONFIG  -->
 <div class='row'>
     <div class='col-lg-11' >

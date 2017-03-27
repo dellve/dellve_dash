@@ -20,7 +20,7 @@ else:
 def main():
     return render_template(HOME_PAGE)
 
-@app.route('/system_metrics', methods=['GET'])
+@app.route('/system-overview', methods=['GET'])
 def get_system_metrics():
     if dellve_enabled(request.args) and netdata_enabled(request.args):
         return apply_template(TEMPLATE_DIR + SYS_PAGE, request.args)
@@ -55,7 +55,7 @@ def get_benchmark_page():
         return render_template(HOME_PAGE) # TODO: throw custom error
 
 # Helper proxy for get_progress polling (ajax rejects cross origin)
-@app.route('/progress_proxy', methods=['GET'])
+@app.route('/progress-proxy', methods=['GET'])
 def get_progress_proxy():
     r = requests.get( "http://" + request.args[URL_TAG]  + '/benchmark/progress').json()
     return jsonify(r)
