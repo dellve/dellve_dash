@@ -1,20 +1,32 @@
 <!-- Component Control-->
 <script>
-//   Action handler for stop/start buttons
+//   Action handler for stop/start commands
 function getBenchmarkAction(form) {
     var benchmarkId = document.getElementById('benchmark-container').value;
     var controlButton = document.getElementById('benchmark-start-stop');
+    // Benchmark Start
     if ( controlButton.value == 'Start') {
+        // send start command to dellve api
         form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/start";
         $('#benchmark-progress').attr('aria-valuenow', 0).css('width', "0%");
+        // repaint stop button
         controlButton.value = 'Stop';
         controlButton.className = 'btn btn-warning';
+        // start progress polling
         $request.activatePoll();
+        // paint progress bar blue for 'active' benchmark state
+        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info';
+    // Benchmark stop
     } else {
+        // send stop command to dellve api
         form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/stop";
+        // repaint start button
         controlButton.value = 'Start';
         controlButton.className = 'btn btn-info';
+        // end progress polling
         $request.deactivatePoll();
+        // paint progress bar yellow for 'stopped' benchmark state
+        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning';
     }
 }
 </script>
