@@ -41,14 +41,19 @@ PollRequest.prototype.activatePoll = function () {
 // User may have left benchmark page in middle of benchmark run
 // if benchmark is still running, restore stop button and proper progress bar value
 // elsewise, restore previous benchmark results (if there are any)
+
 {% if run_detail['progress'] != 0 and run_detail['progress'] != 100 %}
 $request.activatePoll();
 {% endif %}
-
 </script>
+<!-- TODO: in above, use state instead of progress flag to allow differentiation
+between currently running (active) benchmark and benchmark that was stopped prematurely.
+Can also use this flag to toggle colour of progress bar
+(yellow stopped, green active/complete {or blue running, green complete, yellow stopped} )  -->
 
 <!-- Component View -->
-<!-- TODO: Fix styling; BEGIN BENCHMARK RUN DETAIL PANEL -->
+<!-- TODO: Fix styling;
+BEGIN BENCHMARK RUN DETAIL PANEL -->
 <div id="accordion2" class='panel panel-default accordion-group' style='width:91%;'>
     <div class='panel-heading' style='height: 55px; position:relative'>
         <a class='accordion-toggle'  data-toggle="collapse"  data-parent="#accordion2" href="#benchmark-detail">
