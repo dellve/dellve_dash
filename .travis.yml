@@ -17,7 +17,7 @@ deploy:
   password:
     secure: CpVy0oJ/peWNpIpMHGpppRkXp8DngoF+FYtyEwXdDeeoCbaJ2KcuuEF1/YO2xXWg2WSCWyEchI//hEM0imJrfDVKLHscZvrZph8QixhAixQoLKOKmav9aIz/6arHRcclrIUxMubpw+MYVJHhekSIE9h9PMqird7ymkFpy3mjOKzb75V8hMy/7g45qCGdfmfWnGydw1EQUVym2pcYxYe/9bIj9KnJTBAElrTJXNydyahGkaorPZpbQzWreOwysps5I4pCHJmaiPqBwisb1eW+AijL7ktMfiougZThot/22qqAm16FEN351+49wwWIWmdH/9uvCAIcb6UF80YvaGV09vrHGRoxe6geAS2uSTny7F0wg/mobKF2c2wHM34s/ypTq1icjz3AZK3bVlY18MpVSrw0/0jLQ9xEEtu5FJJdnvrno8w5pif3a/U3dAcNWDG8FmI9gm99QxS6OvQemJMHb9pOJpoxmy4zH+nRAovgdXsti5cJDwH/VIjVKsZhzVy2Dn3+IM7OgrmOs42mcOK9XeNG8cEOJ+bW1ceDfq1Q3voaqWePDUHpeFBtgc3U0LuEzMVEAnxCVB2XwSVbP0oXXGflwEvjsO3TVlg3wjsw7EQAHaIlnY48e3yCho/xt2yGaL0/Uwuyf6hd45AOxINvkD188IT5xwrNb5znJbrZpFc=
   organization: dellve-deep
-  space: '1'
+  space: 'dev'
   on:
     repo: dellve/dellve-dash
     branch: master
