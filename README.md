@@ -1,4 +1,4 @@
-# DellVE Dash :sparkles: :tada: :rocket: :metal: :octocat:  
+# DellVE Dash :sparkles: :tada: :information_desk_person: :metal: :smiley_cat: 
 [![Build Status](https://travis-ci.org/dellve/dellve-dash.svg?branch=master)](https://travis-ci.org/dellve/dellve-dash)  
 Front-end application to accompany the DellVE Benchmark Suite  
 
