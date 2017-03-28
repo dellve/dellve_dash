@@ -1,4 +1,4 @@
-# DellVE Dash :sparkles: :tada: :metal: :dancer: :princess:
+# DellVE Dash :sparkles: :tada: :metal: :fire: :dancer: :princess:
 [![Build Status](https://travis-ci.org/dellve/dellve-dash.svg?branch=master)](https://travis-ci.org/dellve/dellve-dash)  
 Front-end application to accompany the DellVE Benchmark Suite  
 
