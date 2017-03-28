@@ -7,8 +7,8 @@ branches:
   - tests
 install:
 - python3 install setup.py
-script:
-- py.test
+#script:
+#- py.test
 after_success: echo "Success!"
 after_failure: echo "Broken :("
 deploy:
