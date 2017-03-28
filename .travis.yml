@@ -7,9 +7,9 @@ install:
     pip install -r requirements.txt
 #script:
 #- py.test
+script: python3 setup.py test
 after_success: echo "Success!"
 after_failure: echo "Broken :("
-script: python3 setup.py test
 deploy:
   provider: cloudfoundry
   api: https://api.ng.bluemix.net
@@ -20,4 +20,4 @@ deploy:
   space: '1'
   on:
     repo: dellve/dellve-dash
-    branch: tests
+    branch: master
