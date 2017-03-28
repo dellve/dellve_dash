@@ -24,11 +24,11 @@ PollRequest.prototype.activatePoll = function () {
         $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
         // Benchmark run complete, end polling, change stop to start button,
         if ( runDetail['progress'] == 100 ) {
+            $request.deactivatePoll(); //
             console.log('Benchmark run complete');
             var controlButton = document.getElementById('benchmark-start-stop');
             controlButton.value = 'Start';
             controlButton.className = 'btn btn-info';
-            $request.deactivatePoll();
             // TODO: populate benchmark detail
             $('#benchmark-detail').attr('aria-expanded', true); // expand detail panel
             // paint progress bar green to represent finished benchmark state
@@ -49,6 +49,32 @@ PollRequest.prototype.activatePoll = function () {
 {% if run_detail['progress'] != 0 and run_detail['progress'] != 100 %}
 $request.activatePoll();
 {% endif %}
+
+
+// 3. Setup results export buttons
+/*
+$(document).ready(function() {
+    $('#benchmark-run-detail-table').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    } );
+} );
+*/
+$(function () {
+	var $table = $('#table');
+	$('#toolbar').find('select').change(function () {
+    $table.bootstrapTable('refreshOptions', {
+      exportDataType: $(this).val()
+    });
+  });
+});
+
+
 </script>
 <!-- TODO: in above, use state instead of progress flag to allow differentiation
 between currently running (active) benchmark and benchmark that was stopped prematurely.
@@ -81,7 +107,7 @@ BEGIN BENCHMARK RUN DETAIL PANEL -->
     </div>
     <!-- TODO: Insert Detail panel specs-->
     <div id="benchmark-detail" aria-expanded='false' class="collapse in panel-body">
-            Blah Blah example detail
+        
     </div>
 </div>
 <!-- END BENCHMARK DETAIL PANEL -->

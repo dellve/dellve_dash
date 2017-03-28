@@ -2,7 +2,7 @@
 Front-end application to accompany the DellVE Benchmark Suite  
 
 Author: Abigail Johnson  
-Live: http://dellve-dash.mybluemix.net/ 
+Live: http://dellve-dash.mybluemix.net/
 
 ## Features
 #### Portal Home
@@ -16,7 +16,6 @@ Live: http://dellve-dash.mybluemix.net/
 ## Installation
 1. To run the project locally
 + cd into this project's root directory
-+ Run `pip3 install -r requirements.txt` to install the app's dependencies
 + Run `python3 app.py`
 
 ## Deployment

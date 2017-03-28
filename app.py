@@ -37,7 +37,7 @@ def get_benchmark_page():
         print ('Benchmarks: ', benchmarks)
         # 2. Restore proper start/stop controls, last detail panel,
         #    last user-selected benchmark, and progress bar
-        run_detail = requests.get( "http://" + str(request.args[SERVER_TAG]) + ":" + str(request.args[DELLVE_TAG])  + '/benchmark/progress').json()
+        run_detail = requests.get( "http://" + str(request.args[SERVER_TAG]) + ":" + str(request.args[DELLVE_TAG])  + DVE_PROGRESS).json()
         print ('Last runtime detail: ', run_detail)
         # 3. Add args to template
         arg_tags = [ SERVER_TAG , NETDATA_TAG, DELLVE_TAG ]
@@ -57,7 +57,7 @@ def get_benchmark_page():
 # Helper proxy for get_progress polling (ajax rejects cross origin)
 @app.route('/progress-proxy', methods=['GET'])
 def get_progress_proxy():
-    r = requests.get( "http://" + request.args[URL_TAG]  + '/benchmark/progress').json()
+    r = requests.get( "http://" + request.args[URL_TAG]  + DVE_PROGRESS).json()
     return jsonify(r)
 
 # Helper method for applying jinja templates

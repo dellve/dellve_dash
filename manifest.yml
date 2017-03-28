@@ -7,3 +7,4 @@ applications:
   host: dellve-dash
   disk_quota: 1024M
   buildpack: python_buildpack
+  command: python3 app.py

@@ -1,0 +1,85 @@
+<h4>Convolution Benchmark Results (Mock)</h4>
+<div id="toolbar">
+  <select class="form-control">
+    <option value="">Export Basic</option>
+    <option value="all">Export All</option>
+    <option value="selected">Export Selected</option>
+  </select>
+</div>
+<table
+    class='table'
+    id='table'
+    data-toolbar="#toolbar"
+    data-show-export="true"
+    data-pagination="true"
+    data-export-types="['json', 'pdf', 'xml', 'csv', 'txt', 'sql', 'excel','doc','png']"
+    data-export-options='{"fileName": "dellve-sample-output",}' >
+<thead>
+<tr class = 'row'>
+<th field='inputSize'>Input Size</th>
+<th field='filterSize'>Filter Size</th>
+<th field='filterNum'># of Filters</th>
+<th field='padding'>Padding (h, w)</th>
+<th field='stride'>Stride (h, w)</th>
+<th field='application'>Application</th>
+<th field='runTime'>Total Time (ms)</th>
+<th field='flops'>Fwd TeraFLOPS</th>
+<th field='processor'>Processor</th>
+</tr>
+</thead>
+<tbody>
+<tr class = 'row'>
+<td>W = 700, H = 161, C = 1, N = 32</td>
+<td>R = 5, S = 20</td>
+<td>32</td>
+<td>0, 0</td>
+<td>2, 2</td>
+<td>Speech Recognition</td>
+<td>2.98</td>
+<td>6.63</td>
+<td>TitanX Pascal</td>
+</tr>
+<tr class = 'row'>
+<td>W = 54, H = 54, C = 64, N = 8</td>
+<td>R = 3, S = 3</td>
+<td>64</td>
+<td>1, 1</td>
+<td>1, 1</td>
+<td>Face Recognition</td>
+<td>0.63</td>
+<td>10.55</td>
+<td>TitanX Pascal</td>
+</tr>
+<tr class = 'row'>
+<td>W = 224, H = 224, C = 3, N = 16</td>
+<td>R = 3, S = 3</td>
+<td>64</td>
+<td>1, 1</td>
+<td>1, 1</td>
+<td>Computer Vision</td>
+<td>3.99</td>
+<td>3.6</td>
+<td>TitanX Pascal</td>
+</tr>
+<tr class = 'row'>
+<td>W = 7, H = 7,  C = 512, N = 16</td>
+<td>R = 3, S = 3</td>
+<td>512</td>
+<td>1, 1</td>
+<td>1, 1</td>
+<td>Computer Vision</td>
+<td>2.93</td>
+<td>5.88</td>
+<td>TitanX Pascal</td>
+</tr>
+<tr class = 'row'>
+<td>W = 28, H = 28, C = 192, N = 16</td>
+<td>R = 5, S = 5</td>
+<td>32</td>
+<td>2, 2</td>
+<td>1, 1</td>
+<td>Computer Vision</td>
+<td>1.57</td>
+<td>6.59</td>
+<td>TitanX Pascal</td>
+</tr></tbody></table>

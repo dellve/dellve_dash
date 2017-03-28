@@ -14,6 +14,15 @@
     <meta property="og:type" content="website"/>
     <link rel="shortcut icon" href="../static/img/bodybuilder-favicon.png">
     <!--Loading bootstrap css-->
+
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="../static/css/bootstrap-table.css">
+    <script src="../static/js/bootstrap-table.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+    <script src="../static/js/bootstrap-table-export.js"></script>
+
     <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700">
     <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,700,300">
     <link type="text/css" rel="stylesheet" href="../static/css/jquery-ui-1.10.4.custom.min.css">
@@ -22,7 +31,15 @@
     <link type="text/css" rel="stylesheet" href="../static/css/main.css">
     <link type="text/css" rel="stylesheet" href="../static/css/style-responsive.css">
     <link type="text/css" rel="stylesheet" href="../static/css/benchmark.css">
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+
+
+
+    <!-- Latest compiled and minified Locales -->
+
+    <!--<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css"></script>  -->
 </head>
 <!--   1. Select a theme. (this section has to appear before loading dashboard.js) -->
 <script>var netdataTheme = 'slate'; //var netdataTheme = 'default'; </script>
@@ -30,6 +47,16 @@
 <script type="text/javascript" src="http://{{ server }}:{{ netdata_port }}/dashboard.js"></script>
 <!--   3.  Set netdata config options -->
 <script type="text/javascript" src="../static/js/netdata-config.js"></script>
+<script>
+// destroy charts not shown (lowers memory on the browser)
+NETDATA.options.current.destroy_on_hide = true;
+// set this to false, to always show all dimensions
+NETDATA.options.current.eliminate_zero_dimensions = true;
+// lower the pressure on this browser
+NETDATA.options.current.concurrent_refreshes = true;
+// if the browser is too slow set this to false
+NETDATA.options.current.parallel_refresher = true;
+</script>
 <body>
     <!-- TODO: Better style this so that it doesn't interfere with UI
     Dummy iframe - target for benchmarks form submission (prevent GET request to Dellve from opening in current or new window)-->
@@ -47,11 +74,19 @@
         </div>
         <!-- END PAGE CONTENT -->
         <!--CORE JAVASCRIPT-->
-        <script src="../static/js/jquery-1.10.2.min.js"></script>
+        <script src="../static/js/jquery.min.js"></script>
         <script src="../static/js/jquery.menu.js"></script>
         <script src="../static/js/jquery-ui.js"></script>
         <script src="../static/js/bootstrap.min.js"></script>
         <script src="../static/js/responsive-tabs.js"></script>
+
+        <!--
+        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+        <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>
+        <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script> -->
     </div>
     <!-- END PAGE WRAPPER -->
 </body>
