@@ -31,11 +31,14 @@ git clone https://github.com/Splo0sh/netdata_nv_plugin --depth 1
 sudo cp netdata_nv_plugin/nv.chart.py /usr/libexec/netdata/python.d/  
 sudo cp netdata_nv_plugin/python_modules/pynvml.py /usr/libexec/netdata/python.d/python_modules/  
 sudo cp netdata_nv_plugin/nv.conf /etc/netdata/python.d/
-```   
+```  
 
-For further information/details on how to install the netdata dependencies on other systems, visit <https://github.com/firehol/netdata/wiki/Installation> and <https://github.com/coraxx/netdata_nv_plugin>  
 ### 2.2 DellVE Benchmark Suite
-See <https://github.com/dellve/dellve_benchend>
+'''
+pip install dellve
+'''  
+
+For further information/details on how to install the netdata dependencies on other systems, visit <https://github.com/firehol/netdata/wiki/Installation>, <https://github.com/coraxx/netdata_nv_plugin>, and <https://github.com/dellve/dellve_benchend>
 
 ## 3.0 Installation (Local)
 ```
