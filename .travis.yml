@@ -7,7 +7,6 @@ install:
     pip install -r requirements.txt
 #script:
 #- py.test
-script: python3 install setup.py
 after_success: echo "Success!"
 after_failure: echo "Broken :("
 deploy:
