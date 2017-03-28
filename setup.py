@@ -28,7 +28,6 @@ setup(
     description='Front-end application to accompany the DellVE Benchmark Suite',
     long_description=long_description,
     url='https://github.com/dellve/dellve-dash',
-    #url='http://dellve-dash.mybluemix.net',
     setup_requires=pytest_runner,
     install_requires=requires,
     tests_require=tests_req

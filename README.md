@@ -92,17 +92,19 @@ TODO
     - [ ] Python unit tests
     - [ ] Interaction/js tests
     - [ ] Change runtime/build to python2.7
+    - [ ] Ensure only user who starts benchmark can stop it ( likely need to do on backend to prevent injection)
 
 #### 7.2 Vanity
     - [ ] (maybe) Add minimizer control snippet to run config and detail panels
     - [...] Fix styling!
-        - [ ] fix css to properly adapt mobile and make uniform across browsers (looks like shit in safari)  
+        - [...] fix css to properly adapt mobile and make uniform across browsers (looks like shit in safari)  
         - [ ] Unify DellVE logo alignment amongst pages
-        - [ ] margins  
+        - [...] margins  
         - [ ] extract css from html   
         - [ ] remove excess styling  
     - [ ] About section
-    - [ ] Throw custom error page and/or display alert modal on invalid server config input (currently re-renders portal home on error )
+    - [...] Throw custom error page and/or display alert modal on invalid server config input (currently re-renders portal home on error )  
+    - [ ] Export Run Detail
 
 #### 7.3 Other Future improvements
     - [...] Refactor views into modular React components
