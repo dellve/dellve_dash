@@ -19,13 +19,13 @@ function getBenchmarkAction(form) {
         document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
     // Benchmark stop
     } else {
+        // end progress polling
+        $request.deactivatePoll();
         // send stop command to dellve api
         form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/stop";
         // repaint start button
         controlButton.value = 'Start';
         controlButton.className = 'btn btn-info';
-        // end progress polling
-        $request.deactivatePoll();
         // paint progress bar yellow for 'stopped' benchmark state
         document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
         document.getElementById('benchmark-progress').innerHTML = 'Stopped';
