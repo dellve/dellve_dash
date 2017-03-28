@@ -1,8 +1,16 @@
+sudo: false
 language: python
 python:
-  -"3.5" # TODO: change
-# command to install dependencies
+    -"3.5" # TODO: change
+branches:
+    only:
+        - master
+        - tests
 install:
-  - python3 install setup.py
-# command to run tests
-script: pytest
+    - python3 install setup.py
+script:
+    - py.test
+after_success:
+    echo "Success!"
+after_failure:
+    echo "Broken :("

@@ -1,3 +1,4 @@
+import sys
 from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
@@ -15,6 +16,9 @@ requires = [
     "cf-deployment-tracker==1.0.2"
 ]
 
+needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
+pytest_runner = ['pytest-runner'] if needs_pytest else []
+
 setup(
     name='dellve-dash',
     version='1.0.0',
@@ -24,5 +28,6 @@ setup(
     long_description=long_description,
     url='https://github.com/dellve/dellve-dash',
     #url='http://dellve-dash.mybluemix.net',
+    setup_requires=pytest_runner,
     install_requires=requires
 )
