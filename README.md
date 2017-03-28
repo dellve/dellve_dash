@@ -1,8 +1,8 @@
-# DellVE Dash :sparkles: :tada: :rocket: :metal: :octocat:
+# DellVE Dash :sparkles: :tada: :rocket: :metal: :octocat:  
 Front-end application to accompany the DellVE Benchmark Suite  
 
 Author: Abigail Johnson  
-Live: http://dellve-dash.mybluemix.net/ 
+Live: http://dellve-dash.mybluemix.net/
 
 ## Features
 #### Portal Home

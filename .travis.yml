@@ -1,0 +1,8 @@
+language: python
+python:
+  -"3.5" # TODO: change
+# command to install dependencies
+install:
+  - python3 install setup.py
+# command to run tests
+script: pytest
