@@ -18,6 +18,7 @@ requires = [
 
 needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
 pytest_runner = ['pytest-runner'] if needs_pytest else []
+tests_req=['pytest']
 
 setup(
     name='dellve-dash',
@@ -29,5 +30,6 @@ setup(
     url='https://github.com/dellve/dellve-dash',
     #url='http://dellve-dash.mybluemix.net',
     setup_requires=pytest_runner,
-    install_requires=requires
+    install_requires=requires,
+    tests_require=tests_req
 )

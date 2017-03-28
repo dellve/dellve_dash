@@ -1,11 +1,15 @@
 sudo: false
 language: python
 python: "3.5"
-install: python3 install setup.py
+install:
+    #- python3 install setup.py
+    #- pip install coveralls
+    pip install -r requirements.txt
 #script:
 #- py.test
 after_success: echo "Success!"
 after_failure: echo "Broken :("
+script: python3 setup.py test
 deploy:
   provider: cloudfoundry
   api: https://api.ng.bluemix.net
