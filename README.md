@@ -55,13 +55,16 @@ TODO
     - [x] Remove server config whitelist and implement home form verification    
     - [x] Attach dellve API endpoint to run config form (start/stop buttons)     
     - [x] Add progress bar/long polling functionality
-    - [ ] Ensure proper reinitialization of run panel on page return     
+    - [x] Continuous Integration build/deploy
+    - [...] Ensure proper reinitialization of run panel on page return     
         -- ( if user leaves benchmark page in middle of run, ensure stop button and proper benchmark progress is displayed if the benchmark is still running by the time they return )  
-    - [ ] Add benchmark detail panel (expand on benchmark progress complete)  
+    - [...] Add benchmark detail panel (expand on benchmark progress complete)  
+    - [ ] Python unit tests
+    - [ ] Interaction/js tests
 
 #### Vanity
     - [ ] (maybe) Add minimizer control snippet to run config and detail panels
-    - [ ] Fix styling!
+    - [...] Fix styling!
         - [ ] fix css to properly adapt mobile and make uniform across browsers (looks like shit in safari)  
         - [ ] Unify DellVE logo alignment amongst pages
         - [ ] margins  
@@ -71,7 +74,10 @@ TODO
     - [ ] Throw custom error page and/or display alert modal on invalid server config input (currently re-renders portal home on error )
 
 #### Other Future improvements
-    - [ ] Refactor views into modular React components
+    - [...] Refactor views into modular React components
 
-## Note
-Application must be accessed via http instead of https for netdata dependencies to load
+## Notes
++ Application must be accessed via http instead of https for netdata dependencies to load  
+#### Error Handling  
++ Invalid (aka unconfigured), missing, or malformed query (aka server config) parameters to this application's endpoints will be handled gracefully by rerouting the request to the home page.
+This approach is chosen in favour of presentation, as this apps primary function that of a gui, not an api.

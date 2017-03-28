@@ -16,6 +16,13 @@ if os.getenv(CF_APP_ENV):
 else:
     port = DEFAULT_PORT
 
+# Error handling:
+#      Invalid (aka unconfigured), missing, or malformed query (aka server config) parameters to this
+#      application's endpoints will be handled gracefully by rerouting the request to the home page.
+#      This approach is chosen in favour of presentation, as this apps primary function is
+#      that of a gui, not an api.
+
+
 @app.route('/')
 def main():
     return render_template(HOME_PAGE)
@@ -25,7 +32,7 @@ def get_system_metrics():
     if dellve_enabled(request.args) and netdata_enabled(request.args):
         return apply_template(TEMPLATE_DIR + SYS_PAGE, request.args)
     else:
-        return render_template(HOME_PAGE) # TODO: throw custom error page
+        return redirect(url_for('/')) # TODO: throw custom error or render mock
 
 @app.route('/benchmarks', methods=['GET'] )
 def get_benchmark_page():
@@ -37,7 +44,7 @@ def get_benchmark_page():
         print ('Benchmarks: ', benchmarks)
         # 2. Restore proper start/stop controls, last detail panel,
         #    last user-selected benchmark, and progress bar
-        run_detail = requests.get( "http://" + str(request.args[SERVER_TAG]) + ":" + str(request.args[DELLVE_TAG])  + '/benchmark/progress').json()
+        run_detail = requests.get( "http://" + str(request.args[SERVER_TAG]) + ":" + str(request.args[DELLVE_TAG])  + DVE_PROGRESS).json()
         print ('Last runtime detail: ', run_detail)
         # 3. Add args to template
         arg_tags = [ SERVER_TAG , NETDATA_TAG, DELLVE_TAG ]
@@ -52,13 +59,16 @@ def get_benchmark_page():
     if dellve_verified and netdata_enabled(request.args):
         return apply_template(TEMPLATE_DIR + BENCH_PAGE, mutable_dict)
     else:
-        return render_template(HOME_PAGE) # TODO: throw custom error
+        return redirect(url_for('/')) # TODO: throw custom error or render mock
 
 # Helper proxy for get_progress polling (ajax rejects cross origin)
 @app.route('/progress-proxy', methods=['GET'])
 def get_progress_proxy():
-    r = requests.get( "http://" + request.args[URL_TAG]  + '/benchmark/progress').json()
-    return jsonify(r)
+    try:
+        r = requests.get("http://" + request.args[URL_TAG]  + DVE_PROGRESS).json()
+        return jsonify(r)
+    except:
+        return redirect(url_for('/')) # TODO: throw custom error or render mock
 
 # Helper method for applying jinja templates
 def apply_template(template_path, args):
@@ -87,7 +97,7 @@ def dellve_enabled(params):
     url = 'http://' + str(params[SERVER_TAG]) + ':' + str(params[DELLVE_TAG]) + DVE_BENCH_LIST
     return valid_api_endpoint(url)
 
-# Helper function to test for existence of HTTP endpoint
+# Utility function to test for existence of HTTP endpoint
 def valid_api_endpoint(url):
     try:
         r = requests.get(url)
