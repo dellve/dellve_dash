@@ -30,7 +30,7 @@ class InvalidServerConfig(Exception):
 
 @app.errorhandler(InvalidServerConfig)
 def handle_invalid_server_config(error):
-    return render_template( "invalid-server-config.html")
+    return render_template(INVALID_CONFIG_PAGE)
 
 @app.route('/')
 def portal_home():
@@ -74,15 +74,11 @@ def progress_proxy():
 def validate_server_config(params):
     try:
         url = 'http://' + str(params[SERVER_TAG]) + ':' + str(params[NETDATA_TAG]) + NETDATA_SUFFIX
-        validate_endpoint(url)
+        assert requests.get(url, timeout=DEFAULT_TIMEOUT).status_code == 200
         url = 'http://' + str(params[SERVER_TAG]) + ':' + str(params[DELLVE_TAG]) + DVE_BENCH_LIST
-        validate_endpoint(url)
+        assert requests.get(url, timeout=DEFAULT_TIMEOUT).status_code == 200
     except:
         raise InvalidServerConfig()
-
-# Utility function to test for existence of HTTP endpoint
-def validate_endpoint(url):
-    assert requests.get(url, timeout=DEFAULT_TIMEOUT).status_code == 200
 
 # Helper method for applying jinja templates
 def apply_template(template_path, args):

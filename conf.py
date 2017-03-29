@@ -17,7 +17,7 @@ PORTAL_HOME = 'portal_home'
 NETDATA_SUFFIX = '/api/v1/charts/data?chart=netdata.plugin_pythond_nv'
 DVE_BENCH_LIST = '/benchmark/'# TODO: ammend as API is determined
 DVE_PROGRESS = '/benchmark/progress'
-DEFAULT_TIMEOUT = 10
+DEFAULT_TIMEOUT = 10 # Timeout 
 
 # Local/Bluemix Deployment
 DEFAULT_PORT = 8080
@@ -29,3 +29,4 @@ TEMPLATE_DIR = 'templates/'
 HOME_PAGE = 'portal-home.html'
 SYS_PAGE = 'system-overview.html'
 BENCH_PAGE = 'benchmarks.html'
+INVALID_CONFIG_PAGE = 'invalid-server-config.html'
