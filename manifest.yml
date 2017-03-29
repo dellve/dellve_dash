@@ -1,5 +1,5 @@
 applications:
-- path: ./dellve-dash
+- path: .
   memory: 512M
   instances: 1
   domain: mybluemix.net
@@ -7,6 +7,5 @@ applications:
   host: dellve-dash
   disk_quota: 1024M
   buildpack: python_buildpack
-  
-  command: python3 app.py
 
+  command: python3 app.py

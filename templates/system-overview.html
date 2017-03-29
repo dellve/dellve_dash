@@ -1,17 +1,8 @@
-<!--
-Custom Error Page for:
-    - Invalid server config provided
-    Def Invalid Config:
-        - Missing required params ( dellve_port, netdata_port, server_ip )
-        - Given config missing required dependencies
-            - dellve api not installed/visable
-            - netdata or nvidia pluggin not installed/visable
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <!--TODO: Extract custom CSS to stylesheet -->
-    <title>DellVE Dash: Benchmarks</title>
+    <title>DellVE Dash: System Metrics</title>
     <meta name="author" content="Abigail Johnson">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8">
@@ -28,12 +19,33 @@ Custom Error Page for:
     <link type="text/css" rel="stylesheet" href="../static/css/jquery-ui-1.10.4.custom.min.css">
     <link type="text/css" rel="stylesheet" href="../static/css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/animate.css">
     <link type="text/css" rel="stylesheet" href="../static/css/main.css">
     <link type="text/css" rel="stylesheet" href="../static/css/style-responsive.css">
-    <link type="text/css" rel="stylesheet" href="../static/css/benchmark.css">
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
-    <body>
-    <!-- TODO: add better description -->
-    </body>
+<style>
+    body {
+        background-color: #272b30;
+    }
+</style>
+<body scroll="no" style="overflow: hidden">
+    {% include 'templates/components/nav-header.html' %}
+    <!-- BEGIN PAGE WRAPPER -->
+    <div>
+        {% include 'templates/components/sidebar.html' %}
+        <script> document.getElementById('system-page').className = 'active';</script>
+        <!-- BEGIN SYSTEM METRICS -->
+        <div>
+            <div class="h_iframe" >
+                <iframe src='http://{{ server }}:{{netdata_port}}' allow-scrolling='no'
+                    width="88%" style="margin-left:17%; margin-top: -60px;position: absolute;overflow: hidden;"
+                    border='none' frameborder="0" height="103%"
+                    allowfullscreen sandboxsrc>
+                </iframe>
+            </div>
+        </div>
+        <!-- END SYTEM METRICS -->
+    </div>
+    <!-- END PAGE WRAPPER-->
+</body>
 </html>

@@ -19,6 +19,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="../static/css/grayscale.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <body style = 'background-color: #1E1E1E;' id="portal-home" data-spy="scroll" data-target=".navbar-fixed-top">
     <!-- Navigation -->
@@ -54,22 +55,22 @@
                             <div class="panel panel-grey" style='width: 50%;position: relative; right: 25%; left:25%; border-color: #3C3C3C'>
                                 <div class="panel-heading" > Portal Home </div>
                                 <div class="panel-body pan"  style='background-color: #272A2F'>
-                                    <form action="/system-overview">
+                                    <form id="form" action="/system-overview" >
                                         <div class="form-body pal">
                                             <div class="form-group">
                                                 <div class='row' style='padding: 14px'>
-                                                    <input id="inputNameCard" name='server' type="text" placeholder="DellVE Enabled Server IP" class="form-control">
+                                                    <input id="server" name='server' type="text" placeholder="DellVE Enabled Server IP" class="form-control">
                                                     </input>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <input id="inputFirstName" type="text" name='netdata_port' placeholder="Netdata Port" class="form-control">
+                                                            <input id="netdata_port" type="text" name='netdata_port' placeholder="Netdata Port" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <input id="inputLastName" type="text" name='dellve_port' placeholder="DellVE Port" class="form-control">
+                                                            <input id="dellve_port" type="text" name='dellve_port' placeholder="DellVE Port" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -77,6 +78,14 @@
                                             </div>
                                         </div>
                                     </form>
+                                    <script>
+                                    $('#form').submit(function() {
+                                        if ($.trim($("#server").val()) === "" || $.trim($("#dellve_port").val()) === ""|| $.trim($("#netdata_port").val()) === "") {
+                                            alert('Please enter a server configuration');
+                                            return false;
+                                        }
+                                    });
+                                    </script>
                                 </div>
                             </div>
                         <!-- END CONFIGURATION PANEL -->
