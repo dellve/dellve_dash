@@ -1,4 +1,4 @@
-from flask import Flask, render_template, json, jsonify, request, url_for, redirect, Response, send_from_directory
+from flask import Flask, render_template, json, jsonify, request
 import requests
 import jinja2
 import os
@@ -27,32 +27,32 @@ class InvalidServerConfig(Exception):
     def __init__(self):
         Exception.__init__(self)
         self.message = "Invalid Server Configuration"
-
+        
+# Show invalid server config page on invalid server config
 @app.errorhandler(InvalidServerConfig)
 def handle_invalid_server_config(error):
     return render_template(INVALID_CONFIG_PAGE)
 
 @app.route('/')
-def portal_home():
+def get_portal_home():
     return render_template(HOME_PAGE)
 
 @app.route('/system-overview', methods=['GET'])
-def system_metrics():
+def get_system_overview_page():
     validate_server_config(request.args)
     return apply_template(TEMPLATE_DIR + SYS_PAGE, request.args)
 
 @app.route('/benchmarks', methods=['GET'] )
-def benchmark_page():
+def get_benchmarks_page():
     # 1. Validate server config params
     validate_server_config(request.args)
-    # 2. get list of benchmarks
+    # 2. Get list of available benchmarks
     benchmarks = requests.get('http://' + str(request.args[SERVER_TAG]) + ':' + str(request.args[DELLVE_TAG]) + DVE_BENCH_LIST, timeout=DEFAULT_TIMEOUT).json()
     print ('Benchmarks: ', benchmarks)
     # 3. Restore proper start/stop controls, last detail panel, etc.
     run_detail = requests.get( "http://" + str(request.args[SERVER_TAG]) + ":" + str(request.args[DELLVE_TAG])  + DVE_PROGRESS, timeout=DEFAULT_TIMEOUT).json()
     print ('Last runtime detail: ', run_detail)
-    print('hello')
-    # 4. Add args to template
+    # 4. Add template args
     mutable_dict = {}
     arg_tags = [ SERVER_TAG , NETDATA_TAG, DELLVE_TAG ]
     for tag in arg_tags:
