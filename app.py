@@ -27,7 +27,7 @@ class InvalidServerConfig(Exception):
     def __init__(self):
         Exception.__init__(self)
         self.message = "Invalid Server Configuration"
-        
+
 # Show invalid server config page on invalid server config
 @app.errorhandler(InvalidServerConfig)
 def handle_invalid_server_config(error):
@@ -65,7 +65,7 @@ def get_benchmarks_page():
 @app.route('/progress-proxy', methods=['GET'])
 def progress_proxy():
     try:
-        r = requests.get("http://" + request.args[URL_TAG]  + DVE_PROGRESS, timeout=DEFAULT_TIMEOUT).json()
+        r = requests.get("http://" + request.args[URL_TAG] + DVE_PROGRESS, timeout=DEFAULT_TIMEOUT).json()
         return jsonify(r)
     except:
         raise InvalidServerConfig()
