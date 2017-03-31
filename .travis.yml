@@ -13,6 +13,10 @@ install:
 script: py.test tests/test_test.py  --cov=dellve
 after_success: coveralls
 after_failure: echo "Broken :("
+branches:
+    only:
+        - master
+        - tests2
 
 # Bluemix Deployment
 deploy:
