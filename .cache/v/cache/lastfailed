@@ -1,0 +1,5 @@
+{
+  "tests/test_test.py::BasicTest::test_benchmark_valid_config": true,
+  "tests/test_test.py::BasicTest::test_system_overview": true,
+  "tests/test_test.py::BasicTest::test_valid_progress_proxy": true
+}
