@@ -2,6 +2,8 @@
 __pycache__/
 htmlcov/
 .eggs/
+.eggs
+.cache/*
 eggs/
 .cache/
 # Elastic Beanstalk Files
