@@ -2,6 +2,8 @@ import os
 import sys
 topdir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(topdir)
+dellvedir = os.path.join(os.path.direname(__file__), ",,/dellve")
+sys.path.append(dellvedir)
 
 from dellve import dellve
 from urllib.request import urlopen
