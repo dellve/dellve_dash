@@ -1,5 +1,6 @@
 import os
 import sys
+# TODO: figure out cleaner way where we don't have to deal with this
 topdir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(topdir)
 dellvedir = os.path.join(os.path.dirname(__file__), "../dellve")
@@ -57,12 +58,10 @@ class BasicTest(LiveServerTestCase):
 
     def test_benchmark_valid_config(self):
         response = self.app.get('/benchmarks' + valid_config)
-        # TODO: once mock in place, replace with 200 assert (will fail when run from travis server as travis not behind vpn)
         self.assertEqual(response.status_code, 200)
 
     def test_system_overview(self):
         response = self.app.get('/system-overview' + valid_config)
-        # TODO: once mock in place, replace with 200 assert (will fail when run from travis server as travis not behind vpn)
         self.assertEqual(response.status_code, 200)
 
     def test_invalid_progress_proxy(self):
@@ -71,5 +70,4 @@ class BasicTest(LiveServerTestCase):
 
     def test_valid_progress_proxy(self):
         response = self.app.get('/progress-proxy?url_base=10.157.26.8:9999')
-        # TODO: once mock in place, replace with 200 assert (will fail when run from travis server as travis not behind vpn)
         self.assertEqual(response.status_code, 200)
