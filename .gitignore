@@ -7,6 +7,9 @@ htmlcov
 .cache/*
 eggs/
 .cache/
+build/
+dist/
+.coverage
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
