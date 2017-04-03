@@ -1,9 +1,10 @@
 import os
 import sys
-topdir = os.path.join(os.path.dirname(__file__), "..")
-sys.path.append(topdir)
-
-from dellve import dellve
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+from dellve import dellve_app
+#from dellve import conf
+#from dellve.conf import *
+#from conf import *
 from urllib.request import urlopen
 from flask import Flask
 from flask_testing import LiveServerTestCase
@@ -40,8 +41,8 @@ class BasicTest(LiveServerTestCase):
         return app
 
     def setUp(self):
-        dellve.app.config['TESTING'] = True
-        self.app = dellve.app.test_client()
+        dellve_app.app.config['TESTING'] = True
+        self.app = dellve_app.app.test_client()
 
     # Basic test case - go to portal home
     # TODO: Missing config
@@ -55,12 +56,10 @@ class BasicTest(LiveServerTestCase):
 
     def test_benchmark_valid_config(self):
         response = self.app.get('/benchmarks' + valid_config)
-        # TODO: once mock in place, replace with 200 assert (will fail when run from travis server as travis not behind vpn)
         self.assertEqual(response.status_code, 200)
 
     def test_system_overview(self):
         response = self.app.get('/system-overview' + valid_config)
-        # TODO: once mock in place, replace with 200 assert (will fail when run from travis server as travis not behind vpn)
         self.assertEqual(response.status_code, 200)
 
     def test_invalid_progress_proxy(self):
@@ -69,5 +68,4 @@ class BasicTest(LiveServerTestCase):
 
     def test_valid_progress_proxy(self):
         response = self.app.get('/progress-proxy?url_base=10.157.26.8:9999')
-        # TODO: once mock in place, replace with 200 assert (will fail when run from travis server as travis not behind vpn)
         self.assertEqual(response.status_code, 200)

@@ -44,7 +44,7 @@ setup(
     author_email='abigailjohnson@utexas.edu',
     description='Front-end application to accompany the DellVE Benchmark Suite',
     long_description=long_description,
-    packages='dellve',
+    packages=['dellve'],
     include_package_data=True,
     package_data= {'dellve': ['templates/**', 'static/*/*']},
     url='https://github.com/dellve/dellve-dash',
