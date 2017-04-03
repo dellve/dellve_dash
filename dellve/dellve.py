@@ -2,7 +2,7 @@ from flask import Flask, render_template, json, jsonify, request
 import requests
 import jinja2
 import os
-from . import conf as c
+import conf as c
 import cf_deployment_tracker
 
 app = Flask(__name__)

@@ -1,9 +1,12 @@
 import os
 import sys
+
 topdir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(topdir)
+dellvedir = os.path.join(os.path.dirname(__file__), "../dellve")
+sys.path.append(dellvedir)
 
-from dellve import dellve
+import dellve
 from urllib.request import urlopen
 from flask import Flask
 from flask_testing import LiveServerTestCase
