@@ -34,7 +34,7 @@ invalid_config = '?'
 #       - Links link to correct page
 #
 
-class BasicTest(LiveServerTestCase):
+class ServerConfigurationTest(LiveServerTestCase):
     # if the create_app is not implemented NotImplementedError will be raised
     def create_app(self):
         app = Flask(__name__)

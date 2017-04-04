@@ -22,8 +22,11 @@ PollRequest.prototype.activatePoll = function () {
     $.getJSON(this.url, function(runDetail) {
         console.log('Benchmark Progress:' + runDetail['progress']);
         $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
+        // select benchmark dropdown value to currently running/last run benchmark
+        document.getElementById('run-detail-heading').innerHTML = 'Run Detail: Benchmark' + runDetail['id'];
+        //document.getElementById('benchmark-container').value = runDetail['id'];
         var controlButton = document.getElementById('benchmark-start-stop');
-        // Benchmark run complete, end polling, change stop to start button,
+        // Benchmark run complete, change stop to start button,
         if ( runDetail['progress'] == 100 ) {
             //$request.deactivatePoll(); //
             console.log('Benchmark run complete');
@@ -40,6 +43,8 @@ PollRequest.prototype.activatePoll = function () {
             // TODO: disable start if user is not benchmark run owner
             console.log(runDetail['running'])
             if ( runDetail['running'] == true ) {
+                // Default dropdown to currently currently running benchmark
+                document.getElementById('benchmark-container').value = runDetail['id']
                 document.getElementById('benchmark-progress').innerHTML = runDetail['progress'] + "%";
                 controlButton.value = 'Stop';
                 controlButton.className = 'btn btn-warning';
@@ -79,7 +84,7 @@ BEGIN BENCHMARK RUN DETAIL PANEL -->
         <a class='accordion-toggle'  data-toggle="collapse"  data-parent="#accordion2" href="#benchmark-detail">
             <div class="row">
                 <div class='col-xs-6' style='align: left;'>
-                    <h4 class='panel-title'>Run Detail</h4>
+                    <h4 id= 'run-detail-heading' class='panel-title'>Run Detail: </h4>
                 </div>
                 <div class='col-xs-6' style='align: right'>
                     <div class="progress">
