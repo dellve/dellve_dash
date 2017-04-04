@@ -66,6 +66,7 @@ def get_benchmarks_page():
 def progress_proxy():
     try:
         r = requests.get("http://" + request.args[c.URL_TAG] + c.DVE_PROGRESS, timeout=c.DEFAULT_TIMEOUT).json()
+        print(r)
         return jsonify(r)
     except:
         raise InvalidServerConfig()
@@ -74,8 +75,10 @@ def progress_proxy():
 def validate_server_config(params):
     try:
         url = 'http://' + str(params[c.SERVER_TAG]) + ':' + str(params[c.NETDATA_TAG]) + c.NETDATA_SUFFIX
+        print(url)
         assert requests.get(url, timeout=c.DEFAULT_TIMEOUT).status_code == 200
         url = 'http://' + str(params[c.SERVER_TAG]) + ':' + str(params[c.DELLVE_TAG]) + c.DVE_BENCH_LIST
+        print(url)
         assert requests.get(url, timeout=c.DEFAULT_TIMEOUT).status_code == 200
     except:
         raise InvalidServerConfig()
