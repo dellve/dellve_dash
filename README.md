@@ -41,7 +41,7 @@ See <https://github.com/dellve/dellve_benchend>
 ## 3.0 Installation (Local)
 ```
 git clone https://github.com/dellve/dellve_dash  
-cd dellve-dash  
+cd dellve_dash  
 pip3 install -r requirements.txt  
 python3 dellve/dellve.py
 ```
@@ -89,7 +89,7 @@ TODO
     - [...] Ensure proper reinitialization of run panel on page return     
         -- ( if user leaves benchmark page in middle of run, ensure stop button and proper benchmark progress is displayed if the benchmark is still running by the time they return )  
     - [...] Add benchmark detail panel (expand on benchmark progress complete)  
-    - [ ] Python unit tests
+    - [x] Python unit tests
     - [ ] Interaction/js tests
     - [ ] Change runtime/build to python2.7
     - [ ] Ensure only user who starts benchmark can stop it ( likely need to do on backend to prevent injection)  

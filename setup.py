@@ -47,7 +47,7 @@ setup(
     packages='dellve',
     include_package_data=True,
     package_data= {'dellve': ['templates/**', 'static/*/*']},
-    url='https://github.com/dellve/dellve-dash',
+    url='https://github.com/dellve/dellve_dash',
     install_requires=requires,
     tests_require=['pytest', 'pytest-cov'],
     cmdclass={'test': PyTest},
