@@ -1,5 +1,5 @@
 # DellVE Dash :sparkles: :tada: :dancer: :princess: :metal: :fire:
-[![Build Status](https://travis-ci.org/dellve/dellve-dash.svg?branch=master)](https://travis-ci.org/dellve/dellve-dash)  
+[![Build Status](https://travis-ci.org/dellve/dellve_dash.svg?branch=master)](https://travis-ci.org/dellve/dellve_dash)  
 Front-end application to accompany the DellVE Benchmark Suite  
 
 Author: Abigail Johnson  
