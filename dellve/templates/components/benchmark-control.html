@@ -14,13 +14,13 @@ function getBenchmarkAction(form) {
         controlButton.value = 'Stop';
         controlButton.className = 'btn btn-warning';
         // start progress polling
-        $request.activatePoll();
+        //$request.activatePoll();
         // paint progress bar blue for 'active' benchmark state
         document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
     // Benchmark stop
     } else {
         // end progress polling
-        $request.deactivatePoll();
+        //$request.deactivatePoll();
         // send stop command to dellve api
         form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/stop";
         // repaint start button

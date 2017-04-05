@@ -1,5 +1,6 @@
 import sys
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
 # To use a consistent encoding
 from codecs import open
 from os import path
@@ -13,12 +14,28 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 # Dependencies
 requires = [
     "Flask==0.11.1",
-    "cf-deployment-tracker==1.0.2"
+    "cf-deployment-tracker==1.0.2",
+    "pytest-flask==0.10.0",
+    "coverage==4.1",
+    "pytest==2.9.2",
+    "pytest-cov==2.3.0",
+    "Flask-Testing>=0.6.2"
 ]
 
-needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
-pytest_runner = ['pytest-runner'] if needs_pytest else []
-tests_req=['pytest']
+class PyTest(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = [
+            '--strict',
+            '--verbose',
+            '--tb=long',
+            'tests']
+        self.test_suite = True
+
+    def run_tests(self):
+        import pytest
+        errno = pytest.main(self.test_args)
+        sys.exit(errno)
 
 setup(
     name='dellve-dash',
@@ -27,8 +44,13 @@ setup(
     author_email='abigailjohnson@utexas.edu',
     description='Front-end application to accompany the DellVE Benchmark Suite',
     long_description=long_description,
-    url='https://github.com/dellve/dellve-dash',
-    setup_requires=pytest_runner,
+    packages='dellve',
+    include_package_data=True,
+    package_data= {'dellve': ['templates/**', 'static/*/*']},
+    url='https://github.com/dellve/dellve_dash',
     install_requires=requires,
-    tests_require=tests_req
+    tests_require=['pytest', 'pytest-cov'],
+    cmdclass={'test': PyTest},
+    test_suite='tests.test_test',
+    extras_require={'testing': ['pytest'],}
 )

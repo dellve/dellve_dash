@@ -15,12 +15,12 @@ PORTAL_HOME = 'portal_home'
 
 # External API Endpoints used for dependency verification and form submission
 NETDATA_SUFFIX = '/api/v1/charts/data?chart=netdata.plugin_pythond_nv'
-DVE_BENCH_LIST = '/benchmark/'# TODO: ammend as API is determined
+DVE_BENCH_LIST = '/benchmark'# TODO: ammend as API is determined
 DVE_PROGRESS = '/benchmark/progress'
-DEFAULT_TIMEOUT = 10 # Timeout 
+DEFAULT_TIMEOUT = 10 # Timeout
 
 # Local/Bluemix Deployment
-DEFAULT_PORT = 8080
+DEFAULT_PORT = 8888
 DEFAULT_HOST = '0.0.0.0'
 CF_APP_ENV = 'VCAP_APP_PORT'
 
