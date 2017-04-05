@@ -10,7 +10,8 @@ function PollRequest() {
   this.url = '/progress-proxy?url_base={{server}}:{{dellve_port}}';
 }
 
-// Disable long poll when benchmark run inactive ( no need to poll dellve indefinitely )
+// Disable long poll when benchmark run inactive
+// Currently not in use
 PollRequest.prototype.deactivatePoll = function () {
   clearInterval(this.pollTimer);
   this.pollTimer = null;
@@ -20,61 +21,43 @@ PollRequest.prototype.deactivatePoll = function () {
 PollRequest.prototype.activatePoll = function () {
   this.pollTimer = setInterval(() => {
     $.getJSON(this.url, function(runDetail) {
-        console.log('Benchmark Progress:' + runDetail['progress']);
-        $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
+        var controlButton = document.getElementById('benchmark-start-stop');
         // select benchmark dropdown value to currently running/last run benchmark
         document.getElementById('run-detail-heading').innerHTML = 'Run Detail: Benchmark' + runDetail['id'];
-        //document.getElementById('benchmark-container').value = runDetail['id'];
-        var controlButton = document.getElementById('benchmark-start-stop');
-        // Benchmark run complete, change stop to start button,
+        $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
+
         if ( runDetail['progress'] == 100 ) {
-            //$request.deactivatePoll(); //
-            console.log('Benchmark run complete');
             controlButton.value = 'Start';
             controlButton.className = 'btn btn-info';
             // TODO: populate benchmark detail
             $('#benchmark-detail').attr('aria-expanded', true); // expand detail panel
-            // paint progress bar green to represent finished benchmark state
             document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-success progress-bar-striped';
             document.getElementById('benchmark-progress').innerHTML = "Complete";
-        // Benchmark uncomplete - stopped or in progress
+        // TODO: disable stop if user is not benchmark run owner
+        } else if ( runDetail['running'] == true ) {
+            document.getElementById('benchmark-container').value = runDetail['id'] // Default dropdown to currently currently running benchmark
+            document.getElementById('run-detail-heading').innerHTML = 'Run Detail: Benchmark' + runDetail['id'];
+            document.getElementById('benchmark-progress').innerHTML = runDetail['progress'] + "%";
+            controlButton.value = 'Stop';
+            controlButton.className = 'btn btn-warning';
+            document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
+        // Benchmark stopped
         } else {
-            // Benchmark run in progress
-            // TODO: disable start if user is not benchmark run owner
-            console.log(runDetail['running'])
-            if ( runDetail['running'] == true ) {
-                // Default dropdown to currently currently running benchmark
-                document.getElementById('benchmark-container').value = runDetail['id']
-                document.getElementById('benchmark-progress').innerHTML = runDetail['progress'] + "%";
-                controlButton.value = 'Stop';
-                controlButton.className = 'btn btn-warning';
-                document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
-            // Benchmark stopped
-            } else {
-                controlButton.value = 'Start';
-                controlButton.className = 'btn btn-info';
-                document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
-                document.getElementById('benchmark-progress').innerHTML = 'Stopped';
-            }
+            controlButton.value = 'Start';
+            controlButton.className = 'btn btn-info';
+            document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
+            document.getElementById('benchmark-progress').innerHTML = 'Stopped';
         }
+
     })
   }, this.interval);
 };
 
-// 2. Initialize proper run panel configuration
-// User may have left benchmark page in middle of benchmark run
-// if benchmark is still running, restore stop button and proper progress bar value
-// elsewise, restore previous benchmark results (if there are any)
 $request.activatePoll();
-//{% if run_detail['progress'] != 0 and run_detail['progress'] != 100 %}
-//$request.activatePoll();
-//{% endif %}
 
 </script>
-<!-- TODO: in above, use state instead of progress flag to allow differentiation
-between currently running (active) benchmark and benchmark that was stopped prematurely.
-Can also use this flag to toggle colour of progress bar
-(yellow stopped, green active/complete {or blue running, green complete, yellow stopped} )  -->
+
+
 
 <!-- Component View -->
 <!-- TODO: Fix styling;

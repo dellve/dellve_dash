@@ -1,5 +1,5 @@
 # DellVE Dash :sparkles: :tada: :dancer: :princess: :metal: :fire:
-[![Build Status](https://travis-ci.org/dellve/dellve-dash.svg?branch=master)](https://travis-ci.org/dellve/dellve-dash) [![Coverage Status](https://coveralls.io/repos/github/dellve/dellve-dash/badge.svg?branch=tests2)](https://coveralls.io/github/dellve/dellve-dash?branch=tests2)   
+[![Build Status](https://travis-ci.org/dellve/dellve_dash.svg?branch=master)](https://travis-ci.org/dellve/dellve_dash) [![Coverage Status](https://coveralls.io/repos/github/dellve/dellve-dash/badge.svg?branch=tests2)](https://coveralls.io/github/dellve/dellve_dash?branch=tests2)   
 Front-end application to accompany the DellVE Benchmark Suite  
 
 Author: Abigail Johnson  
