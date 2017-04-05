@@ -1,5 +1,5 @@
 applications:
-- path: ./dellve
+- path: .
   memory: 512M
   instances: 1
   domain: mybluemix.net
@@ -8,4 +8,4 @@ applications:
   disk_quota: 1024M
   buildpack: python_buildpack
 
-  command: python3 dellve.py
+  command: python3 dellve/dellve.py
