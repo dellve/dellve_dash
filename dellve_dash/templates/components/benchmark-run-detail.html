@@ -36,7 +36,7 @@ PollRequest.prototype.activatePoll = function () {
         // TODO: disable stop if user is not benchmark run owner
         } else if ( runDetail['running'] == true ) {
             document.getElementById('benchmark-container').value = runDetail['id'] // Default dropdown to currently currently running benchmark
-            document.getElementById('run-detail-heading').innerHTML = 'Run Detail: Benchmark' + runDetail['id'];
+            document.getElementById('run-detail-heading').innerHTML = 'Run Detail: ' + runDetail['name'];
             document.getElementById('benchmark-progress').innerHTML = runDetail['progress'] + "%";
             controlButton.value = 'Stop';
             controlButton.className = 'btn btn-warning';

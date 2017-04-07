@@ -43,7 +43,7 @@ See <https://github.com/dellve/dellve_benchend>
 git clone https://github.com/dellve/dellve_dash  
 cd dellve_dash  
 pip3 install -r requirements.txt  
-python3 dellve/dellve.py
+python3 dellve_dash/dellve_dash.py
 ```
 
 ## 4.0 Deployment

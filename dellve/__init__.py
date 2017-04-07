@@ -1,1 +1,0 @@
-from .dellve import app

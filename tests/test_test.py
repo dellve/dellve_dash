@@ -3,10 +3,10 @@ import sys
 # TODO: figure out cleaner way where we don't have to deal with this
 topdir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(topdir)
-dellvedir = os.path.join(os.path.dirname(__file__), "../dellve")
+dellvedir = os.path.join(os.path.dirname(__file__), "../dellve_dash")
 sys.path.append(dellvedir)
 
-from dellve import dellve
+from dellve_dash import dellve_dash
 from urllib.request import urlopen
 from flask import Flask
 from flask_testing import LiveServerTestCase
@@ -43,8 +43,8 @@ class ServerConfigurationTest(LiveServerTestCase):
         return app
 
     def setUp(self):
-        dellve.app.config['TESTING'] = True
-        self.app = dellve.app.test_client()
+        dellve_dash.app.config['TESTING'] = True
+        self.app = dellve_dash.app.test_client()
 
     # Basic test case - go to portal home
     # TODO: Missing config
@@ -58,11 +58,11 @@ class ServerConfigurationTest(LiveServerTestCase):
 
     def test_benchmark_valid_config(self):
         response = self.app.get('/benchmarks' + valid_config)
-        #self.assertEqual(response.status_code, 200) # TODO: uncomment when mock deployed
+        self.assertEqual(response.status_code, 200) # TODO: uncomment when mock deployed
 
     def test_system_overview(self):
         response = self.app.get('/system-overview' + valid_config)
-        #self.assertEqual(response.status_code, 200) # TODO: uncomment when mock deployed
+        self.assertEqual(response.status_code, 200) # TODO: uncomment when mock deployed
 
     def test_invalid_progress_proxy(self):
         response = self.app.get('/progress-proxy' + invalid_config ) # no server config
@@ -70,4 +70,4 @@ class ServerConfigurationTest(LiveServerTestCase):
 
     def test_valid_progress_proxy(self):
         response = self.app.get('/progress-proxy?url_base=10.157.26.8:9999')
-        #self.assertEqual(response.status_code, 200) # TODO: uncomment when mock deployed
+        self.assertEqual(response.status_code, 200) # TODO: uncomment when mock deployed
