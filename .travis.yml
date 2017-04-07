@@ -28,5 +28,5 @@ deploy:
   organization: dellve-deep
   space: dev
   on:
-    repo: dellve/dellve-dash
+    repo: dellve/dellve_dash
     branch: master
