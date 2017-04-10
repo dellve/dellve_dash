@@ -451,7 +451,7 @@ ul ul, ol ul, ul ol, ol ol {
 .list-inline {
 	padding-left: 0;
 	list-style: none;
-	margin-left: -5px
+	margin-left: 50%
 }
 .list-inline>li {
 	display: inline-block;
