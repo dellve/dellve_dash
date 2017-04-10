@@ -1,5 +1,5 @@
 # DellVE Dash :sparkles: :tada: :dancer: :princess: :metal: :fire:
-[![Build Status](https://travis-ci.org/dellve/dellve-dash.svg?branch=master)](https://travis-ci.org/dellve/dellve-dash)  
+[![Build Status](https://travis-ci.org/dellve/dellve_dash.svg?branch=master)](https://travis-ci.org/dellve/dellve_dash) [![Coverage Status](https://coveralls.io/repos/github/dellve/dellve_dash/badge.svg?branch=tests2)](https://coveralls.io/github/dellve/dellve_dash?branch=tests2)   
 Front-end application to accompany the DellVE Benchmark Suite  
 
 Author: Abigail Johnson  
@@ -40,10 +40,10 @@ See <https://github.com/dellve/dellve_benchend>
 
 ## 3.0 Installation (Local)
 ```
-git clone https://github.com/dellve/dellve-dash  
-cd dellve-dash  
+git clone https://github.com/dellve/dellve_dash  
+cd dellve_dash  
 pip3 install -r requirements.txt  
-python3 app.py
+python3 dellve_dash/dellve_dash.py
 ```
 
 ## 4.0 Deployment
@@ -89,7 +89,7 @@ TODO
     - [...] Ensure proper reinitialization of run panel on page return     
         -- ( if user leaves benchmark page in middle of run, ensure stop button and proper benchmark progress is displayed if the benchmark is still running by the time they return )  
     - [...] Add benchmark detail panel (expand on benchmark progress complete)  
-    - [ ] Python unit tests
+    - [x] Python unit tests
     - [ ] Interaction/js tests
     - [ ] Change runtime/build to python2.7
     - [ ] Ensure only user who starts benchmark can stop it ( likely need to do on backend to prevent injection)  

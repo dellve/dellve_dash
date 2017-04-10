@@ -1,5 +1,15 @@
 .DS_Store
-__pycache__
+__pycache__/
+htmlcov/
+htmlcov
+.eggs/
+.eggs
+.cache/*
+eggs/
+.cache/
+build/
+dist/
+.coverage
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

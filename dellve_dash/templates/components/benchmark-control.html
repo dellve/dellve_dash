@@ -1,0 +1,69 @@
+<!-- Component Control-->
+<script>
+//   Action handler for stop/start commands
+function getBenchmarkAction(form) {
+    var benchmarkId = document.getElementById('benchmark-container').value;
+    var controlButton = document.getElementById('benchmark-start-stop');
+    // Benchmark Start
+    if ( controlButton.value == 'Start') {
+        // send start command to dellve api
+        form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/start";
+        $('#benchmark-progress').attr('aria-valuenow', 0).css('width', "0%");
+        document.getElementById('benchmark-progress').innerHTML = "0 %";
+        // repaint stop button
+        controlButton.value = 'Stop';
+        controlButton.className = 'btn btn-warning';
+        // start progress polling
+        //$request.activatePoll();
+        // paint progress bar blue for 'active' benchmark state
+        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
+    // Benchmark stop
+    } else {
+        // end progress polling
+        //$request.deactivatePoll();
+        // send stop command to dellve api
+        form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/stop";
+        // repaint start button
+        controlButton.value = 'Start';
+        controlButton.className = 'btn btn-info';
+        // paint progress bar yellow for 'stopped' benchmark state
+        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
+        document.getElementById('benchmark-progress').innerHTML = 'Stopped';
+    }
+}
+</script>
+
+<!-- Component View -->
+<!-- BEGIN BENCHMARK RUN CONFIG  -->
+<div class='row'>
+    <div class='col-lg-11' >
+        <div class="col-md-6">
+            <br><h1 > Benchmarks </h1>
+        </div>
+        <!-- BEGIN RUN CONFIG FORM -->
+        <form onsubmit="getBenchmarkAction(this);" target='dummyframe'>
+            <div class= 'form-group'>
+                <div class="col-md-3">
+                    Benchmark Type
+                    <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark -->
+                    <select id='benchmark-container'  class="selectpicker form-control" >
+                          {% for benchmark in benchmarks %}
+                          <option value="{{ benchmark['id'] }}">{{ benchmark['name'] }}</option>
+                          {% endfor %}
+                    </select>
+                </div>
+                <!-- Toggle Between Start/Stop Button -->
+                <div class="col-md-3">
+                    Action <br>
+                    {% if run_detail['progress'] == 0 or run_detail['progress'] == 100 -%}
+                    <input id='benchmark-start-stop' style='width: 100%' type="submit" class="btn btn-info" value='Start'></input>
+                    {% else -%}
+                    <input id='benchmark-start-stop' style='width: 100%' type="submit" class="btn btn-warning" value='Stop'></input>
+                    {%- endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<br><br>
+<!-- END BENCHMARK RUN CONFIG -->

@@ -4,12 +4,21 @@ python: "3.5"
 install:
     #- python3 install setup.py
     #- pip install coveralls
-    pip install -r requirements.txt
+    - pip install coverage
+    - pip install python-coveralls
+    - pip install -r requirements.txt
+    - pip install pytest-cov coverage coveralls
 #script:
 #- py.test
-script: python3 setup.py install
-after_success: echo "Success!"
+script: py.test tests/test_test.py  --cov=dellve_dash
+after_success: coveralls
 after_failure: echo "Broken :("
+branches:
+    only:
+        - master
+        - tests2
+
+# Bluemix Deployment
 deploy:
   provider: cloudfoundry
   api: https://api.ng.bluemix.net
@@ -19,5 +28,5 @@ deploy:
   organization: dellve-deep
   space: dev
   on:
-    repo: dellve/dellve-dash
+    repo: dellve/dellve_dash
     branch: master
