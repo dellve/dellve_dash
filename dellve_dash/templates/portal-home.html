@@ -21,7 +21,7 @@
     <link href="../static/css/grayscale.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
-<body style = 'background-color: #1E1E1E;' id="portal-home" data-spy="scroll" data-target=".navbar-fixed-top">
+<body style = 'background-color: #1E1E1E; overflow: hidden;' id="portal-home" data-spy="scroll" data-target=".navbar-fixed-top">
     <!-- Navigation -->
     <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
         <div class="container">
@@ -30,7 +30,7 @@
                 <ul class="nav navbar-nav">
                     <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
                     <li>
-                        <a href="#portal-home">Home</a>
+                        <a class="page-scroll-home" href="#portal-home">Home</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#about">About</a>
@@ -110,15 +110,16 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>About DellVE Benchmark</h2>
-                <p> TODO</p>
-                <ul class="list-inline banner-social-buttons">
-                    <li>
+                <p class="about-content"> Dellve Deep is a specialized performance benchmark for general purpose graphics processing unit subsystems in high performance computing servers.
+                    In the construction of our project, we leverage a number of different tools and technologies, namely the Python and Javascript programming languages,
+                    the cuDNN Deep Neural Net (DNN) library, and open source projects such as Netdata, Click, and Falcon.
+                </p>
+                <ul class="banner-social-buttons">
                         <a href="https://github.com/dellve"
                         class="btn btn-default btn-lg">
                             <i class="fa fa-github fa-fw"></i>
                             <span class="network-name">Github</span>
                         </a>
-                    </li>
                 </ul>
             </div>
         </div>
