@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <!--TODO: Extract custom CSS to stylesheet -->
-    <title>DellVE Dash: System Metrics</title>
+    <title>DellVE Dash: About</title>
     <meta name="author" content="Abigail Johnson">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8">
@@ -33,18 +33,28 @@
     <!-- BEGIN PAGE WRAPPER -->
     <div>
         {% include 'templates/components/sidebar.html' %}
-        <script> document.getElementById('system-page').className = 'active';</script>
-        <!-- BEGIN SYSTEM METRICS -->
-        <div>
-            <div class="h_iframe" >
-                <iframe src='http://{{ server }}:{{netdata_port}}' allow-scrolling='no'
-                    width="85%" style="margin-left:17%; margin-top: -60px;position: absolute;overflow: hidden;"
-                    border='none' frameborder="0" height="103%"
-                    allowfullscreen sandboxsrc>
-                </iframe>
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-2">
+                <h1>About DellVE Benchmark</h1>
+                <h2 style="margin-left: 15px;">Benchmark Descriptions</h2>
+                <ul class="benchmark-description" style="font-size: 18px; margin-left: 25px">
+                    <li>Benchmark 1: SAMPLE TEXT<br></li>
+                    <li>Benchmark 2: SAMPLE TEXT<br></li>
+                    <li>Benchmark 3: SAMPLE TEXT<br></li>
+                    <br>
+                </ul>
+            </div>
+                <ul class="list-inline banner-social-buttons">
+                    <li>
+                        <a href="https://github.com/dellve"
+                           class="btn btn-default btn-lg">
+                            <i class="fa fa-github fa-fw"></i>
+                            <span class="network-name">Github</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-        <!-- END SYTEM METRICS -->
     </div>
     <!-- END PAGE WRAPPER-->
 </body>

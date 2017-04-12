@@ -42,6 +42,11 @@ def get_system_overview_page():
     validate_server_config(request.args)
     return apply_template(c.TEMPLATE_DIR + c.SYS_PAGE, request.args)
 
+@app.route('/about', methods=['GET'])
+def get_about_page():
+    validate_server_config(request.args)
+    return apply_template(c.TEMPLATE_DIR + c.ABOUT_PAGE, request.args)
+
 @app.route('/benchmarks', methods=['GET'] )
 def get_benchmarks_page():
     # 1. Validate server config params
