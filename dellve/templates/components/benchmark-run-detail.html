@@ -10,6 +10,35 @@ function PollRequest() {
   this.url = '/progress-proxy?url_base={{server}}:{{dellve_port}}';
 }
 
+var runDetailStore = {};
+
+var getRunDetail = function(id, key, def) {
+  if (id in runDetailStore) {
+    return runDetailStore[id][key];
+  } else {
+    return def;
+  }
+};
+
+var updateRunDetailOutput = function (id) {
+  HTML = '';
+  var outputValue = getRunDetail(id, 'output', null);
+  if (outputValue != null) {
+    for (var n = 0; n < outputValue.length; n++) {
+      HTML = HTML + "<p>" + outputValue[n] + "</p>";
+    }
+  }
+  document.getElementById('benchmark-output-container').innerHTML = HTML;
+};
+
+var updateRunDetailProgress = function (id) {
+  document.getElementById('benchmark-progress').innerHTML = getRunDetail(id, 'progress', '0') + "%";
+};
+
+var storeRunDetail = function(runDetail) {
+  runDetailStore[runDetail['id']] = runDetail;
+};
+
 // Disable long poll when benchmark run inactive ( no need to poll dellve indefinitely )
 PollRequest.prototype.deactivatePoll = function () {
   clearInterval(this.pollTimer);
@@ -20,11 +49,13 @@ PollRequest.prototype.deactivatePoll = function () {
 PollRequest.prototype.activatePoll = function () {
   this.pollTimer = setInterval(() => {
     $.getJSON(this.url, function(runDetail) {
+        console.log(runDetail['id']);
+        storeRunDetail(runDetail);
         console.log('Benchmark Progress:' + runDetail['progress']);
         $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
         // Benchmark run complete, end polling, change stop to start button,
         if ( runDetail['progress'] == 100 ) {
-            $request.deactivatePoll(); //
+            setTimeout($request.deactivatePoll, 2000);
             console.log('Benchmark run complete');
             var controlButton = document.getElementById('benchmark-start-stop');
             controlButton.value = 'Start';
@@ -35,7 +66,8 @@ PollRequest.prototype.activatePoll = function () {
             document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-success progress-bar-striped';
             document.getElementById('benchmark-progress').innerHTML = "Complete";
         } else {
-            document.getElementById('benchmark-progress').innerHTML = runDetail['progress'] + "%";
+            updateRunDetailProgress(runDetail['id']);
+            updateRunDetailOutput(runDetail['id']);
         }
     })
   }, this.interval);
@@ -84,7 +116,7 @@ BEGIN BENCHMARK RUN DETAIL PANEL -->
     </div>
     <!-- TODO: Insert Detail panel specs-->
     <div id="benchmark-detail" aria-expanded='false' class="collapse in panel-body">
-
+      <div id="benchmark-output-container" style='width: 100%;'></div>
     </div>
 </div>
 <!-- END BENCHMARK DETAIL PANEL -->

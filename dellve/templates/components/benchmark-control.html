@@ -20,7 +20,11 @@ function getBenchmarkAction(form) {
     // Benchmark stop
     } else {
         // end progress polling
-        $request.deactivatePoll();
+        //
+        // NOTE:  we stop polling after some delay,
+        //        to get final updates from back-end;
+        //
+        setTimeout($request.deactivatePoll, 2500);
         // send stop command to dellve api
         form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/stop";
         // repaint start button
@@ -38,7 +42,7 @@ function getBenchmarkAction(form) {
 <div class='row'>
     <div class='col-lg-11' >
         <div class="col-md-6">
-            <br><h1 > Benchmarks </h1>
+            <br><h1> Benchmarks </h1>
         </div>
         <!-- BEGIN RUN CONFIG FORM -->
         <form onsubmit="getBenchmarkAction(this);" target='dummyframe'>
@@ -51,6 +55,17 @@ function getBenchmarkAction(form) {
                           <option value="{{ benchmark['id'] }}">{{ benchmark['name'] }}</option>
                           {% endfor %}
                     </select>
+                    <script type="text/javascript">
+                      var benchmarkDetails = {};
+                      $(function() {
+                        $('#benchmark-container').on('change', function(){
+                          var id = $(this).find("option:selected").val();
+                          $request.deactivatePoll();
+                          updateRunDetailProgress(id);
+                          updateRunDetailOutput(id);
+                        });
+                      });
+                    </script>
                 </div>
                 <!-- Toggle Between Start/Stop Button -->
                 <div class="col-md-3">
