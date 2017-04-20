@@ -24,27 +24,37 @@
     <link type="text/css" rel="stylesheet" href="../static/css/benchmark.css">
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
+
 <!--   1. Select a theme. (this section has to appear before loading dashboard.js) -->
 <script>var netdataTheme = 'slate'; //var netdataTheme = 'default'; </script>
 <!--   2.  Load dashboard.js -->
 <script type="text/javascript" src="http://{{ server }}:{{ netdata_port }}/dashboard.js"></script>
 <!--   3.  Set netdata config options -->
 <script type="text/javascript" src="../static/js/netdata-config.js"></script>
-<body scroll="no" style="overflow: hidden">
+<style>
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    body{
+        overflow-x: hidden;
+    }
+</style>
+<body>
     <!-- TODO: Better style this so that it doesn't interfere with UI
     Dummy iframe - target for benchmarks form submission (prevent GET request to Dellve from opening in current or new window)-->
-   <!-- <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe> -->
+   <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe" style="display: none;"></iframe>
     {% include 'templates/components/nav-header.html' %}
     <!-- BEGIN PAGE WRAPPER -->
     <div>
         {% include 'templates/components/sidebar.html' %}
         <script> document.getElementById('benchmark-page').className = 'active';</script>
+    </div>
         <!-- BEGIN PAGE CONTENT -->
-        <div style='margin-left: 300px;'><br>
-            {% include 'templates/components/benchmark-control.html' %}
-            {% include 'templates/components/benchmark-run-detail.html' %}
-            {% include 'templates/components/nvidia-charts.html' %}
-        </div>
+    <div style='margin-left: 300px;'><br>
+        {% include 'templates/components/benchmark-control.html' %}
+        {% include 'templates/components/benchmark-run-detail.html' %}
+        {% include 'templates/components/nvidia-charts.html' %}
+    </div>
         <!-- END PAGE CONTENT -->
         <!--CORE JAVASCRIPT-->
         <script src="../static/js/jquery-1.10.2.min.js"></script>
@@ -52,7 +62,6 @@
         <script src="../static/js/jquery-ui.js"></script>
         <script src="../static/js/bootstrap.min.js"></script>
         <script src="../static/js/responsive-tabs.js"></script>
-    </div>
     <!-- END PAGE WRAPPER -->
 </body>
 </html>
