@@ -12,7 +12,7 @@ function getBenchmarkAction(form) {
         document.getElementById('benchmark-progress').innerHTML = "0 %";
         // repaint stop button
         controlButton.value = 'Stop';
-        controlButton.className = 'btn btn-warning';
+        controlButton.className = 'btn btn-warning btn-lg';
         document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
     // Benchmark stop
     } else {
@@ -20,7 +20,7 @@ function getBenchmarkAction(form) {
         form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/stop";
         // repaint start button
         controlButton.value = 'Start';
-        controlButton.className = 'btn btn-info';
+        controlButton.className = 'btn btn-info btn-lg';
         // paint progress bar yellow for 'stopped' benchmark state
         document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
         document.getElementById('benchmark-progress').innerHTML = 'Stopped';
@@ -48,33 +48,40 @@ PollRequest.prototype.deactivatePoll = function () {
   this.pollTimer = null;
 };
 
+var firstCheck = true;
+
 // Long poll dellve server for progress updates on currently running benchmark
 PollRequest.prototype.activatePoll = function () {
   this.pollTimer = setInterval(() => {
     $.getJSON(this.url, function(runDetail) {
         var controlButton = document.getElementById('benchmark-start-stop');
         // select benchmark dropdown value to currently running/last run benchmark
-        //document.getElementById('run-detail-heading').innerHTML = 'Run Detail: Benchmark' + runDetail['id'];
+        // TODO: populate benchmark detail
+        document.getElementById('run-detail-heading').innerHTML = 'Run Detail: ' + runDetail['name'];
+        document.getElementById('run-detail').innerHTML = runDetail['output'];
         $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
+        // When page first loads, initialze dropdown with last run benchmark
+        if (firstCheck == true) {
+            firstCheck = false;
+            document.getElementById('benchmark-container').value = runDetail['id'];
+        }
         if ( runDetail['progress'] == 100 ) {
             controlButton.value = 'Start';
-            controlButton.className = 'btn btn-info';
-            // TODO: populate benchmark detail
-            //$('#benchmark-detail').attr('aria-expanded', true); // expand detail panel
+            controlButton.className = 'btn btn-info btn-lg';
             document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-success progress-bar-striped';
             document.getElementById('benchmark-progress').innerHTML = "Complete";
         // TODO: disable stop if user is not benchmark run owner
         } else if ( runDetail['running'] == true ) {
             document.getElementById('benchmark-container').value = runDetail['id'] // Default dropdown to currently currently running benchmark
-            //document.getElementById('run-detail-heading').innerHTML = 'Run Detail: ' + runDetail['name'];
+            document.getElementById('run-detail-heading').innerHTML = 'Run Detail: ' + runDetail['name'];
             document.getElementById('benchmark-progress').innerHTML = runDetail['progress'] + "%";
             controlButton.value = 'Stop';
-            controlButton.className = 'btn btn-warning';
+            controlButton.className = 'btn btn-warning btn-lg';
             document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
         // Benchmark stopped
         } else {
             controlButton.value = 'Start';
-            controlButton.className = 'btn btn-info';
+            controlButton.className = 'btn btn-info btn-lg';
             document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
             document.getElementById('benchmark-progress').innerHTML = 'Stopped';
         }
@@ -91,7 +98,7 @@ $request.activatePoll();
 <!-- BEGIN BENCHMARK RUN CONFIG  -->
 <div class='row'>
     <div class='col-lg-12' >
-        <div class="col-md-2">
+        <div class="col-md-4">
             <br><h1> Stress Tools </h1>
         </div>
         <!-- BEGIN RUN CONFIG FORM -->
@@ -99,6 +106,9 @@ $request.activatePoll();
             <div class= 'form-group'>
                 <div class="col-md-3">
                     Tool Type
+                    <script>
+                        document.getElementById('benchmark-container').value = run_detail['id'];
+                    </script>
                     <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark -->
                     <select id='benchmark-container'  class="selectpicker form-control" >
                           {% for benchmark in benchmarks %}
@@ -106,41 +116,24 @@ $request.activatePoll();
                           {% endfor %}
                     </select>
                 </div>
+                <div class='col-md-3'>
+                    {% include 'templates/components/config-editor.html' %}
+                </div>
+
                 <!-- Toggle Between Start/Stop Button -->
-                <div class="col-md-2" style='width=100%'>
-                    Action <br>
+                <div class="col-md-1">
                     {% if run_detail['progress'] == 0 or run_detail['progress'] == 100 -%}
-                    <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-info" value='Start'></input>
+                    <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-info btn-lg" value='Start'></input>
                     {% else -%}
-                    <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-warning" value='Stop'></input>
+                    <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-warning btn-lg" value='Stop'></input>
                     {%- endif %}
                 </div>
             </div>
         </form>
-        <br>
-        <!--BEGIN CONFIG  -->
-        <!-- END CONFIG-->
-        <div class="progress col-sm-4">
-            <!-- TODO: initialize progress bar colour with respect to benchmark state
-                TODO: add value and state label-->
-            <div id='benchmark-progress' class="progress-bar progress-bar-info progress-bar-striped"
-                role="progressbar" aria-valuenow="{{ run_detail['progress'] }}"
-                aria-valuemin="0" aria-valuemax="100" style="width:{{ run_detail['progress'] }}%; margin-bottom:-50%; min-width: 2em;"
-                value="{{ run_detail['progress'] }}%"> {{ run_detail['progress'] }} %
-            </div>
-        </div>
-
-        <!-- START PROGRESS BAR
-        <div class="progress">
-            <br><br>
-            <div id='benchmark-progress' class="progress-bar progress-bar-info progress-bar-striped"
-                role="progressbar" aria-valuenow="{{ run_detail['progress'] }}"
-                aria-valuemin="0" aria-valuemax="100" style="width:{{ run_detail['progress'] }}%; margin-bottom:-50%; min-width: 2em;"
-                value="{{ run_detail['progress'] }}%"> {{ run_detail['progress'] }} %
-            </div>
-        </div>
-         END PROGRESS BAR -->
     </div>
+
 </div>
+
+
 <br><br>
 <!-- END BENCHMARK RUN CONFIG -->

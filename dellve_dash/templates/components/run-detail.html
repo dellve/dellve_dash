@@ -1,0 +1,17 @@
+<div>
+    <h3 id='run-detail-heading'> Run Detail </h3>
+    <!-- START PROGRESS BAR -->
+    <div class="progress" style='width:100%'>
+
+        <div id='benchmark-progress' class="progress-bar progress-bar-info progress-bar-striped"
+            role="progressbar" aria-valuenow="{{ run_detail['progress'] }}"
+            aria-valuemin="0" aria-valuemax="100" style="width:{{ run_detail['progress'] }}%; margin-bottom:-50%; min-width: 2em;"
+            value="{{ run_detail['progress'] }}%"> {{ run_detail['progress'] }} %
+        </div>
+    </div>
+    <!-- END PROGRESS BAR -->
+    <!-- START LOGGER -->
+    <div id='run-detail'>
+    </div>
+    <!-- END LOGGER -->
+</div>

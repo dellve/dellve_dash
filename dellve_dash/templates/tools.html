@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <!--TODO: Extract custom CSS to stylesheet -->
-    <title>DellVE Dash: Tools</title>
+    <title>DellVE Dash: Benchmarks</title>
     <meta name="author" content="Abigail Johnson">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8">
@@ -23,14 +23,9 @@
     <link type="text/css" rel="stylesheet" href="../static/css/style-responsive.css">
     <link type="text/css" rel="stylesheet" href="../static/css/benchmark.css">
     <link type="text/css" rel="stylesheet" href="../static/css/jsoneditor.min.css">
+
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="../static/js/jsoneditor.min.js"></script>
-    <script src="../static/js/bootstrap.min.js"></script> <!-- not working -->
-
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+    <script src='../static/js/jsoneditor.min.js'></script>
 </head>
 <!--   1. Select a theme. (this section has to appear before loading dashboard.js) -->
 <script>var netdataTheme = 'slate'; //var netdataTheme = 'default'; </script>
@@ -38,33 +33,35 @@
 <script type="text/javascript" src="http://{{ server }}:{{ netdata_port }}/dashboard.js"></script>
 <!--   3.  Set netdata config options -->
 <script type="text/javascript" src="../static/js/netdata-config.js"></script>
+<script>
+NETDATA.options.current.stop_updates_when_focus_is_lost = false;
+NETDATA.options.current.destroy_on_hide = false;
+</script>
 <body scroll="no" style="overflow: hidden">
     <!-- TODO: Better style this so that it doesn't interfere with UI
     Dummy iframe - target for benchmarks form submission (prevent GET request to Dellve from opening in current or new window)-->
-   <!-- <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe> -->
+   <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe>
     {% include 'templates/components/nav-header.html' %}
     <!-- BEGIN PAGE WRAPPER -->
     <div>
         {% include 'templates/components/sidebar.html' %}
+
         <script> document.getElementById('tool-page').className = 'active';</script>
         <!-- BEGIN PAGE CONTENT -->
-
-            <div style='margin-left: 300px;'>
-                {% include 'templates/components/benchmark-control.html' %}
-                <div class='row'>
-                    <div class='col-lg-7'>
-                        {% include 'templates/components/nvidia-charts.html' %}
-                    </div>
-                    <div class='col-lg-5'>
-                        {% include 'templates/components/config-editor.html' %}
-                    </div>
-
+        <div style='margin-left: 300px;'><br>
+            {% include 'templates/components/benchmark-control.html' %}
+            <div class='row'>
+                <div class='col-md-6' style='overflow-y:scroll'>
+                    {% include 'templates/components/nvidia-charts.html' %}
                 </div>
-            </div>
+                <div class='col-md-5'>
+                    {% include 'templates/components/run-detail.html' %}
+                </div>
 
+            </div>
+        </div>
         <!-- END PAGE CONTENT -->
         <!--CORE JAVASCRIPT-->
-        <script src="../static/js/jquery-1.10.2.min.js"></script>
         <script src="../static/js/jquery.menu.js"></script>
         <script src="../static/js/jquery-ui.js"></script>
         <script src="../static/js/bootstrap.min.js"></script>
