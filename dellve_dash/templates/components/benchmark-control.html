@@ -13,14 +13,9 @@ function getBenchmarkAction(form) {
         // repaint stop button
         controlButton.value = 'Stop';
         controlButton.className = 'btn btn-warning';
-        // start progress polling
-        //$request.activatePoll();
-        // paint progress bar blue for 'active' benchmark state
         document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
     // Benchmark stop
     } else {
-        // end progress polling
-        //$request.deactivatePoll();
         // send stop command to dellve api
         form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/stop";
         // repaint start button
@@ -31,20 +26,79 @@ function getBenchmarkAction(form) {
         document.getElementById('benchmark-progress').innerHTML = 'Stopped';
     }
 }
+
+
+</script>
+
+<script>
+// 1. Setup Poll handler for benchmark progress updates
+$request = new PollRequest();
+
+// Use progress proxy to access cross origin resource
+function PollRequest() {
+  this.pollTimer = null;
+  this.interval = 1000; // Request benchmark progress every second
+  this.url = '/progress-proxy?url_base={{server}}:{{dellve_port}}';
+}
+
+// Disable long poll when benchmark run inactive
+// Currently not in use
+PollRequest.prototype.deactivatePoll = function () {
+  clearInterval(this.pollTimer);
+  this.pollTimer = null;
+};
+
+// Long poll dellve server for progress updates on currently running benchmark
+PollRequest.prototype.activatePoll = function () {
+  this.pollTimer = setInterval(() => {
+    $.getJSON(this.url, function(runDetail) {
+        var controlButton = document.getElementById('benchmark-start-stop');
+        // select benchmark dropdown value to currently running/last run benchmark
+        //document.getElementById('run-detail-heading').innerHTML = 'Run Detail: Benchmark' + runDetail['id'];
+        $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
+        if ( runDetail['progress'] == 100 ) {
+            controlButton.value = 'Start';
+            controlButton.className = 'btn btn-info';
+            // TODO: populate benchmark detail
+            //$('#benchmark-detail').attr('aria-expanded', true); // expand detail panel
+            document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-success progress-bar-striped';
+            document.getElementById('benchmark-progress').innerHTML = "Complete";
+        // TODO: disable stop if user is not benchmark run owner
+        } else if ( runDetail['running'] == true ) {
+            document.getElementById('benchmark-container').value = runDetail['id'] // Default dropdown to currently currently running benchmark
+            //document.getElementById('run-detail-heading').innerHTML = 'Run Detail: ' + runDetail['name'];
+            document.getElementById('benchmark-progress').innerHTML = runDetail['progress'] + "%";
+            controlButton.value = 'Stop';
+            controlButton.className = 'btn btn-warning';
+            document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
+        // Benchmark stopped
+        } else {
+            controlButton.value = 'Start';
+            controlButton.className = 'btn btn-info';
+            document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
+            document.getElementById('benchmark-progress').innerHTML = 'Stopped';
+        }
+
+    })
+  }, this.interval);
+};
+
+$request.activatePoll();
+
 </script>
 
 <!-- Component View -->
 <!-- BEGIN BENCHMARK RUN CONFIG  -->
 <div class='row'>
-    <div class='col-lg-11' >
-        <div class="col-md-6">
-            <br><h1 > Benchmarks </h1>
+    <div class='col-lg-12' >
+        <div class="col-md-2">
+            <br><h1> Stress Tools </h1>
         </div>
         <!-- BEGIN RUN CONFIG FORM -->
         <form onsubmit="getBenchmarkAction(this);" target='dummyframe'>
             <div class= 'form-group'>
                 <div class="col-md-3">
-                    Benchmark Type
+                    Tool Type
                     <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark -->
                     <select id='benchmark-container'  class="selectpicker form-control" >
                           {% for benchmark in benchmarks %}
@@ -53,16 +107,37 @@ function getBenchmarkAction(form) {
                     </select>
                 </div>
                 <!-- Toggle Between Start/Stop Button -->
-                <div class="col-md-3">
+                <div class="col-md-2" style='width=100%'>
                     Action <br>
                     {% if run_detail['progress'] == 0 or run_detail['progress'] == 100 -%}
-                    <input id='benchmark-start-stop' style='width: 100%' type="submit" class="btn btn-info" value='Start'></input>
+                    <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-info" value='Start'></input>
                     {% else -%}
-                    <input id='benchmark-start-stop' style='width: 100%' type="submit" class="btn btn-warning" value='Stop'></input>
+                    <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-warning" value='Stop'></input>
                     {%- endif %}
                 </div>
             </div>
         </form>
+        <br>
+        <div class="progress col-sm-4">
+            <!-- TODO: initialize progress bar colour with respect to benchmark state
+                TODO: add value and state label-->
+            <div id='benchmark-progress' class="progress-bar progress-bar-info progress-bar-striped"
+                role="progressbar" aria-valuenow="{{ run_detail['progress'] }}"
+                aria-valuemin="0" aria-valuemax="100" style="width:{{ run_detail['progress'] }}%; margin-bottom:-50%; min-width: 2em;"
+                value="{{ run_detail['progress'] }}%"> {{ run_detail['progress'] }} %
+            </div>
+        </div>
+
+        <!-- START PROGRESS BAR
+        <div class="progress">
+            <br><br>
+            <div id='benchmark-progress' class="progress-bar progress-bar-info progress-bar-striped"
+                role="progressbar" aria-valuenow="{{ run_detail['progress'] }}"
+                aria-valuemin="0" aria-valuemax="100" style="width:{{ run_detail['progress'] }}%; margin-bottom:-50%; min-width: 2em;"
+                value="{{ run_detail['progress'] }}%"> {{ run_detail['progress'] }} %
+            </div>
+        </div>
+         END PROGRESS BAR -->
     </div>
 </div>
 <br><br>

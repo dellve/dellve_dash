@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <!--TODO: Extract custom CSS to stylesheet -->
-    <title>DellVE Dash: Benchmarks</title>
+    <title>DellVE Dash: Tools</title>
     <meta name="author" content="Abigail Johnson">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8">
@@ -38,13 +38,21 @@
     <!-- BEGIN PAGE WRAPPER -->
     <div>
         {% include 'templates/components/sidebar.html' %}
-        <script> document.getElementById('benchmark-page').className = 'active';</script>
+        <script> document.getElementById('tool-page').className = 'active';</script>
         <!-- BEGIN PAGE CONTENT -->
-        <div style='margin-left: 300px;'><br>
-            {% include 'templates/components/benchmark-control.html' %}
-            {% include 'templates/components/benchmark-run-detail.html' %}
-            {% include 'templates/components/nvidia-charts.html' %}
-        </div>
+
+            <div style='margin-left: 300px;'>
+                {% include 'templates/components/benchmark-control.html' %}
+                <div class='row'>
+                    <div class='col-lg-8'>
+                        {% include 'templates/components/nvidia-charts.html' %}
+                    </div>
+                    <div class='col-lg-4'>
+                    </div>
+
+                </div>
+            </div>
+
         <!-- END PAGE CONTENT -->
         <!--CORE JAVASCRIPT-->
         <script src="../static/js/jquery-1.10.2.min.js"></script>

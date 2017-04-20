@@ -25,7 +25,6 @@ PollRequest.prototype.activatePoll = function () {
         // select benchmark dropdown value to currently running/last run benchmark
         document.getElementById('run-detail-heading').innerHTML = 'Run Detail: Benchmark' + runDetail['id'];
         $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
-
         if ( runDetail['progress'] == 100 ) {
             controlButton.value = 'Start';
             controlButton.className = 'btn btn-info';
