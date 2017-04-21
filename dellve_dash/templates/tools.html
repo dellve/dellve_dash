@@ -23,7 +23,7 @@
     <link type="text/css" rel="stylesheet" href="../static/css/style-responsive.css">
     <link type="text/css" rel="stylesheet" href="../static/css/benchmark.css">
     <link type="text/css" rel="stylesheet" href="../static/css/jsoneditor.min.css">
-
+    <!-- <script src="../static/js/bundle.js"></script> -->
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src='../static/js/jsoneditor.min.js'></script>
 </head>
@@ -37,7 +37,7 @@
 NETDATA.options.current.stop_updates_when_focus_is_lost = false;
 NETDATA.options.current.destroy_on_hide = false;
 </script>
-<body scroll="no" style="overflow: hidden">
+<body >
     <!-- TODO: Better style this so that it doesn't interfere with UI
     Dummy iframe - target for benchmarks form submission (prevent GET request to Dellve from opening in current or new window)-->
    <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe>
@@ -48,13 +48,13 @@ NETDATA.options.current.destroy_on_hide = false;
 
         <script> document.getElementById('tool-page').className = 'active';</script>
         <!-- BEGIN PAGE CONTENT -->
-        <div style='margin-left: 300px;'><br>
+        <div style='margin-left: 280px;'><br>
             {% include 'templates/components/benchmark-control.html' %}
             <div class='row'>
                 <div class='col-md-6' style='overflow-y:scroll'>
                     {% include 'templates/components/nvidia-charts.html' %}
                 </div>
-                <div class='col-md-5'>
+                <div class='col-md-6'>
                     {% include 'templates/components/run-detail.html' %}
                 </div>
 
@@ -62,6 +62,7 @@ NETDATA.options.current.destroy_on_hide = false;
         </div>
         <!-- END PAGE CONTENT -->
         <!--CORE JAVASCRIPT-->
+
         <script src="../static/js/jquery.menu.js"></script>
         <script src="../static/js/jquery-ui.js"></script>
         <script src="../static/js/bootstrap.min.js"></script>
