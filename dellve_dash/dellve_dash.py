@@ -77,16 +77,18 @@ def progress_proxy():
         raise InvalidServerConfig()
 
 # Helper proxy for tool start/stop (Used to format POST requests while Dellve API in flux)
-@app.route('/tool-action-proxy', methods=['GET'])
+@app.route('/tool-action-proxy', methods=['POST'])
 def tool_action_proxy():
-    print('Tool action proxy:' + str(request))
-    return
     try:
-        r = requests.get("http://" + request.args[c.URL_TAG] + c.DVE_PROGRESS, timeout=c.DEFAULT_TIMEOUT).json()
-        #print(r)
-        return jsonify(r)
+        url = 'http://' + request.args['url_base'] + "/benchmark/" + str(request.args['b_id']) + "/" + str(request.args['action']).lower()
+        print(url)
+        r = requests.post(url, data=request.data) # config info
+        print(r.status_code, r.reason)
+        return ''
     except:
         raise InvalidServerConfig()
+
+
 
 # Utility Function to raise error on invalid server config
 def validate_server_config(params):

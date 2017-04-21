@@ -2,48 +2,42 @@
 <script>
 //   Action handler for stop/start commands
 function getBenchmarkAction(form) {
+    // 1. Send start/stop to DellveAPI
     var benchmarkId = document.getElementById('benchmark-container').value;
     var controlButton = document.getElementById('benchmark-start-stop');
+    $.ajax({
+      type: "POST",
+      url: '/tool-action-proxy?b_id=' + benchmarkId + '&url_base={{server}}:{{dellve_port}}&action=' + controlButton.value,
+      data: JSON.stringify(configEditor.get()),
+      success: function(){},
+      dataType: "json",
+      contentType : "application/json"
+    });
+    //2 .Repaint Buttons
     // Benchmark Start
+
     if ( controlButton.value == 'Start') {
         document.getElementById('run-detail').innerHTML = ''; // clear logs
-        // send start command to dellve api
-        // TODO: send post w/ config
-        form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/start";
-        // reset progress
-        $('#benchmark-progress').attr('aria-valuenow', 0).css('width', "0%");
+        $('#benchmark-progress').attr('aria-valuenow', 0).css('width', "0%"); // reset progress
         document.getElementById('benchmark-progress').innerHTML = "0 %";
         controlButton.value = 'Stop';
         controlButton.className = 'btn btn-warning btn-lg';
         document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
     // Benchmark stop
     } else {
-        form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/stop";
         controlButton.value = 'Start';
-        // repaint
         controlButton.className = 'btn btn-info btn-lg';
         document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
         document.getElementById('benchmark-progress').innerHTML = 'Stopped';
     }
 }
 
-
-
-// Use progress proxy to access cross origin resource
+// Use long-poll progress proxy to access cross origin resource
 function PollRequest() {
   this.pollTimer = null;
   this.interval = 1000; // Request benchmark progress every second
   this.url = '/progress-proxy?url_base={{server}}:{{dellve_port}}';
 }
-
-/* Disable long poll when benchmark run inactive
-Not in use
-PollRequest.prototype.deactivatePoll = function () {
-  clearInterval(this.pollTimer);
-  this.pollTimer = null;
-};
-*/
-
 
 // Long poll dellve server for progress updates on currently running benchmark
 PollRequest.prototype.activatePoll = function () {
@@ -56,7 +50,6 @@ PollRequest.prototype.activatePoll = function () {
     })
   }, this.interval);
 };
-
 
 
 /* Helper method to update tool start/stop button and dropdown w/ respect to tool run progress */
@@ -106,13 +99,22 @@ function updateRunDetail(runDetail) {
     document.getElementById('run-detail-heading').innerHTML = 'Run Detail: ' + runDetail['name'];
     // 2. Update Logging
     var logs = JSON.stringify(runDetail['output']);
+    // Remove ANSI codes and misformed literals and styled header
     logs = logs.replace(/['"]+/g, '').replace(/,/g , ' ').replace(/\\n/g, "<br/>").replace(/\\t/g, "&nbsp;").replace(/\\u001b\[0m/g, "&nbsp;").replace(/\\u001b\[0;31m/g, "&nbsp;").substring(1, logs.length-1);
-    document.getElementById('run-detail').innerHTML = logs;
+    var header = "";
+    if (runDetail['name']!= 'HPL') {
+        header = "<p style='text-align:center'>====================================================================================<br><br>";
+        header = header += runDetail['name'] += "<br><br>Dellve Deep GPU Stress and Capabilities Tool Suite<br>The University of Texas at Austin ECE<br><br>";
+        header =  header += "Quian Baula, Travis Chau, Abigail Johnson, Jayesh Joshi, Konstantyn Komarov<br><br>";
+        header = header += "====================================================================================<br><br></p>";
+    }
+    document.getElementById('run-detail').innerHTML = header += logs;
     // 3. Default scroll to bottom on active tool run
     if ( runDetail['running'] == true ) {
         document.getElementById('run-detail').scrollTop = document.getElementById('run-detail').scrollHeight;
     }
 }
+
 
 /* Helper method repaint tool config editor on dropdown tool change */
 function updateConfigEditor() {
@@ -120,20 +122,22 @@ function updateConfigEditor() {
     var configStr = elem.options[elem.selectedIndex].getAttribute('data-config');
     configStr = configStr.replace(/'/g, '"');
     var updatedConfig = JSON.parse(configStr);
-    var container = document.getElementById("config-editor");
+    container = document.getElementById("config-editor");
     container.innerHTML = '';
-    var configEditor = new JSONEditor(container, {
+    configEditor = new JSONEditor(container, {
         mode: 'form',
         name: 'Configuration Data',
-        search: false,
+        search: false
     });
     configEditor.set(updatedConfig);
+    //configEditor.enable();
 }
 
 // 1. Setup Poll handler for benchmark progress updates and activate poll
 $request = new PollRequest();
 $request.activatePoll();
 var firstCheck = true;
+updateConfigEditor();
 
 </script>
 
@@ -142,27 +146,26 @@ var firstCheck = true;
 <div class='row'>
     <div class='col-lg-12' >
         <div class="col-md-5">
-            <br><h1> Stress Tools </h1>
+            <br><h1> GPU Stress and Capabilities Tools </h1>
         </div>
         <!-- BEGIN RUN CONFIG FORM -->
-        <form onsubmit="getBenchmarkAction(this);" target='dummyframe'>
+        <form onsubmit="getBenchmarkAction(this);" target='dummyframe' >
             <div class= 'form-group'>
                     <div class='col-md-3' >
                         Tool Type
                         <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark
                             create configuration dictionary
+                            TODO: validate config json format and ammend as necessary
                         -->
                         <select id='benchmark-container'  class="selectpicker form-control" onchange="updateConfigEditor();">
                                 {% for benchmark in benchmarks %}
-                                <script> console.log("{{benchmark['config']}}"); </script>
-                              <option value="{{ benchmark['id'] }}" data-config="{{benchmark.config}}">{{ benchmark['name'] }}</option>
+                              <option value="{{ benchmark['id'] }}" data-config="{{benchmark['config']}}">{{ benchmark['name'] }}</option>
                                 {% endfor %}
                         </select>
                     </div>
                     <div class='col-md-3'>
                         {% include 'templates/components/config-editor.html' %}
                     </div>
-
                     <!-- Toggle Between Start/Stop Button -->
                     <div class='col-md-1'>
                         {% if run_detail['running'] == False -%}

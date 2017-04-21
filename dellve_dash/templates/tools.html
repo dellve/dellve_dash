@@ -34,10 +34,6 @@
 <script type="text/javascript" src="http://{{ server }}:{{ netdata_port }}/dashboard.js"></script>
 <!--   3.  Set netdata config options -->
 <script type="text/javascript" src="../static/js/netdata-config.js"></script>
--<script>
-NETDATA.options.current.stop_updates_when_focus_is_lost = false;
-NETDATA.options.current.destroy_on_hide = false;
-</script>
 <body >
     <!-- TODO: Better style this so that it doesn't interfere with UI
     Dummy iframe - target for benchmarks form submission (prevent GET request to Dellve from opening in current or new window)-->
@@ -63,11 +59,7 @@ NETDATA.options.current.destroy_on_hide = false;
         </div>
         <!-- END PAGE CONTENT -->
         <!--CORE JAVASCRIPT-->
-
-        <script src="../static/js/jquery.menu.js"></script>
-        <script src="../static/js/jquery-ui.js"></script>
         <script src="../static/js/bootstrap.min.js"></script>
-        <script src="../static/js/responsive-tabs.js"></script>
     </div>
     <!-- END PAGE WRAPPER -->
 </body>
