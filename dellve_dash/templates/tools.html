@@ -26,7 +26,6 @@
     <!-- <script src="../static/js/bundle.js"></script> -->
 
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src='../static/js/jsoneditor.min.js'></script>
 </head>
 <!--   1. Select a theme. (this section has to appear before loading dashboard.js) -->
@@ -35,6 +34,10 @@
 <script type="text/javascript" src="http://{{ server }}:{{ netdata_port }}/dashboard.js"></script>
 <!--   3.  Set netdata config options -->
 <script type="text/javascript" src="../static/js/netdata-config.js"></script>
+-<script>
+NETDATA.options.current.stop_updates_when_focus_is_lost = false;
+NETDATA.options.current.destroy_on_hide = false;
+</script>
 <body >
     <!-- TODO: Better style this so that it doesn't interfere with UI
     Dummy iframe - target for benchmarks form submission (prevent GET request to Dellve from opening in current or new window)-->

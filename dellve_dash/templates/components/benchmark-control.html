@@ -49,60 +49,15 @@ PollRequest.prototype.deactivatePoll = function () {
 PollRequest.prototype.activatePoll = function () {
   this.pollTimer = setInterval(() => {
     $.getJSON(this.url, function(runDetail) {
+        // Repaint start/stop, run detail logging, and progress bar on tool run updates
         updateControlPanel(runDetail);
         updateProgressBar(runDetail);
         updateRunDetail(runDetail);
-        // 2. repaint start/stop, run detail logging, and progress bar on tool run updates
-        //repaintToolListeners(runDetail);
     })
   }, this.interval);
 };
 
 
-/* Method to repaint start/stop, run detail logging, and progress bar on tool run updates
-Needs to be done in-step to assure proper state transition */
-function repaintToolListeners(runDetail) {
-    // 1. Init Dropdown to last run on initial page load and init tool config editor
-    var activeTool = document.getElementById('benchmark-container');
-
-    if (firstCheck == true) {
-        firstCheck = false;
-        activeTool.value = runDetail['id'];
-        updateConfigEditor();
-    }
-
-    // 2. Update run detail (logging, panel header, and scrolling)
-    //updateRunDetail(runDetail);
-    $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
-
-    var controlButton = document.getElementById('benchmark-start-stop');
-    var progressBar = document.getElementById('benchmark-progress');
-    // 3. Tool run complete
-    if ( runDetail['progress'] == 100 ) {
-        controlButton.value = 'Start';
-        controlButton.className = 'btn btn-info btn-lg';
-        progressBar.className = 'progress-bar progress-bar-success progress-bar-striped';
-        progressBar.innerHTML = "Complete";
-    // 4. Tool run in progress
-    } else if ( runDetail['running'] == true ) {
-        controlButton.className = 'btn btn-warning btn-lg';
-        controlButton.value = 'Stop';
-        document.getElementById('benchmark-container').value = runDetail['id'] // Default dropdown to currently currently running benchmark
-        progressBar.innerHTML = runDetail['progress'] + "%";
-        //controlButton.value = 'Stop';
-        //controlButton.className = 'btn btn-warning btn-lg';
-        progressBar.className = 'progress-bar progress-bar-info progress-bar-striped';
-    // 5. Benchmark stopped
-    } else {
-        controlButton.value = 'Start';
-        controlButton.className = 'btn btn-info btn-lg';
-        progressBar.className = 'progress-bar progress-bar-warning progress-bar-striped';
-        progressBar.innerHTML = 'Stopped';
-    }
-
-    // 2. Update run detail (logging, panel header, and scrolling)
-    updateRunDetail(runDetail);
-}
 
 /* Helper method to update tool start/stop button and dropdown w/ respect to tool run progress */
 function updateControlPanel(runDetail) {
@@ -184,6 +139,7 @@ var firstCheck = true;
 
 <!-- Component View -->
 <!-- BEGIN BENCHMARK RUN CONFIG  -->
+<div class='row'>
     <div class='col-lg-12' >
         <div class="col-md-5">
             <br><h1> Stress Tools </h1>
