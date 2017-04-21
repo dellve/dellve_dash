@@ -6,35 +6,28 @@ function getBenchmarkAction(form) {
     var controlButton = document.getElementById('benchmark-start-stop');
     // Benchmark Start
     if ( controlButton.value == 'Start') {
-        // clear logs
-        document.getElementById('run-detail').innerHTML = '';
+        document.getElementById('run-detail').innerHTML = ''; // clear logs
         // send start command to dellve api
+        // TODO: send post w/ config
         form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/start";
+        // reset progress
         $('#benchmark-progress').attr('aria-valuenow', 0).css('width', "0%");
         document.getElementById('benchmark-progress').innerHTML = "0 %";
-        // repaint stop button
         controlButton.value = 'Stop';
         controlButton.className = 'btn btn-warning btn-lg';
         document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
     // Benchmark stop
     } else {
-        // send stop command to dellve api
         form.action = "http://{{server}}:{{dellve_port}}/benchmark/" + benchmarkId + "/stop";
-        // repaint start button
         controlButton.value = 'Start';
+        // repaint
         controlButton.className = 'btn btn-info btn-lg';
-        // paint progress bar yellow for 'stopped' benchmark state
         document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
         document.getElementById('benchmark-progress').innerHTML = 'Stopped';
     }
 }
 
 
-</script>
-
-<script>
-// 1. Setup Poll handler for benchmark progress updates
-$request = new PollRequest();
 
 // Use progress proxy to access cross origin resource
 function PollRequest() {
@@ -43,68 +36,154 @@ function PollRequest() {
   this.url = '/progress-proxy?url_base={{server}}:{{dellve_port}}';
 }
 
-// Disable long poll when benchmark run inactive
-// Currently not in use
+/* Disable long poll when benchmark run inactive
+Not in use
 PollRequest.prototype.deactivatePoll = function () {
   clearInterval(this.pollTimer);
   this.pollTimer = null;
 };
+*/
 
-var firstCheck = true;
 
 // Long poll dellve server for progress updates on currently running benchmark
 PollRequest.prototype.activatePoll = function () {
   this.pollTimer = setInterval(() => {
     $.getJSON(this.url, function(runDetail) {
-        var controlButton = document.getElementById('benchmark-start-stop');
-        // select benchmark dropdown value to currently running/last run benchmark
-        document.getElementById('run-detail-heading').innerHTML = 'Run Detail: ' + runDetail['name'];
-
-        // Logging
-        //var stripAnsi = require('strip-ansi');
-        var logs = JSON.stringify(runDetail['output']);
-        logs = logs.replace(/['"]+/g, '').replace(/,/g , ' ').replace(/\\n/g, "<br/>").replace(/\\t/g, "&nbsp;").replace(/\\u001b\[0m/g, "&nbsp;").replace(/\\u001b\[0;31m/g, "&nbsp;").substring(1, logs.length-1); 
-        //logs = stripAnsi(logs);
-        document.getElementById('run-detail').innerHTML = logs;
-        $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
-        // When page first loads, initialze dropdown with last run benchmark
-        if (firstCheck == true) {
-            firstCheck = false;
-            document.getElementById('benchmark-container').value = runDetail['id'];
-        }
-        if ( runDetail['progress'] == 100 ) {
-            controlButton.value = 'Start';
-            controlButton.className = 'btn btn-info btn-lg';
-            document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-success progress-bar-striped';
-            document.getElementById('benchmark-progress').innerHTML = "Complete";
-        // TODO: disable stop if user is not benchmark run owner
-        } else if ( runDetail['running'] == true ) {
-            document.getElementById('run-detail').scrollTop = document.getElementById('run-detail').scrollHeight; // auto scroll logs to bottom
-            document.getElementById('benchmark-container').value = runDetail['id'] // Default dropdown to currently currently running benchmark
-            document.getElementById('run-detail-heading').innerHTML = 'Run Detail: ' + runDetail['name'];
-            document.getElementById('benchmark-progress').innerHTML = runDetail['progress'] + "%";
-            controlButton.value = 'Stop';
-            controlButton.className = 'btn btn-warning btn-lg';
-            document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
-        // Benchmark stopped
-        } else {
-            controlButton.value = 'Start';
-            controlButton.className = 'btn btn-info btn-lg';
-            document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
-            document.getElementById('benchmark-progress').innerHTML = 'Stopped';
-        }
-
+        updateControlPanel(runDetail);
+        updateProgressBar(runDetail);
+        updateRunDetail(runDetail);
+        // 2. repaint start/stop, run detail logging, and progress bar on tool run updates
+        //repaintToolListeners(runDetail);
     })
   }, this.interval);
 };
 
+
+/* Method to repaint start/stop, run detail logging, and progress bar on tool run updates
+Needs to be done in-step to assure proper state transition */
+function repaintToolListeners(runDetail) {
+    // 1. Init Dropdown to last run on initial page load and init tool config editor
+    var activeTool = document.getElementById('benchmark-container');
+
+    if (firstCheck == true) {
+        firstCheck = false;
+        activeTool.value = runDetail['id'];
+        updateConfigEditor();
+    }
+
+    // 2. Update run detail (logging, panel header, and scrolling)
+    //updateRunDetail(runDetail);
+    $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
+
+    var controlButton = document.getElementById('benchmark-start-stop');
+    var progressBar = document.getElementById('benchmark-progress');
+    // 3. Tool run complete
+    if ( runDetail['progress'] == 100 ) {
+        controlButton.value = 'Start';
+        controlButton.className = 'btn btn-info btn-lg';
+        progressBar.className = 'progress-bar progress-bar-success progress-bar-striped';
+        progressBar.innerHTML = "Complete";
+    // 4. Tool run in progress
+    } else if ( runDetail['running'] == true ) {
+        controlButton.className = 'btn btn-warning btn-lg';
+        controlButton.value = 'Stop';
+        document.getElementById('benchmark-container').value = runDetail['id'] // Default dropdown to currently currently running benchmark
+        progressBar.innerHTML = runDetail['progress'] + "%";
+        //controlButton.value = 'Stop';
+        //controlButton.className = 'btn btn-warning btn-lg';
+        progressBar.className = 'progress-bar progress-bar-info progress-bar-striped';
+    // 5. Benchmark stopped
+    } else {
+        controlButton.value = 'Start';
+        controlButton.className = 'btn btn-info btn-lg';
+        progressBar.className = 'progress-bar progress-bar-warning progress-bar-striped';
+        progressBar.innerHTML = 'Stopped';
+    }
+
+    // 2. Update run detail (logging, panel header, and scrolling)
+    updateRunDetail(runDetail);
+}
+
+/* Helper method to update tool start/stop button and dropdown w/ respect to tool run progress */
+function updateControlPanel(runDetail) {
+    var activeTool = document.getElementById('benchmark-container');
+    var controlButton = document.getElementById('benchmark-start-stop');
+    // 1. Init Dropdown to last run on initial page load and init tool config editor
+    if (firstCheck == true) {
+        firstCheck = false;
+        activeTool.value = runDetail['id'];
+        updateConfigEditor();
+    }
+    // 2. Tool Run in Progress
+    if ( runDetail['running'] == true  ) {
+        activeTool.value = runDetail['id'] // Default dropdown to currently currently running benchmark
+        controlButton.className = 'btn btn-warning btn-lg';
+        controlButton.value = 'Stop';
+    // 3. Tool Run complete or Stopped
+    } else {
+        controlButton.className = 'btn btn-info btn-lg';
+        controlButton.value = 'Start';
+    }
+}
+
+/* Helper function update progress bar */
+function updateProgressBar(runDetail) {
+    $('#benchmark-progress').attr('aria-valuenow', runDetail['progress']).css('width',runDetail['progress'] + "%");
+    var progressBar = document.getElementById('benchmark-progress');
+    // 1. Tool run complete
+    if ( runDetail['progress'] == 100 ) {
+        progressBar.className = 'progress-bar progress-bar-success progress-bar-striped';
+        progressBar.innerHTML = "Complete";
+    // 2. Tool run in progress
+    } else if ( runDetail['running'] == true ) {
+        progressBar.className = 'progress-bar progress-bar-info progress-bar-striped';
+        progressBar.innerHTML = runDetail['progress'] + "%";
+    // 3. Tool Run stopped
+    } else {
+        progressBar.className = 'progress-bar progress-bar-warning progress-bar-striped';
+        progressBar.innerHTML = 'Stopped';
+    }
+}
+
+/* Helper method to update Run Detail panel logging and header */
+function updateRunDetail(runDetail) {
+    // 1. Update Header
+    document.getElementById('run-detail-heading').innerHTML = 'Run Detail: ' + runDetail['name'];
+    // 2. Update Logging
+    var logs = JSON.stringify(runDetail['output']);
+    logs = logs.replace(/['"]+/g, '').replace(/,/g , ' ').replace(/\\n/g, "<br/>").replace(/\\t/g, "&nbsp;").replace(/\\u001b\[0m/g, "&nbsp;").replace(/\\u001b\[0;31m/g, "&nbsp;").substring(1, logs.length-1);
+    document.getElementById('run-detail').innerHTML = logs;
+    // 3. Default scroll to bottom on active tool run
+    if ( runDetail['running'] == true ) {
+        document.getElementById('run-detail').scrollTop = document.getElementById('run-detail').scrollHeight;
+    }
+}
+
+/* Helper method repaint tool config editor on dropdown tool change */
+function updateConfigEditor() {
+    var elem = document.getElementById("benchmark-container");
+    var configStr = elem.options[elem.selectedIndex].getAttribute('data-config');
+    configStr = configStr.replace(/'/g, '"');
+    var updatedConfig = JSON.parse(configStr);
+    var container = document.getElementById("config-editor");
+    container.innerHTML = '';
+    var configEditor = new JSONEditor(container, {
+        mode: 'form',
+        name: 'Configuration Data',
+        search: false,
+    });
+    configEditor.set(updatedConfig);
+}
+
+// 1. Setup Poll handler for benchmark progress updates and activate poll
+$request = new PollRequest();
 $request.activatePoll();
+var firstCheck = true;
 
 </script>
 
 <!-- Component View -->
 <!-- BEGIN BENCHMARK RUN CONFIG  -->
-<div class='row'>
     <div class='col-lg-12' >
         <div class="col-md-5">
             <br><h1> Stress Tools </h1>
@@ -112,17 +191,16 @@ $request.activatePoll();
         <!-- BEGIN RUN CONFIG FORM -->
         <form onsubmit="getBenchmarkAction(this);" target='dummyframe'>
             <div class= 'form-group'>
-
                     <div class='col-md-3' >
                         Tool Type
-                        <script>
-                            document.getElementById('benchmark-container').value = run_detail['id'];
-                        </script>
-                        <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark -->
-                        <select id='benchmark-container'  class="selectpicker form-control" >
-                              {% for benchmark in benchmarks %}
-                              <option value="{{ benchmark['id'] }}">{{ benchmark['name'] }}</option>
-                              {% endfor %}
+                        <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark
+                            create configuration dictionary
+                        -->
+                        <select id='benchmark-container'  class="selectpicker form-control" onchange="updateConfigEditor();">
+                                {% for benchmark in benchmarks %}
+                                <script> console.log("{{benchmark['config']}}"); </script>
+                              <option value="{{ benchmark['id'] }}" data-config="{{benchmark.config}}">{{ benchmark['name'] }}</option>
+                                {% endfor %}
                         </select>
                     </div>
                     <div class='col-md-3'>
@@ -131,7 +209,7 @@ $request.activatePoll();
 
                     <!-- Toggle Between Start/Stop Button -->
                     <div class='col-md-1'>
-                        {% if run_detail['progress'] == 0 or run_detail['progress'] == 100 -%}
+                        {% if run_detail['running'] == False -%}
                         <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-info btn-lg" value='Start'></input>
                         {% else -%}
                         <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-warning btn-lg" value='Stop'></input>
