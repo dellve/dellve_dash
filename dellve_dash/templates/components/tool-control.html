@@ -5,31 +5,47 @@
         <div class="col-md-5">
             <br><h1> GPU Stress and Capabilities Tools </h1>
         </div>
-        <form onsubmit="getToolAction('{{server}}','{{dellve_port}}');" target='dummyframe' >
-            <div class= 'form-group'>
-                    <div class='col-md-3' >
-                        Tool Type
-                        <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark
-                            TODO: validate config json format and ammend as necessary -->
-                        <select id='benchmark-container'  class="selectpicker form-control" onchange="updateConfigEditor();">
-                                {% for benchmark in benchmarks %}
-                              <option value="{{ benchmark['id'] }}" data-config="{{benchmark['config']}}">{{ benchmark['name'] }}</option>
-                                {% endfor %}
-                        </select>
-                    </div>
-                    <div class='col-md-3'>
-                        {% include 'templates/components/config-editor.html' %}
-                    </div>
-                    <!-- Toggle Between Start/Stop Button -->
-                    <div class='col-md-1'>
-                        {% if run_detail['running'] == False -%}
-                        <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-info btn-lg" value='Start'></input>
-                        {% else -%}
-                        <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-warning btn-lg" value='Stop'></input>
-                        {%- endif %}
-                    </div>
+        <!-- Start Tool Selection -->
+        <div class='col-md-3' >
+            Tool Type
+            <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark
+                TODO: validate config json format and ammend as necessary -->
+            <select id='benchmark-container'  class="selectpicker form-control" onchange="updateConfigEditor();">
+                    {% for benchmark in benchmarks %}
+                  <option value="{{ benchmark['id'] }}" data-config="{{benchmark['config']}}">{{ benchmark['name'] }}</option>
+                    {% endfor %}
+            </select>
+        </div>
+        <!-- End Tool Selection -->
+        <!-- Start Config Editor -->
+        <div class='col-md-3' >
+            <div id="accordion3" class='panel panel-default' style='position:absolute;z-index:5;width:90%' >
+                <div class='panel-heading' style='height: 55px; '>
+                    <a class='accordion-toggle'  data-toggle="collapse"  data-parent="#accordion3" href="#benchmark-config-edit">
+                        <div class="row">
+                            <div class='col-xs-6' style='align: left;'>
+                                <h4 class='panel-title'>Configuration</h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div id="benchmark-config-edit" aria-expanded='false' class="collapse out panel-body" >
+                    <div id="config-editor" ></div>
+                </div>
             </div>
-        </form>
+        </div>
+        <!-- End Config Editor -->
+        <!-- Begin Start/Stop Buttons -->
+        <div class='col-md-1'>
+            {% if run_detail['running'] == False -%}
+            <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-info btn-lg" value='Start'
+                onclick="getToolAction('{{server}}','{{dellve_port}}');"></input>
+            {% else -%}
+            <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-warning btn-lg" value='Stop'
+                onclick="getToolAction('{{server}}','{{dellve_port}}');"></input>
+            {%- endif %}
+        </div>
+        <!--End Start/Stop Buttons -->    
     </div>
 </div>
 <br>

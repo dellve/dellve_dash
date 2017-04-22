@@ -79,14 +79,14 @@ def progress_proxy():
 # Helper proxy for tool start/stop (Used to format POST requests while Dellve API in flux)
 @app.route('/tool-action-proxy', methods=['POST'])
 def tool_action_proxy():
-    try:
-        url = 'http://' + request.args['url_base'] + "/benchmark/" + str(request.args['b_id']) + "/" + str(request.args['action']).lower()
-        print(url)
-        r = requests.post(url, data=request.data) # config info
-        print(r.status_code, r.reason)
-        return ''
-    except:
-        raise InvalidServerConfig()
+    #try:
+    url = 'http://' + request.args['url_base'] + "/benchmark/" + str(request.args['b_id']) + "/" + str(request.args['action']).lower()
+    print(url)
+    r = requests.post(url, data=request.data) # config info
+    print(r.status_code, r.reason)
+    return 'd'
+    #except:
+    #raise InvalidServerConfig()
 
 
 
