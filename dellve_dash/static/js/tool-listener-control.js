@@ -1,42 +1,20 @@
-<!-- Component Control-->
-<script>
-//   Action handler for stop/start commands
-function getBenchmarkAction(form) {
-    // 1. Send start/stop to DellveAPI
-    var benchmarkId = document.getElementById('benchmark-container').value;
-    var controlButton = document.getElementById('benchmark-start-stop');
-    $.ajax({
-      type: "POST",
-      url: '/tool-action-proxy?b_id=' + benchmarkId + '&url_base={{server}}:{{dellve_port}}&action=' + controlButton.value,
-      data: JSON.stringify(configEditor.get()),
-      success: function(){},
-      dataType: "json",
-      contentType : "application/json"
-    });
-    //2 .Repaint Buttons
-    // Benchmark Start
-
-    if ( controlButton.value == 'Start') {
-        document.getElementById('run-detail').innerHTML = ''; // clear logs
-        $('#benchmark-progress').attr('aria-valuenow', 0).css('width', "0%"); // reset progress
-        document.getElementById('benchmark-progress').innerHTML = "0 %";
-        controlButton.value = 'Stop';
-        controlButton.className = 'btn btn-warning btn-lg';
-        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
-    // Benchmark stop
-    } else {
-        controlButton.value = 'Start';
-        controlButton.className = 'btn btn-info btn-lg';
-        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
-        document.getElementById('benchmark-progress').innerHTML = 'Stopped';
-    }
-}
+/*
+ * Javascript handlers for
+ *        1. intiating start/stop requests to Dellve Api
+ *        2. long polling Dellve API for tool run progress
+ *        3. updating tool listensrs
+ *            -start/stop button
+ *            -config editor
+ *            -progress bar
+ *            -run detail heading and log
+ *
+ */
 
 // Use long-poll progress proxy to access cross origin resource
-function PollRequest() {
+function PollRequest(server_ip, dellve_port) {
   this.pollTimer = null;
   this.interval = 1000; // Request benchmark progress every second
-  this.url = '/progress-proxy?url_base={{server}}:{{dellve_port}}';
+  this.url = '/progress-proxy?url_base=' + server_ip + ':' + dellve_port;
 }
 
 // Long poll dellve server for progress updates on currently running benchmark
@@ -51,8 +29,8 @@ PollRequest.prototype.activatePoll = function () {
   }, this.interval);
 };
 
-
 /* Helper method to update tool start/stop button and dropdown w/ respect to tool run progress */
+var firstCheck = true;
 function updateControlPanel(runDetail) {
     var activeTool = document.getElementById('benchmark-container');
     var controlButton = document.getElementById('benchmark-start-stop');
@@ -104,7 +82,7 @@ function updateRunDetail(runDetail) {
     var header = "";
     if (runDetail['name']!= 'HPL') {
         header = "<p style='text-align:center'>====================================================================================<br><br>";
-        header = header += runDetail['name'] += "<br><br>Dellve Deep GPU Stress and Capabilities Tool Suite<br>The University of Texas at Austin ECE<br><br>";
+        header = header += runDetail['name'] += "<br>Dellve Deep GPU Stress and Capabilities Tool Suite<br>The University of Texas at Austin ECE<br>Senior Design Spring 2017<br><br>";
         header =  header += "Quian Baula, Travis Chau, Abigail Johnson, Jayesh Joshi, Konstantyn Komarov<br><br>";
         header = header += "====================================================================================<br><br></p>";
     }
@@ -115,8 +93,8 @@ function updateRunDetail(runDetail) {
     }
 }
 
-
 /* Helper method repaint tool config editor on dropdown tool change */
+updateConfigEditor();
 function updateConfigEditor() {
     var elem = document.getElementById("benchmark-container");
     var configStr = elem.options[elem.selectedIndex].getAttribute('data-config');
@@ -133,50 +111,33 @@ function updateConfigEditor() {
     //configEditor.enable();
 }
 
-// 1. Setup Poll handler for benchmark progress updates and activate poll
-$request = new PollRequest();
-$request.activatePoll();
-var firstCheck = true;
-updateConfigEditor();
-
-</script>
-
-<!-- Component View -->
-<!-- BEGIN BENCHMARK RUN CONFIG  -->
-<div class='row'>
-    <div class='col-lg-12' >
-        <div class="col-md-5">
-            <br><h1> GPU Stress and Capabilities Tools </h1>
-        </div>
-        <!-- BEGIN RUN CONFIG FORM -->
-        <form onsubmit="getBenchmarkAction(this);" target='dummyframe' >
-            <div class= 'form-group'>
-                    <div class='col-md-3' >
-                        Tool Type
-                        <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark
-                            create configuration dictionary
-                            TODO: validate config json format and ammend as necessary
-                        -->
-                        <select id='benchmark-container'  class="selectpicker form-control" onchange="updateConfigEditor();">
-                                {% for benchmark in benchmarks %}
-                              <option value="{{ benchmark['id'] }}" data-config="{{benchmark['config']}}">{{ benchmark['name'] }}</option>
-                                {% endfor %}
-                        </select>
-                    </div>
-                    <div class='col-md-3'>
-                        {% include 'templates/components/config-editor.html' %}
-                    </div>
-                    <!-- Toggle Between Start/Stop Button -->
-                    <div class='col-md-1'>
-                        {% if run_detail['running'] == False -%}
-                        <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-info btn-lg" value='Start'></input>
-                        {% else -%}
-                        <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-warning btn-lg" value='Stop'></input>
-                        {%- endif %}
-                    </div>
-            </div>
-        </form>
-    </div>
-</div>
-<br>
-<!-- END BENCHMARK RUN CONFIG -->
+/*   Action handler for stop/start commands */
+function getToolAction(server_ip, dellve_port) {
+    // 1. Send start/stop to DellveAPI
+    var benchmarkId = document.getElementById('benchmark-container').value;
+    var controlButton = document.getElementById('benchmark-start-stop');
+    $.ajax({
+      type: "POST",
+      url: '/tool-action-proxy?b_id=' + benchmarkId + '&url_base=' + server_ip + ':' + dellve_port + '&action=' + controlButton.value,
+      data: JSON.stringify(configEditor.get()),
+      success: function(){},
+      dataType: "json",
+      contentType : "application/json"
+    });
+    //2 .Repaint Buttons
+    // Benchmark Start
+    if ( controlButton.value == 'Start') {
+        document.getElementById('run-detail').innerHTML = ''; // clear logs
+        $('#benchmark-progress').attr('aria-valuenow', 0).css('width', "0%"); // reset progress
+        document.getElementById('benchmark-progress').innerHTML = "0 %";
+        controlButton.value = 'Stop';
+        controlButton.className = 'btn btn-warning btn-lg';
+        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-info progress-bar-striped';
+    // Benchmark stop
+    } else {
+        controlButton.value = 'Start';
+        controlButton.className = 'btn btn-info btn-lg';
+        document.getElementById('benchmark-progress').className = 'progress-bar progress-bar-warning progress-bar-striped';
+        document.getElementById('benchmark-progress').innerHTML = 'Stopped';
+    }
+}
