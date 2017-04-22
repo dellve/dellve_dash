@@ -56,7 +56,7 @@
         <!-- Control for start/stop, progress polling, config editor, run detail logging -->
         <script src="../static/js/tool-listener-control.js"></script>
         <script>
-        // Setup Poll handler for benchmark progress updates and activate poll
+        // Setup Poll handler for tool progress updates and activate long poll
         $request = new PollRequest('{{server}}', '{{dellve_port}}');
         $request.activatePoll();
         </script>

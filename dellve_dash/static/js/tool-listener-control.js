@@ -7,7 +7,7 @@
  *            -config editor
  *            -progress bar
  *            -run detail heading and log
- * 
+ *
  * Author: Abigail Johnson
  */
 
@@ -79,7 +79,8 @@ function updateRunDetail(runDetail) {
     // 2. Update Logging
     var logs = JSON.stringify(runDetail['output']);
     // Remove ANSI codes and misformed literals and styled header
-    logs = logs.replace(/['"]+/g, '').replace(/,/g , ' ').replace(/\\n/g, "<br/>").replace(/\\t/g, "&nbsp;").replace(/\\u001b\[0m/g, "&nbsp;").replace(/\\u001b\[0;31m/g, "&nbsp;").substring(1, logs.length-1);
+    logs = logs.replace(/['"]+/g, '').replace(/,/g , ' ').replace(/\\n/g, "<br/>").replace(/\\t/g, "&nbsp;").replace(/\\u001b\[0m/g, "&nbsp;").replace(/\\u001b\[0;31m/g, "&nbsp;");
+    logs = logs.substring(1, logs.length-1);
     var header = "";
     if (runDetail['name']!= 'HPL') {
         header = "<p style='text-align:center'>====================================================================================<br><br>";
