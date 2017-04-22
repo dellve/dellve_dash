@@ -7,7 +7,8 @@
  *            -config editor
  *            -progress bar
  *            -run detail heading and log
- *
+ * 
+ * Author: Abigail Johnson
  */
 
 // Use long-poll progress proxy to access cross origin resource
