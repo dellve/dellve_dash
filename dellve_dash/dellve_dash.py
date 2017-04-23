@@ -47,7 +47,7 @@ def get_about_page():
     validate_server_config(request.args)
     return apply_template(c.TEMPLATE_DIR + c.ABOUT_PAGE, request.args)
 
-@app.route('/benchmarks', methods=['GET'] )
+@app.route('/tools', methods=['GET'] )
 def get_benchmarks_page():
     # 1. Validate server config params
     validate_server_config(request.args)
@@ -75,6 +75,20 @@ def progress_proxy():
         return jsonify(r)
     except:
         raise InvalidServerConfig()
+
+# Helper proxy for tool start/stop (Used to format POST requests while Dellve API in flux)
+@app.route('/tool-action-proxy', methods=['POST'])
+def tool_action_proxy():
+    #try:
+    url = 'http://' + request.args['url_base'] + "/benchmark/" + str(request.args['b_id']) + "/" + str(request.args['action']).lower()
+    print(url)
+    r = requests.post(url, data=request.data) # config info
+    print(r.status_code, r.reason)
+    return 'd'
+    #except:
+    #raise InvalidServerConfig()
+
+
 
 # Utility Function to raise error on invalid server config
 def validate_server_config(params):

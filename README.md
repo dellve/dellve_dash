@@ -86,28 +86,28 @@ TODO
     - [x] Attach dellve API endpoint to run config form (start/stop buttons)     
     - [x] Add progress bar/long polling functionality
     - [x] Continuous Integration build/deploy
-    - [...] Ensure proper reinitialization of run panel on page return     
+    - [x] Ensure proper reinitialization of run panel on page return     
         -- ( if user leaves benchmark page in middle of run, ensure stop button and proper benchmark progress is displayed if the benchmark is still running by the time they return )  
-    - [...] Add benchmark detail panel (expand on benchmark progress complete)  
+    - [x] Add benchmark detail panel (expand on benchmark progress complete)  
     - [x] Python unit tests
-    - [ ] Interaction/js tests
+    - [x] Interaction/js tests
     - [ ] Change runtime/build to python2.7
-    - [ ] Ensure only user who starts benchmark can stop it ( likely need to do on backend to prevent injection)  
 
 #### 7.2 Vanity
-    - [ ] (maybe) Add minimizer control snippet to run config and detail panels
-    - [...] Fix styling!
+    - [x] Fix styling!
         - [...] fix css to properly adapt mobile and make uniform across browsers (looks like shit in safari)  
-        - [ ] Unify DellVE logo alignment amongst pages
-        - [...] margins  
-        - [ ] extract css from html   
-        - [ ] remove excess styling  
-    - [ ] About section
+        - [x] Unify DellVE logo alignment amongst pages
+        - [x] margins  
+        - [x] extract css from html   
+        - [x] remove excess styling  
+        - [ ] export pdf styling
+    - [x] About section
     - [x] Throw custom error page and/or display alert modal on invalid server config input (currently re-renders portal home on error )  
-    - [ ] Export Run Detail
+    - [x] Export Run Detail
 
 #### 7.3 Other Future improvements
     - [...] Refactor views into modular React components
+    - [ ] Ensure only user who starts benchmark can stop it ( likely need to do on backend to prevent injection)  
 
 ## 8.0 Notes
 + Application must be accessed via http instead of https for netdata dependencies to load  
