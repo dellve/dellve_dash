@@ -3,14 +3,14 @@
 <div class='row'>
     <div class='col-lg-12' >
         <div class="col-md-5">
-            <br><h1> GPU Stress and Capabilities Tools </h1>
+            <h1> GPU Stress and Capabilities Tools </h1>
         </div>
         <!-- Start Tool Selection -->
         <div class='col-md-3' >
-            Tool Type
+            <div style='font-size:18px'><b>Tool Type:</b></div>
             <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark
                 TODO: validate config json format and ammend as necessary -->
-            <select id='benchmark-container'  class="selectpicker form-control" onchange="updateConfigEditor();">
+            <select id='benchmark-container'  class="selectpicker form-control" onchange="updateConfigEditor();" style='height: 50px'>
                     {% for benchmark in benchmarks %}
                   <option value="{{ benchmark['id'] }}" data-config="{{benchmark['config']}}">{{ benchmark['name'] }}</option>
                     {% endfor %}
@@ -18,19 +18,20 @@
         </div>
         <!-- End Tool Selection -->
         <!-- Start Config Editor -->
+        <br>
         <div class='col-md-3' >
             <div id="accordion3" class='panel panel-default' style='position:absolute;z-index:5;width:90%' >
-                <div class='panel-heading' style='height: 55px; '>
+                <div class='panel-heading' style='height: 50px;background-color:#ffffff;'>
                     <a class='accordion-toggle'  data-toggle="collapse"  data-parent="#accordion3" href="#benchmark-config-edit">
                         <div class="row">
                             <div class='col-xs-6' style='align: left;'>
-                                <h4 class='panel-title'>Configuration</h4>
+                                <h5 class='panel-title' style='color:#000000'>Run Configuration </h5>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div id="benchmark-config-edit" aria-expanded='false' class="collapse out panel-body" >
-                    <div id="config-editor" ></div>
+                <div id="benchmark-config-edit" aria-expanded='false' class="collapse out panel-body" style='background-color:#ffffff;' >
+                    <div id="config-editor" style="header-size: 0px" ></div>
                 </div>
             </div>
         </div>
@@ -45,8 +46,8 @@
                 onclick="getToolAction('{{server}}','{{dellve_port}}');"></input>
             {%- endif %}
         </div>
-        <!--End Start/Stop Buttons -->    
+        <!--End Start/Stop Buttons -->
     </div>
 </div>
-<br>
+<br><br>
 <!-- END BENCHMARK RUN CONFIG -->

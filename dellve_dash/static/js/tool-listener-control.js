@@ -83,7 +83,7 @@ function updateRunDetail(runDetail) {
     logs = logs.substring(1, logs.length-1);
     var header = "";
     if (runDetail['name']!= 'HPL') {
-        header = "<p style='text-align:center'>====================================================================================<br><br>";
+        header = "<p id='log-header' style='text-align:center'>====================================================================================<br><br>";
         header = header += runDetail['name'] += "<br>Dellve Deep GPU Stress and Capabilities Tool Suite<br>The University of Texas at Austin ECE<br>Senior Design Spring 2017<br><br>";
         header =  header += "Quian Baula, Travis Chau, Abigail Johnson, Jayesh Joshi, Konstantyn Komarov<br><br>";
         header = header += "====================================================================================<br><br></p>";
@@ -106,10 +106,11 @@ function updateConfigEditor() {
     container.innerHTML = '';
     configEditor = new JSONEditor(container, {
         mode: 'form',
-        name: 'Configuration Data',
+        name: 'Configuration Options',
         search: false
     });
     configEditor.set(updatedConfig);
+    $( ".jsoneditor-menu" ).remove();
     //configEditor.enable();
 }
 
@@ -143,3 +144,17 @@ function getToolAction(server_ip, dellve_port) {
         document.getElementById('benchmark-progress').innerHTML = 'Stopped';
     }
 }
+
+/* Exports most recent tool run detail as pdf
+TODO: format export */
+$(function () {
+  $('#export-report-button').click(function () {
+    var doc = new jsPDF();
+    doc.addHTML($('#run-detail')[0], 15, 15, {
+      'background': '#fff',
+    }, function() {
+      var fileName = 'dellve_run_' + Date().toLocaleString() + '.pdf';
+      doc.save(fileName);
+    });
+  });
+});

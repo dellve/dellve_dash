@@ -21,8 +21,9 @@
     <link type="text/css" rel="stylesheet" href="../static/css/style-responsive.css">
     <link type="text/css" rel="stylesheet" href="../static/css/benchmark.css">
     <link type="text/css" rel="stylesheet" href="../static/css/jsoneditor.min.css">
-    <link href="../static/css/darkConfigEditor.css" rel="stylesheet" type="text/css">
+    <!--<link href="../static/css/darkConfigEditor.css" rel="stylesheet" type="text/css"> -->
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
     <script src='../static/js/jsoneditor.min.js'></script>
 </head>
 <!--   1. Select a theme. (this section has to appear before loading dashboard.js) -->
@@ -43,7 +44,7 @@
                 <div class='col-md-6' style='overflow-y:scroll'>
                     {% include 'templates/components/nvidia-charts.html' %}
                 </div>
-                <div class='col-md-6'>
+                <div class='col-md-6' >
                     {% include 'templates/components/run-detail.html' %}
                 </div>
 
