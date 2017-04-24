@@ -79,7 +79,7 @@ function updateRunDetail(runDetail) {
     // 2. Update Logging
     var logs = JSON.stringify(runDetail['output']);
     // Remove ANSI codes and misformed literals and styled header
-    logs = logs.replace(/['"]+/g, '').replace(/,/g , ' ').replace(/\\n/g, "<br/>").replace(/\\t/g, "&nbsp;").replace(/\\u001b\[0m/g, "&nbsp;").replace(/\\u001b\[0;31m/g, "&nbsp;");
+    logs = logs.replace(/['"]+/g, '').replace(/,/g , ' ').replace(/\\n/g, "<br>").replace(/\\t/g, "&nbsp;").replace(/\\u001b\[0m/g, "&nbsp;").replace(/\\u001b\[0;31m/g, "&nbsp;");
     logs = logs.substring(1, logs.length-1);
     var header = "";
     if (runDetail['name']!= 'HPL') {
@@ -150,11 +150,27 @@ TODO: format export */
 $(function () {
   $('#export-report-button').click(function () {
     var doc = new jsPDF();
-    doc.addHTML($('#run-detail')[0], 15, 15, {
-      'background': '#fff',
-    }, function() {
-      var fileName = 'dellve_run_' + Date().toLocaleString() + '.pdf';
-      doc.save(fileName);
+    doc.setFontSize(12);
+    doc.setTextColor(0);
+    doc.setDrawColor(0,0,0);
+
+    // Add page content
+    var content = document.getElementById('run-detail').innerHTML;
+    content = content.substring(content.indexOf(">") + 1);
+    //content = content.replace(/<br>/g, "\n");
+    var lines = content.split('<br>');
+    console.log('lines:' + lines.length);
+    var cutoff = 50; // num lines till next page break
+
+    for ( i = 0; i < lines.length; i += cutoff ) {
+        var pageContent = lines.slice(i, i + cutoff );
+        doc.text(20,30, pageContent );
+        doc.addPage();
+
+    }
+
+    // Save File
+    var fileName = 'dellve_run_' + Date().toLocaleString() + '.pdf';
+    doc.save(fileName);
     });
-  });
 });
