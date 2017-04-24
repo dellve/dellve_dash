@@ -2,16 +2,16 @@
     <!-- TODO; add run detail export button -->
     <div class='row'>
         <div class='col-lg-12'>
-            <div class='col-lg-10' style='alight:left'>
+            <div class='col-lg-10' style='alight:left; margin-left: -15px'>
                 <h3 id='run-detail-heading'> Run Detail </h3>
             </div>
             <div class='col-lg-2'>
-                <input id='export-report-button' type="submit" style='width: 100%' class="btn btn-info" value='Export pdf'></input>
+                <input id='export-report-button' type="submit" style='width: 100%; margin-left: 15px;' class="btn btn-info" value='Export PDF'></input>
             </div>
         </div>
     </div>
     <!-- START PROGRESS BAR -->
-    <div class="progress" style='width:100%'>
+    <div class="progress" style='width:98%'>
         <!-- Set proper progress bar on page load (forsure more concise way to do this) -->
         {% if run_detail['progress'] == 100 -%}
         <div id='benchmark-progress' class="progress-bar progress-bar-success progress-bar-striped"
@@ -35,7 +35,7 @@
     </div>
     <!-- END PROGRESS BAR -->
     <!-- START LOGGER -->
-    <div id='run-detail' class='run-log' style="height:600px;background-color:#000000;width=100%;overflow:auto;padding:10px;font-size:15px;font-family:courier">
+    <div id='run-detail' class='run-log' style="height:600px;background-color:#1E1E1E;width:98%;overflow:auto;padding:10px;font-size:15px;font-family:courier">
         <div  style="width:90%"></div>
     </div>
 

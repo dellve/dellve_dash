@@ -85,7 +85,7 @@ function updateRunDetail(runDetail) {
     if (runDetail['name']!= 'HPL') {
         header = "<p id='log-header' style='text-align:center'>====================================================================================<br><br>";
         header = header += runDetail['name'] += "<br>Dellve Deep GPU Stress and Capabilities Tool Suite<br>The University of Texas at Austin ECE<br>Senior Design Spring 2017<br><br>";
-        header =  header += "Quian Baula, Travis Chau, Abigail Johnson, Jayesh Joshi, Konstantyn Komarov<br><br>";
+        header =  header += "Quinito Baula, Travis Chau, Abigail Johnson, Jayesh Joshi, Konstantyn Komarov<br><br>";
         header = header += "====================================================================================<br><br></p>";
     }
     document.getElementById('run-detail').innerHTML = header += logs;
@@ -116,6 +116,10 @@ function updateConfigEditor() {
     });
     configEditor.set(updatedConfig);
     $( ".jsoneditor-menu" ).remove();
+    $( ".jsoneditor-tree" ).css('background-color', '#FFFFFF');
+    $( ".jsoneditor-separator" ).css('background', '#FFFFFF');
+    $( ".jsoneditor-mode-form").css('border', 0);
+    //configEditor.enable();
 }
 
 /*   Action handler for stop/start commands */
