@@ -10,7 +10,7 @@ Custom Error Page for:
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>DellVE Dash: Invalid Server</title>
+    <title>Dellve Dash: Invalid Server</title>
     <meta name="author" content="Abigail Johnson">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8">
@@ -32,34 +32,34 @@ Custom Error Page for:
     <link type="text/css" rel="stylesheet" href="../static/css/benchmark.css">
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
-    <body>
+    <body style='background-color: #272B30;'>
         <!-- TODO: Style -->
-        <div align='center'>
-            <h3>
+        <div>
+            <h1 align='center' style='margin-top: 10%;'>
                 Unprocessable Request: Invalid Server Configuration Provided
-            </h3>
+            </h1>
             <br><br>
-            <hr>
-            <h4>
-                DellVE Dash could not process the provided server configuration due to one of the following: <br>
-                    1. Request missing required config params ( dellve_port, netdata_port, server_ip ) <br>
-                    2. Given config params missing required dependencies  <br>
-                        - DellVE api not installed/visable <br>
-                        - Netdata or nvidia pluggin not installed/visable <br>
-
-                To access DellVE Dash, please enter a valid DellVE server configuration in the
-                <a href='/'>Portal Home</a><br>
-                For information on how to configure your server to be compatible with DellVE dash, visit the DellVE Dash READEme at
+            <h3 align="center">
+                Dellve Dash could not process the provided server configuration due to one of the following: <br><br>
+            </h3>
+            <h4 style='margin-left: 23%'>
+                <ul>
+                    <li>Request missing required config params ( dellve_port, netdata_port, server_ip )</li> <br>
+                    <li>Given config params missing required dependencies</li>  <br>
+                    <ul><li>DellVE api not installed/visable</li> <br>
+                        <li>Netdata or nvidia pluggin not installed/visable</li> <br><br><br>
+                    </ul>
+                </ul>
+            </h4>
+              <h3 align='center'>To access Dellve Dash, please enter a valid Dellve server configuration in the
+                <a href='/' style='color: #0087CB'>Portal Home</a><br><br>
+                For information on how to configure your server to be compatible with Dellve dash, visit the Dellve Dash READEme at
                 <a href="https://github.com/dellve/dellve_dash"
                 class="btn btn-default btn-lg">
                     <i class="fa fa-github fa-fw"></i>
                     <span class="network-name">Github</span>
                 </a>
-                <button onclick="window.history.back()"
-                   class="btn btn-default btn-lg">
-                    <span class="home-page">Portal Home</span>
-                </button>
-            </h4>
+              </h3>
         </div>
     </body>
 </html>
