@@ -79,13 +79,13 @@ function updateRunDetail(runDetail) {
     // 2. Update Logging
     var logs = JSON.stringify(runDetail['output']);
     // Remove ANSI codes and misformed literals and styled header
-    logs = logs.replace(/['"]+/g, '').replace(/,/g , ' ').replace(/\\n/g, "<br/>").replace(/\\t/g, "&nbsp;").replace(/\\u001b\[0m/g, "&nbsp;").replace(/\\u001b\[0;31m/g, "&nbsp;");
+    logs = logs.replace(/['"]+/g, '').replace(/,/g , ' ').replace(/\\n/g, "<br>").replace(/\\t/g, "&nbsp;").replace(/\\u001b\[0m/g, "&nbsp;").replace(/\\u001b\[0;31m/g, "&nbsp;");
     logs = logs.substring(1, logs.length-1);
     var header = "";
     if (runDetail['name']!= 'HPL') {
         header = "<p id='log-header' style='text-align:center'>====================================================================================<br><br>";
         header = header += runDetail['name'] += "<br>Dellve Deep GPU Stress and Capabilities Tool Suite<br>The University of Texas at Austin ECE<br>Senior Design Spring 2017<br><br>";
-        header =  header += "Quian Baula, Travis Chau, Abigail Johnson, Jayesh Joshi, Konstantyn Komarov<br><br>";
+        header =  header += "Quinito Baula, Travis Chau, Abigail Johnson, Jayesh Joshi, Konstantyn Komarov<br><br>";
         header = header += "====================================================================================<br><br></p>";
     }
     document.getElementById('run-detail').innerHTML = header += logs;
@@ -95,22 +95,52 @@ function updateRunDetail(runDetail) {
     }
 }
 
-/* Helper method repaint tool config editor on dropdown tool change */
+/* Helper method repaint tool config editor on dropdown tool change
+ TODO: schema validation */
 updateConfigEditor();
 function updateConfigEditor() {
     var elem = document.getElementById("benchmark-container");
     var configStr = elem.options[elem.selectedIndex].getAttribute('data-config');
+    var schemaStr = elem.options[elem.selectedIndex].getAttribute('data-schema');
     configStr = configStr.replace(/'/g, '"');
+    schemaStr = schemaStr.replace(/'/g, '"');
     var updatedConfig = JSON.parse(configStr);
+    var schema = JSON.parse(schemaStr);
+    /*
+    var schema = {
+      "title": "Example Schema",
+      "type": "object",
+      "properties": {
+        "mem_utilization": {
+          "description" : "% Memory Utilization Desired",
+          "type": "integer",
+          "minimum" : 0,
+          "maximum" : 100
+        },
+        "run_time_min": {
+          "description" : "Desired run time",
+          "type": "integer",
+          "minimum" : 0,
+          "maximum" : 100
+        },
+      },
+      "required": ["mem_utilization", "run_time_min"]
+  }*/
+
     container = document.getElementById("config-editor");
     container.innerHTML = '';
     configEditor = new JSONEditor(container, {
         mode: 'form',
         name: 'Configuration Options',
-        search: false
+        search: false,
+        schema: schema
     });
+    //JSONEditor.setSchema(schema)
     configEditor.set(updatedConfig);
     $( ".jsoneditor-menu" ).remove();
+    $( ".jsoneditor-tree" ).css('background-color', '#FFFFFF');
+    $( ".jsoneditor-separator" ).css('background', '#FFFFFF');
+    $( ".jsoneditor-mode-form").css('border', 0);
     //configEditor.enable();
 }
 
@@ -150,11 +180,28 @@ TODO: format export */
 $(function () {
   $('#export-report-button').click(function () {
     var doc = new jsPDF();
-    doc.addHTML($('#run-detail')[0], 15, 15, {
-      'background': '#fff',
-    }, function() {
-      var fileName = 'dellve_run_' + Date().toLocaleString() + '.pdf';
-      doc.save(fileName);
+    doc.setFontSize(12);
+    doc.setTextColor(0);
+    doc.setDrawColor(0,0,0);
+
+    // Add page content
+    var content = document.getElementById('run-detail').innerHTML;
+    content = content.substring(content.indexOf(">") + 1);
+    //content = content.replace(/<br>/g, "\n");
+    var lines = content.split('<br>');
+    console.log('lines:' + lines.length);
+    var cutoff = 50; // num lines till next page break
+
+    for ( i = 0; i < lines.length; i += cutoff ) {
+        var pageContent = lines.slice(i, i + cutoff );
+        doc.text(20,30, pageContent );
+        if (i + cutoff <= lines.length) {
+            doc.addPage();
+        }
+    }
+
+    // Save File
+    var fileName = 'dellve_run_' + Date().toLocaleString() + '.pdf';
+    doc.save(fileName);
     });
-  });
 });
