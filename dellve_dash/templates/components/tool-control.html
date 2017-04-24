@@ -12,7 +12,7 @@
                 TODO: add schema -->
             <select id='benchmark-container'  class="selectpicker form-control" onchange="updateConfigEditor();" style='height: 50px'>
                     {% for benchmark in benchmarks %}
-                  <option value="{{ benchmark['id'] }}" data-config="{{benchmark['config']}}">{{ benchmark['name'] }}</option>
+                  <option value="{{ benchmark['id'] }}" data-config="{{benchmark['config']}}" data-schema="{{benchmark['schema']}}">{{ benchmark['name'] }}</option>
                     {% endfor %}
             </select>
         </div>
