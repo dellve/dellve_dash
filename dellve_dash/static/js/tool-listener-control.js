@@ -111,7 +111,9 @@ function updateConfigEditor() {
     });
     configEditor.set(updatedConfig);
     $( ".jsoneditor-menu" ).remove();
-    $( ".jsoneditor-mode-form" ).css('background-color', '#E2E2E2');
+    $( ".jsoneditor-tree" ).css('background-color', '#FFFFFF');
+    $( ".jsoneditor-separator" ).css('background', '#FFFFFF');
+    $( ".jsoneditor-mode-form").css('border', 0);
     //configEditor.enable();
 }
 
