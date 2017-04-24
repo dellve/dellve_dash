@@ -84,7 +84,7 @@ function updateRunDetail(runDetail) {
     var header = "";
     if (runDetail['name']!= 'HPL') {
         header = "<p id='log-header' style='text-align:center'>====================================================================================<br><br>";
-        header = header += runDetail['name'] += "<br>Dellve Deep GPU Stress and Capabilities Tool Suite<br>The University of Texas at Austin ECE<br>Senior Design Spring 2017<br><br>";
+        header = header += runDetail['name'] += "<br>Dellve Deep GPU Stress and Benchmark Tool Suite<br>The University of Texas at Austin ECE<br>Senior Design Spring 2017<br><br>";
         header =  header += "Quinito Baula, Travis Chau, Abigail Johnson, Jayesh Joshi, Konstantyn Komarov<br><br>";
         header = header += "====================================================================================<br><br></p>";
     }
@@ -116,6 +116,8 @@ function updateConfigEditor() {
     });
     configEditor.set(updatedConfig);
     $( ".jsoneditor-menu" ).remove();
+    $( ".jsoneditor-schema-error" ).css('color', '#FFFFFF');
+    $( ".jsoneditor-popover jsoneditor-left" ).innerHTML = "Contains invalid parameters. Default config file will be used if submitted.";
     $( ".jsoneditor-tree" ).css('background-color', '#FFFFFF');
     $( ".jsoneditor-separator" ).css('background', '#FFFFFF');
     $( ".jsoneditor-mode-form").css('border', 0);
@@ -164,6 +166,7 @@ $(function () {
 
     // Add page content
     var content = document.getElementById('run-detail').innerHTML;
+    content = content.substring(content.indexOf(">") + 1);
     content = content.substring(content.indexOf(">") + 1);
     //content = content.replace(/<br>/g, "\n");
     var lines = content.split('<br>');
