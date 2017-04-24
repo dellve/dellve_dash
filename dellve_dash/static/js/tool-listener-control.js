@@ -167,7 +167,7 @@ $(function () {
     // Add page content
     var content = document.getElementById('run-detail').innerHTML;
     content = content.substring(content.indexOf(">") + 1);
-    content = content.substring(content.indexOf(">") + 1);
+    //content = content.substring(content.indexOf(">") + 1);
     //content = content.replace(/<br>/g, "\n");
     var lines = content.split('<br>');
     console.log('lines:' + lines.length);
