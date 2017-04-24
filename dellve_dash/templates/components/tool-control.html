@@ -9,7 +9,7 @@
         <div class='col-md-3' >
             <div style='font-size:18px'><b>Tool Type:</b></div>
             <!-- Dynamically populate benchmark dropdown and restore last user-select benchmark
-                TODO: validate config json format and ammend as necessary -->
+                TODO: add schema -->
             <select id='benchmark-container'  class="selectpicker form-control" onchange="updateConfigEditor();" style='height: 50px'>
                     {% for benchmark in benchmarks %}
                   <option value="{{ benchmark['id'] }}" data-config="{{benchmark['config']}}">{{ benchmark['name'] }}</option>
@@ -19,6 +19,14 @@
         <!-- End Tool Selection -->
         <!-- Start Config Editor -->
         <br>
+        <style>
+        .jsoneditor-schema-error:after {
+            font-family: FontAwesome;
+            content : "\f071";
+            color: red;
+            font-size: 18px;
+        }
+        </style>
         <div class='col-md-3' >
             <div id="accordion3" class='panel panel-default' style='position:absolute;z-index:5;width:90%' >
                 <div class='panel-heading' style='height: 50px;background-color:#ffffff;'>
