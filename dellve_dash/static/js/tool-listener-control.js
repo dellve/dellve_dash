@@ -95,20 +95,47 @@ function updateRunDetail(runDetail) {
     }
 }
 
-/* Helper method repaint tool config editor on dropdown tool change */
+/* Helper method repaint tool config editor on dropdown tool change
+ TODO: schema validation */
 updateConfigEditor();
 function updateConfigEditor() {
     var elem = document.getElementById("benchmark-container");
     var configStr = elem.options[elem.selectedIndex].getAttribute('data-config');
+    var schemaStr = elem.options[elem.selectedIndex].getAttribute('data-schema');
     configStr = configStr.replace(/'/g, '"');
+    schemaStr = schemaStr.replace(/'/g, '"');
     var updatedConfig = JSON.parse(configStr);
+    var schema = JSON.parse(schemaStr);
+    /*
+    var schema = {
+      "title": "Example Schema",
+      "type": "object",
+      "properties": {
+        "mem_utilization": {
+          "description" : "% Memory Utilization Desired",
+          "type": "integer",
+          "minimum" : 0,
+          "maximum" : 100
+        },
+        "run_time_min": {
+          "description" : "Desired run time",
+          "type": "integer",
+          "minimum" : 0,
+          "maximum" : 100
+        },
+      },
+      "required": ["mem_utilization", "run_time_min"]
+  }*/
+
     container = document.getElementById("config-editor");
     container.innerHTML = '';
     configEditor = new JSONEditor(container, {
         mode: 'form',
         name: 'Configuration Options',
-        search: false
+        search: false,
+        schema: schema
     });
+    //JSONEditor.setSchema(schema)
     configEditor.set(updatedConfig);
     $( ".jsoneditor-menu" ).remove();
     $( ".jsoneditor-tree" ).css('background-color', '#FFFFFF');
@@ -171,7 +198,6 @@ $(function () {
         if (i + cutoff <= lines.length) {
             doc.addPage();
         }
-
     }
 
     // Save File
