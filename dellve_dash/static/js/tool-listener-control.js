@@ -165,7 +165,9 @@ $(function () {
     for ( i = 0; i < lines.length; i += cutoff ) {
         var pageContent = lines.slice(i, i + cutoff );
         doc.text(20,30, pageContent );
-        doc.addPage();
+        if (i + cutoff <= lines.length) {
+            doc.addPage();
+        }
 
     }
 
