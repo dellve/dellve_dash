@@ -182,7 +182,11 @@ $(function () {
     }
 
     // Save File
-    var fileName = 'dellve_run_' + Date().toLocaleString() + '.pdf';
+    d = new Date();
+    date = d.getMonth() + '-' + d.getDate() + '-' + d.getFullYear();
+    var toolName = document.getElementById('run-detail-heading').innerHTML;
+    toolName = toolName.substring(toolName.indexOf(":") + 2); // strip 'Run Detail: ' prefix (+2 to remove buffer space)
+    var fileName = toolName + '_' + date + '.pdf';
     doc.save(fileName);
     });
 });
