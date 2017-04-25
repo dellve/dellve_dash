@@ -25,21 +25,21 @@
             content : "\f071";
             color: red;
             font-size: 18px;
-            background-color: "#FFFFFF";
+            background-color: #FFFFFF;
         }
         </style>
         <div class='col-md-3' >
-            <div id="accordion3" class='panel panel-default' style='position:absolute;z-index:5;width:90%' >
+            <div id="accordion3" class='panel panel-default' style='position:absolute;z-index:5;width:92%; margin-top: 4px;' >
                 <div class='panel-heading' style='height: 50px;background-color:#ffffff;'>
                     <a class='accordion-toggle'  data-toggle="collapse"  data-parent="#accordion3" href="#benchmark-config-edit">
                         <div class="row">
                             <div class='col-xs-6' style='align: left;'>
-                                <h5 class='panel-title' style='color:#000000'>Run Configuration </h5>
+                                <h5 class='panel-title' style='color:#000000; text-shadow: 0 0 0'>Run Configuration </h5>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div id="benchmark-config-edit" aria-expanded='false' class="collapse out panel-body" style='background-color:#ffffff;' >
+                <div id="benchmark-config-edit" aria-expanded='false' class="collapse out panel-body" style='background-color:#ffffff;'>
                     <div id="config-editor" style="header-size: 0px" ></div>
                 </div>
             </div>
@@ -48,10 +48,10 @@
         <!-- Begin Start/Stop Buttons -->
         <div class='col-md-1'>
             {% if run_detail['running'] == False -%}
-            <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-info btn-lg" value='Start'
+            <input id='benchmark-start-stop' type="submit" style='width: 100%; height: 50px; margin-top: 4px;' class="btn btn-info btn-lg" value='Start'
                 onclick="getToolAction('{{server}}','{{dellve_port}}');"></input>
             {% else -%}
-            <input id='benchmark-start-stop' type="submit" style='width: 100%' class="btn btn-warning btn-lg" value='Stop'
+            <input id='benchmark-start-stop' type="submit" style='width: 100%; height: 50px; margin-top: 4px;' class="btn btn-warning btn-lg" value='Stop'
                 onclick="getToolAction('{{server}}','{{dellve_port}}');"></input>
             {%- endif %}
         </div>
