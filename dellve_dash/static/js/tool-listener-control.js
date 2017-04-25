@@ -161,23 +161,21 @@ function getToolAction(server_ip, dellve_port) {
 TODO: format export */
 $(function () {
   $('#export-report-button').click(function () {
-    var doc = new jsPDF();
+    var doc = new jsPDF('p','in','letter');
     doc.setFontSize(12);
     doc.setTextColor(0);
-    doc.setDrawColor(0,0,0);
+    doc.setDrawColor(0,255,0);
 
     // Add page content
     var content = document.getElementById('run-detail').innerHTML;
-    content = content.substring(content.indexOf(">") + 1);
-    //content = content.substring(content.indexOf(">") + 1);
-    //content = content.replace(/<br>/g, "\n");
+    content = content.substring(content.indexOf(">") + 1).replace(/<\/p>/g, "");
     var lines = content.split('<br>');
     console.log('lines:' + lines.length);
     var cutoff = 50; // num lines till next page break
 
     for ( i = 0; i < lines.length; i += cutoff ) {
         var pageContent = lines.slice(i, i + cutoff );
-        doc.text(20,30, pageContent );
+        doc.text(1,1, pageContent );
         if (i + cutoff <= lines.length) {
             doc.addPage();
         }
