@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>DellVE Dash: Stress and Benchmark Tools</title>
+    <title>Dellve Dash: Stress and Benchmark Tools</title>
     <meta name="author" content="Abigail Johnson">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8">
@@ -32,7 +32,7 @@
 <script type="text/javascript" src="http://{{ server }}:{{ netdata_port }}/dashboard.js"></script>
 <!--   3.  Set netdata config options
 <script type="text/javascript" src="../static/js/netdata-config.js"></script> -->
-<body >
+<body style='overflow: hidden'>
     {% include 'templates/components/nav-header.html' %}
     <!-- BEGIN PAGE WRAPPER -->
     <div>
@@ -41,7 +41,7 @@
         <div style='margin-left: 280px;'><br>
             {% include 'templates/components/tool-control.html' %}
             <div class='row'>
-                <div class='col-md-6' style='overflow-y:scroll'>
+                <div class='col-md-6'>
                     {% include 'templates/components/nvidia-charts.html' %}
                 </div>
                 <div class='col-md-6' >
