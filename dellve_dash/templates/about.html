@@ -37,7 +37,7 @@
         {% include 'templates/components/sidebar.html' %}
         <div class="row" style="padding-top: 50px">
             <div class="col-lg-12 col-lg-offset-2">
-                <h1>About Dellve</h1>
+                <h1 style="font-weight:bold;">About Dellve</h1>
                 <h3>Dellve Deep is designed to quantify the performance of a GPU-enabled High Performance Computing server. The main tools that is packaged <br>
                     with Dellve are benchmarks and stress tools that uses operations from Nvidia’s cuDNN library.<br><br>
                     Training full DNNs for benchmarking is not feasible due to the wide range of DNN applications and architectures. Due to this, we target <br>
@@ -45,16 +45,16 @@
                 </h3>
                 <br>
                 <br>
-                <h2>Benchmarks vs Stress Tools</h2>
+                <h2 style="font-weight: bold">Benchmarks vs Stress Tools</h2>
                 <h3>Benchmarks are meant to compare the performance of different GPUs, while stress tools are designed to determine the stability <br>
                     of the GPU subsystem.<br><br>
                     To achieve this, benchmarks have fixed problem sizes that keep the comparisons fair between benchmark runs across different GPUs. <br>
                     On the other hand, stress tools have dynamic problem sizes generated to match the user-specified memory allocation. Once memory <br>
-                    is allocated, the stress tools will push the GPUs to 100% core utilization for a configurable amount of time. <br><br>
+                    is allocated, the stress tools will push the GPUs to 100% core utilization for a configurable amount of time.
                 </h3>
                 <br>
                 <br>
-                <h2>CuDNN Operations</h2>
+                <h2 style="font-weight: bold">CuDNN Operations</h2>
                 <h3>The current implementation of Dellve utilizes four fundamental operations for the purpose of running benchmarks and stress tools. <br>
                     We also include both forward and backward propagations for each operation.<br><br>
                     <div style="font-weight: bold; margin-left: 15px;">
@@ -66,7 +66,10 @@
                     </ul>
                     </div>
                 </h3>
-
+                <br>
+                <br>
+                <br>
+<br>
 
             </div>
                 <ul class="list-inline banner-social-buttons">
