@@ -26,23 +26,48 @@
 <style>
     body {
         background-color: #272b30;
+        overflow: hidden;
     }
+
 </style>
-<body scroll="no" style="overflow: hidden">
+<body>
     {% include 'templates/components/nav-header.html' %}
     <!-- BEGIN PAGE WRAPPER -->
     <div>
         {% include 'templates/components/sidebar.html' %}
-        <div class="row">
+        <div class="row" style="padding-top: 50px">
             <div class="col-lg-12 col-lg-offset-2">
-                <h1>About Dellve Benchmark</h1>
-                <h2 style="margin-left: 15px;">Benchmark Descriptions</h2>
-                <ul class="benchmark-description" style="font-size: 18px; margin-left: 25px">
-                    <li>Benchmark 1: SAMPLE TEXT<br></li>
-                    <li>Benchmark 2: SAMPLE TEXT<br></li>
-                    <li>Benchmark 3: SAMPLE TEXT<br></li>
-                    <br>
-                </ul>
+                <h1>About Dellve</h1>
+                <h3>Dellve Deep is designed to quantify the performance of a GPU-enabled High Performance Computing server. The main tools that is packaged <br>
+                    with Dellve are benchmarks and stress tools that uses operations from Nvidia’s cuDNN library.<br><br>
+                    Training full DNNs for benchmarking is not feasible due to the wide range of DNN applications and architectures. Due to this, we target <br>
+                    low level DNN operations, and we leverage cuDNN due to its usage in popular frameworks such as Caffe, TensorFlow, and Torch.
+                </h3>
+                <br>
+                <br>
+                <h2>Benchmarks vs Stress Tools</h2>
+                <h3>Benchmarks are meant to compare the performance of different GPUs, while stress tools are designed to determine the stability <br>
+                    of the GPU subsystem.<br><br>
+                    To achieve this, benchmarks have fixed problem sizes that keep the comparisons fair between benchmark runs across different GPUs. <br>
+                    On the other hand, stress tools have dynamic problem sizes generated to match the user-specified memory allocation. Once memory <br>
+                    is allocated, the stress tools will push the GPUs to 100% core utilization for a configurable amount of time. <br><br>
+                </h3>
+                <br>
+                <br>
+                <h2>CuDNN Operations</h2>
+                <h3>The current implementation of Dellve utilizes four fundamental operations for the purpose of running benchmarks and stress tools. <br>
+                    We also include both forward and backward propagations for each operation.<br><br>
+                    <div style="font-weight: bold; margin-left: 15px;">
+                    <ul>
+                    <li>Activation</li>
+                    <li>Convolution</li>
+                    <li>Pooling</li>
+                    <li>Softmax</li>
+                    </ul>
+                    </div>
+                </h3>
+
+
             </div>
                 <ul class="list-inline banner-social-buttons">
                     <li>

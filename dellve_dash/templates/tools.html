@@ -32,13 +32,13 @@
 <script type="text/javascript" src="http://{{ server }}:{{ netdata_port }}/dashboard.js"></script>
 <!--   3.  Set netdata config options
 <script type="text/javascript" src="../static/js/netdata-config.js"></script> -->
-<body style='overflow: hidden'>
+<body style='overflow: hidden;'>
     {% include 'templates/components/nav-header.html' %}
     <!-- BEGIN PAGE WRAPPER -->
     <div>
         {% include 'templates/components/sidebar.html' %}
         <script> document.getElementById('tool-page').className = 'active';</script>
-        <div style='margin-left: 280px;'><br>
+        <div style='margin-left: 280px; padding-top: 50px;'><br>
             {% include 'templates/components/tool-control.html' %}
             <div class='row'>
                 <div class='col-md-6'>
