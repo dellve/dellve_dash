@@ -1755,7 +1755,6 @@ ul.chats li.out .message a.chat-datetime {
 }
 canvas {
   width: 100% !important;
-  max-width: 800px;
   height: auto !important;
 }
 .timeline-centered {
